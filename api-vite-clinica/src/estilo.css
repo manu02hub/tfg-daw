@@ -1,0 +1,398 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: white;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.containerLogin {
+  height: auto;
+  justify-content: center;
+  height: auto;
+  margin: 30px;
+  padding: 10px;
+}
+
+.imagenLogo {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 50%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.containerLogin h3 {
+  color: #212121;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+}
+
+.contenedorForm {
+  padding: 5px;
+  margin-top: 5px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.contenedorForm input[type="email"],
+input[type="password"],
+input[type="number"] {
+  width: 93%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: white;
+  outline: none;
+  border: 2px solid #bdbdbd;
+  border-radius: 4px;
+  color: #212121;
+  font-family: "Roboto";
+  font-weight: 500;
+}
+.contenedorForm input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus {
+  border: 2px solid #0277b5;
+}
+
+.contenedorForm input[type="submit"] {
+  width: 99%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #0277b5;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-family: "Roboto";
+  font-weight: 500;
+  transition: all 300ms;
+  cursor: pointer;
+}
+
+.contenedorForm input[type="submit"]:hover {
+  background: #023754;
+}
+
+.contenedorForm a {
+  font-size: 15px;
+  font-weight: bolder;
+  color: #0277b5;
+  text-align: right;
+  margin-bottom: 10px;
+  margin-top: 3px;
+  margin-right: -20px;
+  justify-content: right;
+  align-items: end;
+  text-align: right;
+  text-decoration: none;
+}
+
+.contenedorLink {
+  display: flex;
+  justify-content: end;
+}
+
+.contenedorPrivate {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.contenedorPrivate .aside {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: left;
+  border-right: 1px solid #EEEEEE;
+  width: 15%;
+  height: 100vh;
+}
+
+.aside .logoAside {
+  width: 100%;
+  height: 13%;
+  background-color: white;
+}
+
+.logoAside img {
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-bottom: 15px;
+  width: 85%;
+  height: auto;
+}
+
+.aside .listadoRoutes {
+  display: flex;
+  flex-flow: column wrap;
+  margin-top: 5px;
+  width: 100%;
+  height: 86%;
+  background-color: white;
+}
+
+.listadoRoutes .cajaListado{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  justify-content: center;
+}
+
+.cajaListado .cajaSelect{
+  width: 80%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  border-radius: 4px;
+  justify-content: start;
+}
+
+.isActive{
+  border-right: 5px solid #0277b5;
+  background-color: #EEEEEE;
+}
+
+.isActive .iconoSide{
+  color: #0277b5;
+}
+
+.isActive .spanSide{
+  color: #0277b5;
+  font-weight: bold;
+}
+
+.iconoSide{
+  margin-left: 20px;
+}
+
+.spanSide{
+  margin-left: 20px;
+}
+
+
+.contenedorPrivate .privateRight {
+  justify-content: right;
+  background-color: red;
+  width: 85%;
+  height: 100vh;
+}
+
+.contenedorPrivate .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: white;
+  width: 100%;
+  height: auto;
+  border-bottom: #EEEEEE 1px solid;
+}
+
+.header .banner {
+  justify-content: baseline;
+  width: 70%;
+  margin-left: 25px;
+}
+
+.header .nombreUsu {
+  display: flex;
+  justify-content: end;
+  margin-right: 25px;
+  margin-top: 5px;
+  width: 30%;
+}
+
+.privateRight .sectionPrivate {
+  background-color: white;
+  width: 100%;
+  height: 90%;
+  padding-bottom: 5px;
+}
+
+.row {
+  display: grid; /* En la propiedad display agregamos grid para establecer una cuadricula */
+  grid-template-columns: repeat(
+    12,
+    [col] 1fr
+  ); /* Define el numero de columnas en el diseÃ±o de cuadricula */
+  grid-template-rows: repeat(1, [row] auto); /* Define la altura de cada fila */
+  grid-column-gap: 1em; /* espacio entre columnas */
+  grid-row-gap: 15px; /* espacio entre filas */
+  justify-content: center; /* Alinea horizontalmente la cuadricula del interior del contenedor */
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Pantalla grande, PC  */
+@media only screen and (min-width: 941px) {
+  .col-lg-1 {
+    grid-column: span 1;
+  }
+
+  .col-lg-2 {
+    grid-column: span 2;
+  }
+
+  .col-lg-3 {
+    grid-column: span 3;
+  }
+
+  .col-lg-4 {
+    grid-column: span 4;
+  }
+
+  .col-lg-5 {
+    grid-column: span 5;
+  }
+
+  .col-lg-6 {
+    grid-column: span 6;
+  }
+
+  .col-lg-7 {
+    grid-column: span 7;
+  }
+
+  .col-lg-8 {
+    grid-column: span 8;
+  }
+
+  .col-lg-9 {
+    grid-column: span 9;
+  }
+
+  .col-lg-10 {
+    grid-column: span 10;
+  }
+
+  .col-lg-11 {
+    grid-column: span 11;
+  }
+
+  .col-lg-12 {
+    grid-column: span 12;
+  }
+}
+
+/* Pantalla tablet  */
+@media only screen and (min-width: 768px) and (max-width: 940px) {
+  .col-md-1 {
+    grid-column: span 1;
+  }
+
+  .col-md-2 {
+    grid-column: span 2;
+  }
+
+  .col-md-3 {
+    grid-column: span 3;
+  }
+
+  .col-md-4 {
+    grid-column: span 4;
+  }
+
+  .col-md-5 {
+    grid-column: span 5;
+  }
+
+  .col-md-6 {
+    grid-column: span 6;
+  }
+
+  .col-md-7 {
+    grid-column: span 7;
+  }
+
+  .col-md-8 {
+    grid-column: span 8;
+  }
+
+  .col-md-9 {
+    grid-column: span 9;
+  }
+
+  .col-md-10 {
+    grid-column: span 10;
+  }
+
+  .col-md-11 {
+    grid-column: span 11;
+  }
+
+  .col-md-12 {
+    grid-column: span 12;
+  }
+}
+
+/* Pantalla movil  */
+@media only screen and (max-width: 767px) {
+  .col-sm-1 {
+    grid-column: span 1;
+  }
+
+  .col-sm-2 {
+    grid-column: span 2;
+  }
+
+  .col-sm-3 {
+    grid-column: span 3;
+  }
+
+  .col-sm-4 {
+    grid-column: span 4;
+  }
+
+  .col-sm-5 {
+    grid-column: span 5;
+  }
+
+  .col-sm-6 {
+    grid-column: span 6;
+  }
+
+  .col-sm-7 {
+    grid-column: span 7;
+  }
+
+  .col-sm-8 {
+    grid-column: span 8;
+  }
+
+  .col-sm-9 {
+    grid-column: span 9;
+  }
+
+  .col-sm-10 {
+    grid-column: span 10;
+  }
+
+  .col-sm-11 {
+    grid-column: span 11;
+  }
+
+  .col-sm-12 {
+    grid-column: span 12;
+  }
+}
