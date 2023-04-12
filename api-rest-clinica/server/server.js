@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const userRoutes = require("../routes/user");
+const clinicRoutes = require("../routes/clinic");
 
 const lanzarServidor = () => {
     //Crear servidor node
@@ -14,6 +16,8 @@ const lanzarServidor = () => {
     app.use(express.urlencoded({ extended: true }));
 
     //Cargar rutas
+    app.use("/api/user",userRoutes);
+    app.use("/api/clinic",clinicRoutes);
 
     //Ruta de prueba
 
