@@ -11,7 +11,7 @@ const createClinic = (req, res) => {
     return res.status(200).json({
         state: "success",
         clinic: cliniCreate
-    })
+    });
 
 }
 
@@ -22,7 +22,7 @@ const getAllClinics = async (req, res) => {
     return res.status(200).json({
         state: "sucess",
         clinics
-    })
+    });
 }
 
 const getClinic = async (req, res) => {

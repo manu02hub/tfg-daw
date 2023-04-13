@@ -5,7 +5,7 @@ const PermissionSchema = Schema({
         type: String,
         required: true,
     }
-})
+});
 
 const modelPermission = model("Permission", PermissionSchema, "permissions");
 
