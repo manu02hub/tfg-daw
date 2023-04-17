@@ -11,6 +11,17 @@ const pruebaUser = (req, res) => {
     })
 }
 
+const getUser = async (req, res) => {
+    const id = req.params.id;
+
+    const user = await User.findOne({ _id: id });
+
+    return res.status(200).json({
+        state: "sucess",
+        user,
+    });
+}
+ 
 const createUser = async (req, res) => {
     let parameters = req.body;
     let respuesta;
@@ -176,6 +187,7 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
+    getUser,
     pruebaUser,
     createUser,
     login,

@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import ToothSensation from "../../assets/logo.png";
-import { Navigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { object, string, number, date } from "yup";
 
-
 function Clinicas() {
-
-
   const validationSchema = object().shape({
     password: string()
       .min(2, "El nombre es muy corto")
@@ -30,14 +25,17 @@ function Clinicas() {
   });
 
   return (
-    <div>
-      <div className="login">
+    <div className="row">
+      <div className="col-lg-12 col-md-12 col-sm-12">
+        <div className="section-information">
+          <h3>Clinicas</h3>
+          {/* <div className="login">
         <div className="containerLogin">
           <div className="imagenLogo">
             <img src={ToothSensation} className="logo" />
-          </div>
+          </div> */}
           {/* <h3>¡¡Bienvenido de nuevo!!</h3> */}
-          <div className="contenedorForm">
+          {/* <div className="contenedorForm">
             <form onSubmit={formik.handleSubmit}>
               <input
                 type="email"
@@ -63,12 +61,14 @@ function Clinicas() {
                   ? formik.errors.password
                   : ""}
               </p>
-              <div className="contenedorLink">
-                {/* <Link>Forgot your password?</Link> */}
-              </div>
+              <div className="contenedorLink"> */}
+          {/* <Link>Forgot your password?</Link> */}
+          {/* </div>
               <input type="submit" value={"Añadir Clinica"}></input>
             </form>
           </div>
+        </div>
+      </div> */}
         </div>
       </div>
     </div>

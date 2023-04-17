@@ -120,14 +120,14 @@ input[type="number"]:focus {
   display: flex;
   flex-flow: column wrap;
   justify-content: left;
-  border-right: 1px solid #EEEEEE;
+  border-right: 1px solid #eeeeee;
   width: 15%;
   height: 100vh;
 }
 
 .aside .logoAside {
   width: 100%;
-  height: 13%;
+  /* height: 13%; */
   background-color: white;
 }
 
@@ -144,11 +144,11 @@ input[type="number"]:focus {
   flex-flow: column wrap;
   margin-top: 5px;
   width: 100%;
-  height: 86%;
+  /* height: 86%; */
   background-color: white;
 }
 
-.listadoRoutes .cajaListado{
+.listadoRoutes .cajaListado {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -158,7 +158,7 @@ input[type="number"]:focus {
   justify-content: center;
 }
 
-.cajaListado .cajaSelect{
+.cajaListado .cajaSelect {
   width: 80%;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -170,28 +170,27 @@ input[type="number"]:focus {
   justify-content: start;
 }
 
-.isActive{
+.isActive {
   border-right: 5px solid #0277b5;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
-.isActive .iconoSide{
+.isActive .iconoSide {
   color: #0277b5;
 }
 
-.isActive .spanSide{
+.isActive .spanSide {
   color: #0277b5;
   font-weight: bold;
 }
 
-.iconoSide{
+.iconoSide {
   margin-left: 20px;
 }
 
-.spanSide{
+.spanSide {
   margin-left: 20px;
 }
-
 
 .contenedorPrivate .privateRight {
   justify-content: right;
@@ -203,16 +202,15 @@ input[type="number"]:focus {
 .contenedorPrivate .header {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   background-color: white;
   width: 100%;
   height: auto;
-  border-bottom: #EEEEEE 1px solid;
+  border-bottom: #eeeeee 1px solid;
 }
 
 .header .banner {
   justify-content: baseline;
-  width: 70%;
+  width: 100%;
   margin-left: 25px;
 }
 
@@ -221,7 +219,7 @@ input[type="number"]:focus {
   justify-content: end;
   margin-right: 25px;
   margin-top: 5px;
-  width: 30%;
+  width: 100%;
 }
 
 .privateRight .sectionPrivate {
@@ -229,6 +227,71 @@ input[type="number"]:focus {
   width: 100%;
   height: 90%;
   padding-bottom: 5px;
+}
+
+.section-information {
+  height: auto;
+  margin: 20px;
+}
+
+.nombreUsu .boxUserPic {
+  height: auto;
+  display: flex;
+  width: auto;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.boxUserPic .user-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.sub-menu-wrap {
+  position: absolute;
+  top: 6%;
+  right: 1%;
+  width: auto;
+  max-height: 400px;
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+
+.sub-menu-wrap .open-menu{
+  max-height: 400px;
+}
+
+.sub-menu {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.sub-menu-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #023754;
+  margin: 5px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.sub-menu-link p {
+  width: 100%;
+  margin: 5px;
+}
+
+.sub-menu-link .sub-menu-icon {
+  width: 30px;
+  border-radius: 25%;
+  padding: 8px;
+  margin-right: 5px;
 }
 
 .row {
