@@ -1,9 +1,9 @@
 import React from "react";
 import logo from "./../../assets/logoPrivate.png";
-import { FaUserAlt } from "react-icons/fa";
+import { FaUserAlt, FaClinicMedical, FaTooth } from "react-icons/fa";
+import NavLink from "../NavLink";
 
 function Aside() {
-
   return (
     <aside className="aside">
       <div className="logoAside">
@@ -12,24 +12,24 @@ function Aside() {
 
       <div className="listadoRoutes">
         <div className="cajaListado">
-          <div className="cajaSelect isActive">
+          <NavLink className="cajaSelect" to={"/panel/gestion-usuarios"}>
             <FaUserAlt className="iconoSide" />
             <span className="spanSide">Usuarios</span>
-          </div>
+          </NavLink>
         </div>
 
         <div className="cajaListado">
-          <div className="cajaSelect">
-            <FaUserAlt className="iconoSide" />
-            <span className="spanSide">Usuarios</span>
-          </div>
+          <NavLink className="cajaSelect" to={"/panel/gestion-clinicas"}>
+            <FaClinicMedical className="iconoSide" />
+            <span className="spanSide">Clinicas</span>
+          </NavLink>
         </div>
 
         <div className="cajaListado">
-          <div className="cajaSelect">
-            <FaUserAlt className="iconoSide" />
-            <span className="spanSide">Usuarios</span>
-          </div>
+          <NavLink className="cajaSelect" to={"/panel/gestion-tratamientos"}>
+            <FaTooth className="iconoSide" />
+            <span className="spanSide">Tratamientos</span>
+          </NavLink>
         </div>
       </div>
     </aside>

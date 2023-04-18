@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import userImage from "../../assets/user.jpg";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AiFillSetting } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 
@@ -32,10 +32,10 @@ function Header() {
               <AiFillSetting className="sub-menu-icon"></AiFillSetting>
               <p>Settings</p>
             </Link>
-            <Link className="sub-menu-link">
+            <NavLink className="sub-menu-link" to={"/logout"}>
               <BiLogOut className="sub-menu-icon"></BiLogOut>
               <p>Log Out</p>
-            </Link>
+            </NavLink>
           </div>
         </div>
       )}

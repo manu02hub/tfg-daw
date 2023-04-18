@@ -5,7 +5,7 @@ function NavLink({ to, children, ...props }) {
   return (
     <NavLinkRouter
       {...props}
-      className={({ isActive }) => (isActive ? "is-active" : undefined)}
+      className={({ isActive }) => (isActive ? "cajaSelect isActive" : "cajaSelect")}
       to={to}
     >
       {children}

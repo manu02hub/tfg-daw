@@ -168,6 +168,8 @@ input[type="number"]:focus {
   display: flex;
   border-radius: 4px;
   justify-content: start;
+  text-decoration: none;
+  color: #212121;
 }
 
 .isActive {
@@ -212,6 +214,7 @@ input[type="number"]:focus {
   justify-content: baseline;
   width: 100%;
   margin-left: 25px;
+  color: #212121;
 }
 
 .header .nombreUsu {
@@ -223,10 +226,10 @@ input[type="number"]:focus {
 }
 
 .privateRight .sectionPrivate {
-  background-color: white;
   width: 100%;
   height: 90%;
   padding-bottom: 5px;
+  background-color: rgb(241 245 249);
 }
 
 .section-information {
@@ -260,7 +263,7 @@ input[type="number"]:focus {
   transition: max-height 0.5s;
 }
 
-.sub-menu-wrap .open-menu{
+.sub-menu-wrap .open-menu {
   max-height: 400px;
 }
 
@@ -294,6 +297,161 @@ input[type="number"]:focus {
   margin-right: 5px;
 }
 
+/*------------------------------USUARIOS---------------------------------------*/
+
+.headerSection {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.headerSection .headerName {
+  width: auto;
+  color: #212121;
+}
+
+.headerSection .headerSearch {
+  width: auto;
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+}
+
+.headerSearch .inputSearch {
+  padding: 10px;
+  margin-right: 3px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid #e5e7eb;
+  font-weight: inherit;
+}
+
+.inputSearch:hover {
+  border: 1px solid #bdbdbd;
+}
+
+.headerSearch .btnAdd {
+  width: auto;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-right: 3px;
+  border-radius: 3px;
+  border: none;
+  background-color: #0277b5;
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.btnAdd span {
+  margin-left: 7px;
+}
+
+.cardUser {
+  box-sizing: border-box;
+  background-color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e5e7eb;
+  display: flex;
+  flex-flow: column wrap;
+  -webkit-box-shadow: 6px 9px 15px 0px rgba(161, 161, 161, 0.13);
+  -moz-box-shadow: 6px 9px 15px 0px rgba(161, 161, 161,0.13);
+  box-shadow: 6px 9px 15px 0px rgba(47, 47, 47, 0.13);
+  margin: 5px;
+}
+
+.cardUser .cardOrder {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: start;
+}
+
+.cardOrder .cardImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 10px;
+}
+
+.cardImg img {
+  width: 50px;
+  height: 50px;
+}
+
+.cardOrder .cardData {
+  margin: 5px;
+  padding: 5px;
+}
+
+.cardData .dataName {
+  color: rgb(30 41 59);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.cardData .dataRol,
+.cardData .dataClinic,
+.cardData .dataEmail {
+  opacity: 1;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgb(90, 105, 125);
+}
+
+.dataRol .icon,
+.dataClinic .icon,
+.dataEmail .icon {
+  margin-right: 5px;
+}
+
+.cardOperations {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  border-top: 1px solid #bdbdbd;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 10px;
+}
+
+.cardOperations .cardShow,
+.cardOperations .cardEdit,
+.cardOperations .cardDelete {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: baseline;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.cardShow {
+  color: #0277b5;
+  margin-left: 15px;
+}
+
+.cardEdit {
+  color: #ffd600;
+}
+
+.cardDelete {
+  color: #d32f2f;
+  margin-right: 15px;
+}
+
+.cardShow span,
+.cardEdit span,
+.cardDelete span {
+  margin-left: 5px;
+}
+
+/*-------------------------GRID SYSTEM------------------------------------------*/
 .row {
   display: grid; /* En la propiedad display agregamos grid para establecer una cuadricula */
   grid-template-columns: repeat(
