@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Global } from "../helpers/Global";
-import { json } from "react-router-dom";
 
 const AuthContext = createContext();
 

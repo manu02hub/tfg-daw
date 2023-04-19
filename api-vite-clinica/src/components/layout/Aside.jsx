@@ -12,7 +12,7 @@ function Aside() {
 
       <div className="listadoRoutes">
         <div className="cajaListado">
-          <NavLink className="cajaSelect" to={"/panel/gestion-usuarios"}>
+          <NavLink className="cajaSelect" to={"/panel/users"}>
             <FaUserAlt className="iconoSide" />
             <span className="spanSide">Usuarios</span>
           </NavLink>

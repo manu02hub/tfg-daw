@@ -41,12 +41,12 @@ function Login() {
   };
 
   if (auth._id) {
-    return <Navigate to={"/panel/gestion-clinicas"} replace={true} />;
+    return <Navigate to={"/panel/users"} replace={true} />;
   } else {
 
     if (estado) {
      
-      return <Navigate to={"/panel/gestion-clinicas"} replace={true} />;
+      return <Navigate to={"/panel/users"} replace={true} />;
     }
 
     return (

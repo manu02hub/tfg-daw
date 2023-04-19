@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 body {
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-family: "Figtree", sans-serif;
   background-color: white;
 }
 
@@ -53,8 +54,9 @@ body {
   flex-direction: column;
 }
 
-.contenedorForm input[type="email"],
+input[type="email"],
 input[type="password"],
+input[type="text"],
 input[type="number"] {
   width: 93%;
   margin-bottom: 10px;
@@ -67,7 +69,8 @@ input[type="number"] {
   font-family: "Roboto";
   font-weight: 500;
 }
-.contenedorForm input[type="email"]:focus,
+input[type="email"]:focus,
+input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus {
   border: 2px solid #0277b5;
@@ -122,7 +125,7 @@ input[type="number"]:focus {
   justify-content: left;
   border-right: 1px solid #eeeeee;
   width: 15%;
-  height: 100vh;
+  height: 100%;
 }
 
 .aside .logoAside {
@@ -196,9 +199,8 @@ input[type="number"]:focus {
 
 .contenedorPrivate .privateRight {
   justify-content: right;
-  background-color: red;
   width: 85%;
-  height: 100vh;
+  background-color: rgb(241 245 249);
 }
 
 .contenedorPrivate .header {
@@ -227,7 +229,7 @@ input[type="number"]:focus {
 
 .privateRight .sectionPrivate {
   width: 100%;
-  height: 90%;
+  height: auto;
   padding-bottom: 5px;
   background-color: rgb(241 245 249);
 }
@@ -304,11 +306,17 @@ input[type="number"]:focus {
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: baseline;
+  margin-top: -10px;
+  margin-left: 10px;
 }
 
 .headerSection .headerName {
   width: auto;
   color: #212121;
+}
+
+.headerName h3 {
+  font-size: 20px;
 }
 
 .headerSection .headerSearch {
@@ -346,6 +354,7 @@ input[type="number"]:focus {
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btnAdd span {
@@ -360,9 +369,9 @@ input[type="number"]:focus {
   border-color: #e5e7eb;
   display: flex;
   flex-flow: column wrap;
-  -webkit-box-shadow: 6px 9px 15px 0px rgba(161, 161, 161, 0.13);
-  -moz-box-shadow: 6px 9px 15px 0px rgba(161, 161, 161,0.13);
-  box-shadow: 6px 9px 15px 0px rgba(47, 47, 47, 0.13);
+  /* -webkit-box-shadow: 6px 9px 15px 0px rgba(161, 161, 161, 0.13);
+  -moz-box-shadow: 6px 9px 15px 0px rgba(161, 161, 161, 0.13);
+  box-shadow: 6px 9px 15px 0px rgba(47, 47, 47, 0.13); */
   margin: 5px;
 }
 
@@ -434,15 +443,18 @@ input[type="number"]:focus {
 .cardShow {
   color: #0277b5;
   margin-left: 15px;
+  text-decoration: none;
 }
 
 .cardEdit {
   color: #ffd600;
+  text-decoration: none;
 }
 
 .cardDelete {
   color: #d32f2f;
   margin-right: 15px;
+  text-decoration: none;
 }
 
 .cardShow span,
@@ -450,6 +462,118 @@ input[type="number"]:focus {
 .cardDelete span {
   margin-left: 5px;
 }
+
+/*------------------------COMPONENT CARD--------------------------------------------*/
+
+.cardComponent {
+  margin-right: 15px;
+  margin-left: 15px;
+  margin-top: 20px;
+  height: auto;
+  width: auto;
+  background-color: white;
+  opacity: 1;
+  padding: 20px;
+  border-radius: 0.5rem;
+}
+
+.cardComponent .formEdit {
+  margin-top: 20px;
+  display: block;
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column; */
+}
+
+.separadorForm{
+  margin-top: 20px;
+}
+
+.separadorBtn{
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.separadorBtn input[type="submit"],
+.separadorBtn button{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 3px;
+  border: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: white;
+}
+
+.btnsColor{
+  background: #0277b5;
+}
+
+.btnsColor:hover{
+  background: #023754;
+}
+
+.btnDelete{
+
+  background: #d32f2f;;
+}
+
+.btnDelete:hover{
+  background: #d54646;
+}
+
+.formEdit label {
+  font-weight: 500;
+  font-size: 0.885rem;
+  line-height: 1.25rem;
+  color: rgb(55 65 81);
+}
+
+.formEdit input {
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  border: 1px solid rgb(209 213 219);
+}
+
+.section-card {
+  /* width: 36rem; */
+}
+
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
+    0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.cardComponent h2 {
+  font-size: 1.1rem;
+  line-height: 1.75rem;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39);
+  font-weight: 500;
+  margin: 0;
+}
+
+.cardComponent p {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin-top: 4px;
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99);
+}
+
+/*--------------------------EDIT USER -----------------------------------------------*/
 
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {
