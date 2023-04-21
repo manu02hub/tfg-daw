@@ -6,7 +6,7 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete, MdEmail } from "react-icons/md";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import userImage from "../../assets/user.jpg";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function CardUser({name, rol, clinic , email}) {
   return (
@@ -38,17 +38,17 @@ function CardUser({name, rol, clinic , email}) {
         </div>
         <div className="cardOperations">
           <Link to={"/panel/users/user-show"} className="cardShow">
-            <BiShowAlt></BiShowAlt>
+            <BiShowAlt className="icon"></BiShowAlt>
             <span>Show</span>
           </Link>
           <hr />
           <Link to={"/panel/users/user-edit"} className="cardEdit">
-            <FiEdit></FiEdit>
+            <FiEdit className="icon"></FiEdit>
             <span>Edit</span>
           </Link>
           <hr />
           <div className="cardDelete">
-            <MdDelete></MdDelete>
+            <MdDelete className="icon"></MdDelete>
             <span>Delete</span>
           </div>
         </div>

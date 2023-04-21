@@ -4,6 +4,7 @@ import userImage from "../../assets/user.jpg";
 import { Link, NavLink } from "react-router-dom";
 import { AiFillSetting } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 function Header() {
   const { auth } = useAuth();
@@ -19,11 +20,14 @@ function Header() {
       <div className="banner">
         <h2>Buenos días !!</h2>
       </div>
-      <div className="nombreUsu" onClick={() => toggleMenu()}>
-        <div className="boxUserPic">
-          <img src={userImage} className="user-pic"></img>
+      <div className="nombreUsu">
+        <div className="boxUser" onClick={() => toggleMenu()}>
+          <div className="boxUserPic">
+            <img src={userImage} className="user-pic"></img>
+          </div>
+          <h5>{auth.name}</h5>
+          <MdKeyboardArrowDown />
         </div>
-        <h5>{auth.name}</h5>
       </div>
       {show && (
         <div className="sub-menu-wrap">
