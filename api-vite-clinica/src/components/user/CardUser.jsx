@@ -3,7 +3,7 @@ import { FaSearch, FaClinicMedical } from "react-icons/fa";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BiShowAlt } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
-import { MdDelete, MdEmail } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import userImage from "../../assets/user.jpg";
 import { Link } from "react-router-dom";

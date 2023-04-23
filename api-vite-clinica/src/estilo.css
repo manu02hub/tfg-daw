@@ -229,7 +229,7 @@ input[type="number"]:focus {
   width: 100%;
 }
 
-.nombreUsu .boxUser{
+.nombreUsu .boxUser {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -318,6 +318,7 @@ input[type="number"]:focus {
   align-items: baseline;
   margin-top: -10px;
   margin-left: 10px;
+  margin-bottom: 15px;
 }
 
 .headerSection .headerName {
@@ -440,7 +441,7 @@ input[type="number"]:focus {
   margin-top: 10px;
 }
 
-hr{
+hr {
   border: 1px solid #e8e5e5;
 }
 
@@ -461,7 +462,7 @@ hr{
   transition: all 500ms;
 }
 
-.cardShow:hover{
+.cardShow:hover {
   color: #065a88;
 }
 
@@ -471,7 +472,7 @@ hr{
   transition: all 500ms;
 }
 
-.cardEdit:hover{
+.cardEdit:hover {
   color: #b79c18;
 }
 
@@ -482,7 +483,7 @@ hr{
   transition: all 300ms;
 }
 
-.cardDelete:hover{
+.cardDelete:hover {
   color: #ee5c5c;
 }
 
@@ -495,8 +496,6 @@ hr{
 /*------------------------COMPONENT CARD--------------------------------------------*/
 
 .cardComponent {
-  margin-right: 15px;
-  margin-left: 15px;
   margin-bottom: 20px;
   height: auto;
   width: auto;
@@ -601,6 +600,7 @@ hr{
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.cardShowUser h2,
 .cardComponent h2 {
   font-size: 1.1rem;
   line-height: 1.75rem;
@@ -610,6 +610,7 @@ hr{
   margin: 0;
 }
 
+.cardShowUser p,
 .cardComponent p {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -619,14 +620,99 @@ hr{
 }
 
 /*--------------------------FORM CREATE------------------------------------------*/
-.formCreateUser{
+.formCreateUser {
   display: flex;
   flex-direction: column;
 }
 
-.sectionRow{
+.sectionRow {
   display: flex;
   flex-direction: row;
+}
+
+/*-----------------------CARD SHOW USER-----------------------------------------*/
+
+.boxShowUser {
+  display: flex;
+  flex-flow: row;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.boxShowUser .cardShowUser {
+  display: flex;
+  flex-flow: column wrap;
+  opacity: 1;
+  border-radius: 0.5rem;
+  justify-content: center;
+  height: 100%;
+  width: 75%;
+}
+
+.sectionInfoClinic h3,
+.cardShowUser h3 {
+  margin-bottom: 5px;
+}
+
+.cardShowUser p {
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+.boxShowUser .boxShowImg {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.boxShowImg img {
+  width: 40%;
+}
+
+.sectionShowClinic {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.sectionInfoClinic {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  justify-content: center;
+}
+
+.sectionInfoClinic .boxInfoclinic {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.boxInfoclinic .columnClinic {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionImgClinic {
+  width: 75%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionImgClinic img {
+  border-radius: 10px;
+  height: auto;
+  width: 40%;
+  margin-right: 10px;
 }
 
 /*-------------------------GRID SYSTEM------------------------------------------*/
@@ -640,7 +726,6 @@ hr{
   grid-column-gap: 1em; /* espacio entre columnas */
   grid-row-gap: 15px; /* espacio entre filas */
   justify-content: center; /* Alinea horizontalmente la cuadricula del interior del contenedor */
-  font-family: "Open Sans", sans-serif;
 }
 
 /* Pantalla grande, PC  */

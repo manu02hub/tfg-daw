@@ -2,6 +2,7 @@ import React from "react";
 import { BsPersonFillAdd } from "react-icons/bs";
 import CardUser from "../../components/user/CardUser";
 import { Link } from "react-router-dom";
+import CardShowUser from "../../components/user/CardShowUser";
 
 function IndexUser() {
   return (
@@ -24,6 +25,7 @@ function IndexUser() {
           </form>
         </div>
       </div>
+      <CardShowUser></CardShowUser>
       <div className="row">
         <CardUser
           name="Manuel Alonso Martín"

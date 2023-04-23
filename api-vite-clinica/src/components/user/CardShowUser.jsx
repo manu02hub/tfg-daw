@@ -1,17 +1,11 @@
-import React from "react";
+import React from 'react';
 import CardBasic from "../../components/CardBasic";
 import userImage from "../../assets/user.jpg";
 import clinicImage from "../../assets/clinic.jpg";
 
-function ShowUser() {
+function CardShowUser() {
   return (
-    <>
-      <div className="headerSection">
-        <div className="headerName">
-          <h3>Info User</h3>
-        </div>
-      </div>
-      <div className="row">
+    <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
             <div className="row">
@@ -65,8 +59,7 @@ function ShowUser() {
           </CardBasic>
         </div>
       </div>
-    </>
-  );
+  )
 }
 
-export default ShowUser;
+export default CardShowUser
