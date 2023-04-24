@@ -2,15 +2,12 @@ import React from "react";
 import CardBasic from "../../components/CardBasic";
 import userImage from "../../assets/user.jpg";
 import clinicImage from "../../assets/clinic.jpg";
+import HeaderSection from "../../components/HeaderSection";
 
 function ShowUser() {
   return (
     <>
-      <div className="headerSection">
-        <div className="headerName">
-          <h3>Info User</h3>
-        </div>
-      </div>
+      <HeaderSection title={"Info User"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>

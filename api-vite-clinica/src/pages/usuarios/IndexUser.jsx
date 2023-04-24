@@ -3,14 +3,12 @@ import { BsPersonFillAdd } from "react-icons/bs";
 import CardUser from "../../components/user/CardUser";
 import { Link } from "react-router-dom";
 import CardShowUser from "../../components/user/CardShowUser";
+import HeaderSection from "../../components/HeaderSection";
 
 function IndexUser() {
   return (
     <>
-      <div className="headerSection">
-        <div className="headerName">
-          <h3>Usuarios</h3>
-        </div>
+      <HeaderSection title={"Usuarios"}>
         <div className="headerSearch">
           <form>
             <input
@@ -24,7 +22,7 @@ function IndexUser() {
             </Link>
           </form>
         </div>
-      </div>
+      </HeaderSection>
       <CardShowUser></CardShowUser>
       <div className="row">
         <CardUser

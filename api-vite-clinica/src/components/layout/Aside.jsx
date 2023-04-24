@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "./../../assets/logoPrivate.png";
-import { FaUserAlt, FaClinicMedical, FaTooth } from "react-icons/fa";
+import { FaUserAlt, FaClinicMedical, FaTooth, FaUserShield } from "react-icons/fa";
+import { BsFillDoorOpenFill } from "react-icons/bs";
 import NavLink from "../NavLink";
 
 function Aside() {
@@ -19,16 +20,23 @@ function Aside() {
         </div>
 
         <div className="cajaListado">
-          <NavLink className="cajaSelect" to={"/panel/gestion-clinicas"}>
+          <NavLink className="cajaSelect" to={"/panel/clinics"}>
             <FaClinicMedical className="iconoSide" />
             <span className="spanSide">Clinicas</span>
           </NavLink>
         </div>
 
         <div className="cajaListado">
-          <NavLink className="cajaSelect" to={"/panel/gestion-tratamientos"}>
+          <NavLink className="cajaSelect" to={"/panel/therapies"}>
             <FaTooth className="iconoSide" />
             <span className="spanSide">Tratamientos</span>
+          </NavLink>
+        </div>
+
+        <div className="cajaListado">
+          <NavLink className="cajaSelect" to={"/panel/gabinetes"}>
+            <BsFillDoorOpenFill className="iconoSide" />
+            <span className="spanSide">Gabinetes</span>
           </NavLink>
         </div>
       </div>

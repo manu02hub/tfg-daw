@@ -54,6 +54,12 @@ body {
   flex-direction: column;
 }
 
+input[type="range"]{
+  width: 95%;
+  accent-color: #116897;
+  transition: all 300ms;
+}
+
 input[type="email"],
 input[type="password"],
 input[type="text"],
@@ -76,6 +82,7 @@ input[type="password"]:focus,
 input[type="number"]:focus {
   border: 2px solid #0277b5;
 }
+
 
 .contenedorForm input[type="submit"] {
   width: 99%;
@@ -523,6 +530,7 @@ hr {
 }
 
 .separadorBtn input[type="submit"],
+.separadorBtn input[type="reset"],
 .separadorBtn button {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -556,6 +564,15 @@ hr {
   background: #d54646;
 }
 
+.btnReset {
+  background: #bdbdbd;
+  transition: all 300ms;
+}
+
+.btnReset:hover {
+  background: #787878;
+}
+
 .errorForm {
   font-weight: 600;
   font-size: 0.775rem;
@@ -566,7 +583,7 @@ hr {
 
 /*--------------------------EDIT USER -----------------------------------------------*/
 .formEdit label,
-.formCreateUser label {
+.formCreate label {
   margin-bottom: 2px;
   font-weight: 500;
   font-size: 0.885rem;
@@ -575,9 +592,9 @@ hr {
 }
 
 .formEdit input,
-.formCreateUser input,
+.formCreate input,
 .formEdit select,
-.formCreateUser select {
+.formCreate select {
   font-family: inherit;
   font-size: 100%;
   font-weight: inherit;
@@ -620,7 +637,7 @@ hr {
 }
 
 /*--------------------------FORM CREATE------------------------------------------*/
-.formCreateUser {
+.formCreate {
   display: flex;
   flex-direction: column;
 }
@@ -713,6 +730,112 @@ hr {
   height: auto;
   width: 40%;
   margin-right: 10px;
+}
+
+/*-------------------------FORM CREATE CLINIC-----------------------------------*/
+
+.btnCreate {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.btnCreate input {
+  width: 45%;
+}
+
+/*------------------------------TABLE-------------------------------------------*/
+.sectionTable {
+  table-layout: auto;
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+
+thead {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.125rem;
+  color: rgb(148 163 184);
+  background-color: #f1f1f1;
+}
+
+th, td{
+  padding: .5rem;
+}
+
+.theadTitles{
+  font-weight: 600;
+  text-align: left;
+}
+
+tbody tr{
+  border-bottom: 1px solid #e8e5e5;
+}
+
+tbody .boxTbody{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.boxTbody img{
+  border-radius: 4px;
+  width: 50;
+  margin-right: 5px;
+}
+
+table a{
+  text-decoration: none;
+  color: white;
+}
+
+table .btnsAction{
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 3px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+table .editTable{
+  background-color: #f0ce25;
+  margin-right: 5px;
+}
+
+table .deleteTable{
+  background-color: #d54646;
+}
+
+.boxImg{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: end;
+  margin-bottom: 3px;
+}
+
+.boxImg img{
+  width: 100%;
+  border-radius: 3px;
+  margin-bottom: 3px;
+}
+
+.btnEditClinic{
+  margin-top: -5px;
 }
 
 /*-------------------------GRID SYSTEM------------------------------------------*/

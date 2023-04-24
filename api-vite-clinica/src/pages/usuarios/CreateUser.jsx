@@ -3,15 +3,12 @@ import CardBasic from "../../components/CardBasic";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
 import InputError from "../../components/InputError";
+import HeaderSection from "../../components/HeaderSection";
 
 function CreateUser() {
   return (
     <>
-      <div className="headerSection">
-        <div className="headerName">
-          <h3>Create User</h3>
-        </div>
-      </div>
+      <HeaderSection title={"Create User"}/>
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
@@ -22,7 +19,7 @@ function CreateUser() {
                   <p>
                     Update your account's profile information and email address.
                   </p>
-                  <form className="formCreateUser">
+                  <form className="formCreate">
                     <div className="row">
                       <div className="col-lg-6 col-md-6 col-sm-12">
                         <InputLabel>Name</InputLabel>

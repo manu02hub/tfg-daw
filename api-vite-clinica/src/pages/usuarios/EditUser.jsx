@@ -3,15 +3,12 @@ import CardBasic from "../../components/CardBasic";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
 import InputError from "../../components/InputError";
+import HeaderSection from "../../components/HeaderSection";
 
 function EditUser() {
   return (
     <>
-      <div className="headerSection">
-        <div className="headerName">
-          <h3>Profile</h3>
-        </div>
-      </div>
+      <HeaderSection title={"Edit User"}/>
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
