@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bycrypt = require("bcrypt");
 const jwt = require("../services/jwt");
 const Rol = require('../models/Rol');
+const Permission = require("../models/Permission");
 const moongosePaginate = require("mongoose-paginate-v2");
 
 const pruebaUser = (req, res) => {
@@ -15,13 +16,22 @@ const getUser = async (req, res) => {
     const id = req.params.id;
 
     const user = await User.findOne({ _id: id });
+    const permissionsUser = await Rol.findOne({ _id: user.id_rol }).populate('id_permissions');
 
     return res.status(200).json({
         state: "sucess",
-        user,
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            id_clinic: user.id_clinic,
+            id_rol: user.id_rol,
+            name_rol: permissionsUser.name,
+            permissions: permissionsUser.id_permissions,
+        },
     });
 }
- 
+
 const createUser = async (req, res) => {
     let parameters = req.body;
     let respuesta;
@@ -62,6 +72,7 @@ const login = async (req, res) => {
     //Encontrar user
     const userFind = await User.findOne({ email: parameters.email });
 
+
     if (userFind) {
 
         pass = bycrypt.compareSync(parameters.password, userFind.password);
@@ -75,11 +86,21 @@ const login = async (req, res) => {
 
             token = jwt.createToken(userFind);
 
+            const permissionsUser = await Rol.findOne({_id: userFind.id_rol}).populate('id_permissions');
+
             respuesta = res.status(200).json({
                 state: "success",
                 message: "Acceso a login",
-                user: userFind,
-                token
+                user: {
+                    _id: userFind._id,
+                    name: userFind.name,
+                    email: userFind.email,
+                    id_clinic: userFind.id_clinic,
+                    id_rol: userFind.id_rol,
+                    name_rol: permissionsUser.name,
+                    permissions: permissionsUser.id_permissions,
+                },
+                token,
             });
         }
 
@@ -108,7 +129,7 @@ const getUsersClinic = async (req, res) => {
 
     const id = req.params.clinic;
 
-    const usersClinic = await User.find({ id_clinic: id }).exec();
+    const usersClinic = await User.find({ id_clinic: id }).populate('id_rol').exec();
 
     return res.status(200).json({
         state: "sucess",
@@ -146,7 +167,7 @@ const updateUser = async (req, res) => {
 
     // {$and: [{ _id: { $not: {$eq: ObjectId("64382c2fc7584cd90e86de17") } } }, {email:"manuel@gmail.com"} ]}
 
-    const userFind = await User.findOne({$and: [{ _id: { $not: {$eq: id } } }, {email: parameters.email} ]});
+    const userFind = await User.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { email: parameters.email }] });
 
     if (userFind) {
 

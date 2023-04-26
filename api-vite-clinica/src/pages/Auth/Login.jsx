@@ -16,7 +16,7 @@ function Login() {
     //Datos del formulario
     let userLogin = form;
 
-    console.log(userLogin);
+    // console.log(userLogin);
 
     //Persistir datos en el navegador
     const request = await fetch(Global.url + "user/login", {

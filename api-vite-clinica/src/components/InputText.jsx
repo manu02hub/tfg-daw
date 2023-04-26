@@ -1,11 +1,11 @@
 import React from "react";
-import { useEffect } from "react";
-import { useRef } from "react";
+import { forwardRef, useEffect, useRef } from 'react';
 
 function InputText(
-  { type = "text", className = "", isFocused = false, ...props }
+  { type = "text", className = "", isFocused = false, ...props },
+  ref
 ) {
-  // const input = ref ? ref : useRef();
+  const input = ref ? ref : useRef();
 
   useEffect(() => {
     if (isFocused) {
@@ -18,9 +18,9 @@ function InputText(
       {...props}
       type={type}
       className={"formEdit " + className}
-      // ref={input}
+      ref={input}
     />
   );
 }
 
-export default InputText;
+export default forwardRef(InputText);
