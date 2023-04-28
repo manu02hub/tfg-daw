@@ -20,7 +20,7 @@ const getAllClinics = async (req, res) => {
     const clinics = await Clinic.find({}).exec();
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         clinics
     });
 }
@@ -32,7 +32,7 @@ const getClinic = async (req, res) => {
     const clinicGet = await Clinic.findById(id);
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         clinic: clinicGet,
     });
 }
@@ -44,7 +44,7 @@ const deleteClinic = async (req, res) => {
     await Clinic.findByIdAndDelete(id);
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         message: "Clinica eliminada correctamente"
     });
 
@@ -57,7 +57,7 @@ const updateClinic = async (req, res) => {
     const clinicEdit = await Clinic.findByIdAndUpdate(id, parameters, { new: true });
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         message: "Clinica editada correctamente",
         clinic: clinicEdit
     });

@@ -19,7 +19,7 @@ const getUser = async (req, res) => {
     const permissionsUser = await Rol.findOne({ _id: user.id_rol }).populate('id_permissions');
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         user: {
             _id: user._id,
             name: user.name,
@@ -54,7 +54,7 @@ const createUser = async (req, res) => {
 
     } else {
         respuesta = res.status(200).json({
-            state: "success",
+            state: "error",
             message: "El usuario ya existe"
         });
     }
@@ -86,7 +86,7 @@ const login = async (req, res) => {
 
             token = jwt.createToken(userFind);
 
-            const permissionsUser = await Rol.findOne({_id: userFind.id_rol}).populate('id_permissions');
+            const permissionsUser = await Rol.findOne({ _id: userFind.id_rol }).populate('id_permissions');
 
             respuesta = res.status(200).json({
                 state: "success",
@@ -117,10 +117,12 @@ const login = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
 
-    const allUsers = await User.find().sort({ date: -1 }).populate('id_rol').exec();
+    const id = req.params.id;
+
+    const allUsers = await User.find({ _id: { $not: { $eq: id } } } ).sort({ date: -1 }).populate('id_rol').exec();
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         allUsers,
     });
 }
@@ -129,10 +131,10 @@ const getUsersClinic = async (req, res) => {
 
     const id = req.params.clinic;
 
-    const usersClinic = await User.find({ id_clinic: id }).populate('id_rol').exec();
+    const usersClinic = await User.find({ $and: [{ _id: { $not: { $eq: id } } }, { id_clinic: id }] }).populate('id_rol').exec();
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         usersClinic,
     });
 
@@ -145,7 +147,7 @@ const editUser = async (req, res) => {
     const user = await User.findOne({ _id: id });
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         user,
     });
 
@@ -187,7 +189,7 @@ const updateUser = async (req, res) => {
         const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
 
         respuesta = res.status(200).json({
-            state: "sucess",
+            state: "success",
             message: "Usuario editado correctamente",
             user: userUpdate
         });
@@ -202,7 +204,7 @@ const deleteUser = async (req, res) => {
     await User.findByIdAndDelete(id);
 
     return res.status(200).json({
-        state: "sucess",
+        state: "success",
         message: "Usuario eliminado correctamente",
     });
 }

@@ -29,7 +29,7 @@ function Web() {
             <Route path="users" element={<Usuarios />}>
               <Route index="user-index" element={<IndexUser />}></Route>
               <Route path="user-show" element={<ShowUser />}></Route>
-              <Route path="user-edit" element={<EditUser />}></Route>
+              <Route path="user-edit/:id" element={<EditUser />}></Route>
               <Route path="user-create" element={<CreateUser />}></Route>
             </Route>
             <Route path="clinics" element={<Clinicas />}>

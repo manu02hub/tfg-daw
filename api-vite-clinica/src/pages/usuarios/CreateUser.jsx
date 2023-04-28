@@ -1,4 +1,5 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import CardBasic from "../../components/CardBasic";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
@@ -8,13 +9,13 @@ import { Global } from "../../helpers/Global";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../helpers/Validate";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
+import SelectRol from "../../components/user/SelectRol";
+import SelectClinic from "../../components/user/SelectClinic";
 
 function CreateUser() {
-  const [roles, setRoles] = useState({});
-
-  useEffect(() => {
-    getRoles();
-  }, []);
+  const navigate = useNavigate();
+  // const { form, changed } = useForm();
 
   const {
     register,
@@ -24,35 +25,19 @@ function CreateUser() {
     resolver: yupResolver(schema),
   });
 
-  const handleOnChange = (event) => {
-    setData(
-      event.target.name,
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value
+  const onSubmit = async (data) => {
+    let newUser = data;
+    console.log(newUser);
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "user/create-user",
+      "POST",
+      newUser
     );
-  };
 
-  const getRoles = async () => {
-    //Persistir datos en el navegador
-    const request = await fetch(Global.url + "rol/getAll-roles", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    });
-
-    const data = await request.json();
-
-    if (data.state == "success") {
-      setRoles(data.roles);
+    if (datos.state == "success" && !cargando) {
+      navigate("/panel/users");
     }
-  };
-
-  const onSubmit = (data) => {
-    e.preventDefault();
-    console.log(data);
   };
 
   return (
@@ -66,7 +51,6 @@ function CreateUser() {
                 <section className="section-card">
                   <h2>Create a new account for workers </h2>
                   <p>
-                    
                     Update your account's profile information and email address.
                   </p>
                   <form
@@ -128,21 +112,13 @@ function CreateUser() {
                       <div className="col-lg-6 col-md-6 col-sm-12">
                         <div className="separadorForm">
                           <InputLabel>Rol</InputLabel>
-                          <select name="select">
-                            {roles.map((rol) => {
-                              <option value={rol._id}>{rol.name}</option>;
-                            })}
-                          </select>
+                          <SelectRol {...register("id_rol")} />
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-12">
                         <div className="separadorForm">
                           <InputLabel>Clinica</InputLabel>
-                          <select name="select" defaultValue={"value1"}>
-                            <option value="value1">Clinica 1</option>
-                            <option value="value2">Clinica Thoot</option>
-                            <option value="value3">Clinica 3</option>
-                          </select>
+                          <SelectClinic {...register("id_clinic")} />
                         </div>
                       </div>
                     </div>

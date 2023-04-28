@@ -838,6 +838,10 @@ table .deleteTable{
   margin-top: -5px;
 }
 
+.boxSpinner{
+ margin: -20px;
+}
+
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {
   display: grid; /* En la propiedad display agregamos grid para establecer una cuadricula */
