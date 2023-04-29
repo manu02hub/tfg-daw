@@ -129,13 +129,14 @@ const getAllUsers = async (req, res) => {
 
 const getUsersClinic = async (req, res) => {
 
-    const id = req.params.clinic;
+    const id_clinic = req.params.clinic;
+    const id = req.params.id;
 
-    const usersClinic = await User.find({ $and: [{ _id: { $not: { $eq: id } } }, { id_clinic: id }] }).populate('id_rol').exec();
+    const allUsers = await User.find({ $and: [{ _id: { $not: { $eq: id } } }, { id_clinic: id_clinic }] }).populate('id_rol').exec();
 
     return res.status(200).json({
         state: "success",
-        usersClinic,
+        allUsers,
     });
 
 }

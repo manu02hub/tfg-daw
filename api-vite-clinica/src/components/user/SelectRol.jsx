@@ -1,17 +1,14 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
-import SelectInput from "../SelectInput";
 
-function SelectRol({ val }, ref) {
+function SelectRol({...props}, ref) {
   const input = ref ? ref : useRef();
-  
   const [roles, setRoles] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getRoles();
-    
   }, []);
 
   const getRoles = async () => {
@@ -23,25 +20,15 @@ function SelectRol({ val }, ref) {
     if (datos.state == "success" && !cargando) {
       setRoles(datos.roles);
       setLoading(false);
-   
     }
   };
 
-  const handleChange = (event) => {
-    console.log(event.target.value);
   
-   
-  };
 
   return (
     <>
       {!loading && (
-        <SelectInput
-          name={"id_rol"}
-          ref={input}
-          defaultValue={val}
-          onChange ={(event) => handleChange(event)}
-        >
+        <select {...props} ref={input}>
           {roles.map((rol) => {
             return (
               <option key={rol._id} value={rol._id}>
@@ -49,7 +36,7 @@ function SelectRol({ val }, ref) {
               </option>
             );
           })}
-        </SelectInput>
+        </select>
       )}
     </>
   );

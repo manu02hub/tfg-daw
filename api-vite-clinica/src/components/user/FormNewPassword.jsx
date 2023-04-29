@@ -1,0 +1,74 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "../../helpers/Validate";
+import { Global } from "../../helpers/Global";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
+import { useNavigate } from "react-router-dom";
+import InputLabel from "../../components/InputLabel";
+import InputText from "../../components/InputText";
+import InputError from "../../components/InputError";
+
+function FormNewPassword() {
+
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (data) => {
+    let newUser = data;
+    console.log(newUser);
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "user/update-user/" + user._id,
+      "PUT",
+      newUser
+    );
+
+    if (datos.state == "success" && !cargando) {
+      navigate("/panel/users");
+    }
+  };
+
+  return (
+    <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
+      <InputLabel>Current Password</InputLabel>
+      <InputText
+        type="password"
+        name="current"
+        defaultValue="aaaaaaaaa"
+      ></InputText>
+
+      <div className="separadorForm">
+        <InputLabel>New Password</InputLabel>
+        <InputText
+          type="password"
+          name="password"
+          {...register("password")}
+        ></InputText>
+        <InputError message={errors.password?.message}></InputError>
+      </div>
+
+      <div className="separadorForm">
+        <InputLabel>Confirm Password</InputLabel>
+        <InputText
+          type="password"
+          name="passwordConfirmation"
+          {...register("passwordConfirmation")}
+        ></InputText>
+        <InputError message={errors.passwordConfirmation?.message}></InputError>
+      </div>
+      <div className="separadorBtn">
+        <input type="submit" className="btnsColor" value={"Save"}></input>
+      </div>
+    </form>
+  );
+}
+
+export default FormNewPassword;

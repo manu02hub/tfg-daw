@@ -54,7 +54,7 @@ body {
   flex-direction: column;
 }
 
-input[type="range"]{
+input[type="range"] {
   width: 95%;
   accent-color: #116897;
   transition: all 300ms;
@@ -82,7 +82,6 @@ input[type="password"]:focus,
 input[type="number"]:focus {
   border: 2px solid #0277b5;
 }
-
 
 .contenedorForm input[type="submit"] {
   width: 99%;
@@ -704,6 +703,12 @@ hr {
   justify-content: center;
 }
 
+.showSpace {
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: 5px;
+}
+
 .sectionInfoClinic .boxInfoclinic {
   display: flex;
   flex-direction: row;
@@ -768,38 +773,39 @@ thead {
   background-color: #f1f1f1;
 }
 
-th, td{
-  padding: .5rem;
+th,
+td {
+  padding: 0.5rem;
 }
 
-.theadTitles{
+.theadTitles {
   font-weight: 600;
   text-align: left;
 }
 
-tbody tr{
+tbody tr {
   border-bottom: 1px solid #e8e5e5;
 }
 
-tbody .boxTbody{
+tbody .boxTbody {
   display: flex;
   flex-direction: row;
   justify-content: left;
   align-items: center;
 }
 
-.boxTbody img{
+.boxTbody img {
   border-radius: 4px;
   width: 50;
   margin-right: 5px;
 }
 
-table a{
+table a {
   text-decoration: none;
   color: white;
 }
 
-table .btnsAction{
+table .btnsAction {
   color: white;
   padding-right: 10px;
   padding-left: 10px;
@@ -811,16 +817,16 @@ table .btnsAction{
   cursor: pointer;
 }
 
-table .editTable{
+table .editTable {
   background-color: #f0ce25;
   margin-right: 5px;
 }
 
-table .deleteTable{
+table .deleteTable {
   background-color: #d54646;
 }
 
-.boxImg{
+.boxImg {
   width: 100%;
   height: 100%;
   display: flex;
@@ -828,18 +834,57 @@ table .deleteTable{
   margin-bottom: 3px;
 }
 
-.boxImg img{
+.boxImg img {
   width: 100%;
   border-radius: 3px;
   margin-bottom: 3px;
 }
 
-.btnEditClinic{
+.btnEditClinic {
   margin-top: -5px;
 }
 
-.boxSpinner{
- margin: -20px;
+.boxSpinner {
+  margin-top: -20px;
+  margin-bottom: 20px;
+  margin-right: -20px;
+  margin-left: -20px;
+}
+
+/*------------------------NAV TABS-------------------------------------------*/
+
+.nav-tab {
+  display: flex;
+  height: auto;
+  justify-content: space-evenly;
+  background-color: white;
+  border-radius: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  text-decoration: none;
+  border: none;
+  font-weight: bold;
+  padding: 13px;
+  border-radius: 5px;
+  margin: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tabs .noActive {
+  background-color: #e5e5e5;
+  color: #065a88;
+}
+
+.tabs .active {
+  background-color: #065a88;
+  color: white;
 }
 
 /*-------------------------GRID SYSTEM------------------------------------------*/

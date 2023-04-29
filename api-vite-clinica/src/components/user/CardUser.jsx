@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Global } from "../../helpers/Global";
+import toast, { Toaster } from "react-hot-toast";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import { FaSearch, FaClinicMedical } from "react-icons/fa";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -10,8 +11,7 @@ import { MdDelete } from "react-icons/md";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import userImage from "../../assets/user.jpg";
 
-function CardUser({ userInfo, showCard, setId, users , setUsers }) {
-  const navigate = useNavigate();
+function CardUser({ userInfo, showCard, setId, users, setUsers }) {
   const [clinic, setClinic] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +36,9 @@ function CardUser({ userInfo, showCard, setId, users , setUsers }) {
     }
   };
 
-  const deleteUser = async(id) => {
+  const deleteUser = async (id) => {
+    let usuarios;
+
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "user/delete-user/" + id,
       "DELETE"
@@ -44,7 +46,10 @@ function CardUser({ userInfo, showCard, setId, users , setUsers }) {
 
     if (datos.state == "success" && !cargando) {
       // setLoading(...users);
-      navigate("/")
+
+      usuarios = users.filter((user) => user._id !== id);
+      setUsers(usuarios);
+      toast.success("Se ha eliminado el usuario correctamente");
     }
   };
 
@@ -100,6 +105,7 @@ function CardUser({ userInfo, showCard, setId, users , setUsers }) {
           </div>
         </div>
       )}
+      <Toaster position="bottom-center" reverseOrder={false} />
     </div>
   );
 }

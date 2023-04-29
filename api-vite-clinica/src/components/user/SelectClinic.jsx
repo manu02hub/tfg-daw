@@ -1,9 +1,8 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
-import SelectInput from "../SelectInput";
 
-function SelecClinic({ valor }, ref) {
+function SelecClinic({...props }, ref) {
   const input = ref ? ref : useRef();
   const [loading, setLoading] = useState(true);
   const [clinics, setClinics] = useState({});
@@ -28,7 +27,7 @@ function SelecClinic({ valor }, ref) {
   return (
     <>
       {!loading && (
-        <SelectInput name={"id_clinic"} ref={input} defaultValue={valor} onChange = {event => event.target.value}>
+        <select {...props} ref={input}>
           {clinics.map((clinic) => {
             return (
               <option key={clinic._id} value={clinic._id}>
@@ -36,7 +35,7 @@ function SelecClinic({ valor }, ref) {
               </option>
             );
           })}
-        </SelectInput>
+        </select>
       )}
     </>
   );

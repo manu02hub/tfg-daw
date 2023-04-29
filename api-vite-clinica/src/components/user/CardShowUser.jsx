@@ -44,7 +44,7 @@ function CardShowUser({ id_user }) {
     <div className="row">
       <div className="col-lg-12 col-md-12 col-sm-12">
         {!loading && (
-          <CardBasic>
+          <CardBasic className="showSpace">
             <div className="row">
               <div className="col-lg-5 col-md-12 col-sm-12">
                 <div className="boxShowUser">
