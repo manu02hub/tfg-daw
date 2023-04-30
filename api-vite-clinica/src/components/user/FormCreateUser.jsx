@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
@@ -11,8 +11,9 @@ import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import SelectRol from "../../components/user/SelectRol";
 import SelectClinic from "../../components/user/SelectClinic";
 
-function FormCreateUser() {
+function FormCreateUser({ auth }) {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
   // const { form, changed } = useForm();
 
   const {
@@ -24,8 +25,8 @@ function FormCreateUser() {
   });
 
   const onSubmit = async (data) => {
+    setError("");
     let newUser = data;
-    console.log(newUser);
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "user/create-user",
@@ -35,8 +36,15 @@ function FormCreateUser() {
 
     if (datos.state == "success" && !cargando) {
       navigate("/panel/users");
+    } else {
+      setError(datos.message);
     }
   };
+
+  const setErrorEmail = () =>{
+    setError("");
+    console.log("metodo");
+  }
 
   return (
     <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
@@ -52,8 +60,11 @@ function FormCreateUser() {
             type="email"
             name="email"
             {...register("email")}
+            onFocus={() => setErrorEmail()}
           ></InputText>
-          <InputError message={errors.email?.message}></InputError>
+
+          
+          <InputError message={errors.email ? errors.email?.message : error }></InputError>
         </div>
       </div>
 
@@ -87,13 +98,17 @@ function FormCreateUser() {
         <div className="col-lg-6 col-md-6 col-sm-12">
           <div className="separadorForm">
             <InputLabel>Rol</InputLabel>
-            <SelectRol name="id_rol" {...register("id_rol")} />
+            <SelectRol name="id_rol" auth={auth} {...register("id_rol")} />
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12">
           <div className="separadorForm">
             <InputLabel>Clinica</InputLabel>
-            <SelectClinic name="id_clinic" {...register("id_clinic")} />
+            <SelectClinic
+              name="id_clinic"
+              auth={auth}
+              {...register("id_clinic")}
+            />
           </div>
         </div>
       </div>

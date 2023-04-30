@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
+import { useParams } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import CardBasic from "../../components/CardBasic";
 import Spinner from "../../components/Spinner";
 import HeaderSection from "../../components/HeaderSection";
-import { useParams } from "react-router-dom";
 import FormEditUser from "../../components/user/FormEditUser";
 import FormNewPassword from "../../components/user/FormNewPassword";
+import Modal from "../../components/Modal";
 
 function EditUser() {
-
+  const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const { auth } = useAuth();
 
   useEffect(() => {
     getUser();
-   
   }, []);
 
   const getUser = async () => {
@@ -31,6 +33,13 @@ function EditUser() {
     }
   };
 
+  const confirmUserDeletion = () => {
+    setConfirmingUserDeletion(true);
+  };
+
+  const closeModal = () => {
+    setConfirmingUserDeletion(false);
+  };
 
   return (
     <>
@@ -50,7 +59,7 @@ function EditUser() {
                         Update your account's profile information and email
                         address.
                       </p>
-                      <FormEditUser user={user}/>
+                      <FormEditUser user={user} auth={auth} />
                     </section>
                   </div>
                 </div>
@@ -68,7 +77,7 @@ function EditUser() {
                         Ensure your account is using a long, random password to
                         stay secure.
                       </p>
-                      <FormNewPassword />
+                      <FormNewPassword user={user}/>
                     </section>
                   </div>
                 </div>
@@ -89,7 +98,12 @@ function EditUser() {
                         you wish to retain.
                       </p>
                       <div className="separadorBtn">
-                        <button className="btnDelete">Delete Account</button>
+                        <button
+                          onClick={() => confirmUserDeletion()}
+                          className="btnDelete"
+                        >
+                          Delete Account
+                        </button>
                       </div>
                     </section>
                   </div>
@@ -97,6 +111,12 @@ function EditUser() {
               </CardBasic>
             </div>
           </div>
+
+          {confirmingUserDeletion && (
+            <Modal show={confirmingUserDeletion} onClose={closeModal}>
+              <p>Este es mi modal</p>
+            </Modal>
+          )}
         </>
       )}
     </>

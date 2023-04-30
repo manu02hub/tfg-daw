@@ -2,8 +2,12 @@ import React from "react";
 import CardBasic from "../../components/CardBasic";
 import HeaderSection from "../../components/HeaderSection";
 import FormCreateUser from "../../components/user/FormCreateUser";
+import useAuth from "../../hooks/useAuth";
 
 function CreateUser() {
+  
+  const {auth} = useAuth();
+
   return (
     <>
       <HeaderSection title={"Create User"} />
@@ -17,7 +21,7 @@ function CreateUser() {
                   <p>
                     Update your account's profile information and email address.
                   </p>
-                  <FormCreateUser />
+                  <FormCreateUser auth={auth}/>
                 </section>
               </div>
             </div>

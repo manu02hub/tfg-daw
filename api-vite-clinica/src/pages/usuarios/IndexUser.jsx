@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Global } from "../../helpers/Global";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import { BsPersonFillAdd } from "react-icons/bs";
 import CardUser from "../../components/user/CardUser";
 import { Link } from "react-router-dom";
@@ -7,6 +9,7 @@ import CardShowUser from "../../components/user/CardShowUser";
 import HeaderSection from "../../components/HeaderSection";
 import Spinner from "../../components/Spinner";
 import TabsUser from "../../components/user/TabsUser";
+import { checkPermission } from "../../helpers/CheckPermissions";
 
 function IndexUser() {
   const [users, setUsers] = useState({});
@@ -14,6 +17,24 @@ function IndexUser() {
   const { auth } = useAuth();
   const [show, setShow] = useState(false);
   const [idUser, setIdUser] = useState(0);
+
+  useEffect(() => {
+    if(auth && checkPermission(auth.permissions, "gestion-clinic-user")){
+      getUsersClinic();
+    }
+  }, []);
+
+  const getUsersClinic = async () => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "user/getUsers-clinic/" + auth._id + "/" + auth.id_clinic,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setUsers(datos.allUsers);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -35,11 +56,18 @@ function IndexUser() {
         </div>
       </HeaderSection>
 
-      <TabsUser auth={auth} usuarios={setUsers} loading={setLoading} showUser={setShow} />
+      {auth && checkPermission(auth.permissions, "gestion-admin-user") && (
+        <TabsUser
+          auth={auth}
+          usuarios={setUsers}
+          loading={setLoading}
+          showUser={setShow}
+        />
+      )}
 
       {!loading && (
         <>
-          {show && <CardShowUser id_user={idUser} ></CardShowUser>}
+          {show && <CardShowUser id_user={idUser}></CardShowUser>}
 
           <div className="row">
             {users.map((user) => {

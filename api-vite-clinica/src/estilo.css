@@ -887,6 +887,39 @@ table .deleteTable {
   color: white;
 }
 
+.divModal {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  z-index: 1;
+  inset: 0px;
+  position: fixed;
+  opacity: 1;
+  /* width: 100%; */
+  background-color: rgb(107 114 128 / 0.75);
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+
+.fondoModal {
+  width: 100%;
+}
+
+.modal {
+  opacity: 1;
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  /* margin-top: 15%; */
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {
   display: grid; /* En la propiedad display agregamos grid para establecer una cuadricula */

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
+import { checkPermission } from "../../helpers/CheckPermissions";
 
-function SelectRol({...props}, ref) {
+function SelectRol({ auth, ...props }, ref) {
   const input = ref ? ref : useRef();
   const [roles, setRoles] = useState({});
   const [loading, setLoading] = useState(true);
@@ -23,18 +24,29 @@ function SelectRol({...props}, ref) {
     }
   };
 
-  
-
   return (
     <>
       {!loading && (
         <select {...props} ref={input}>
           {roles.map((rol) => {
-            return (
-              <option key={rol._id} value={rol._id}>
-                {rol.name}
-              </option>
-            );
+            if (auth && checkPermission(auth.permissions, "add-adminClinic")) {
+              let aux = rol.id_permissions.filter(
+                (id) => id == auth.permissions._id
+              );
+              return (
+                !checkPermission(rol.id_permissions, "add-admins") && (
+                  <option key={rol._id} value={rol._id}>
+                    {rol.name}
+                  </option>
+                )
+              );
+            } else {
+              return (
+                <option key={rol._id} value={rol._id}>
+                  {rol.name}
+                </option>
+              );
+            }
           })}
         </select>
       )}

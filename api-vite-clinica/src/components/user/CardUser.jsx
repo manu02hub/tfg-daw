@@ -45,7 +45,6 @@ function CardUser({ userInfo, showCard, setId, users, setUsers }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      // setLoading(...users);
 
       usuarios = users.filter((user) => user._id !== id);
       setUsers(usuarios);

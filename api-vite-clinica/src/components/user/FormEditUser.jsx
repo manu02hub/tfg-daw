@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../helpers/Validate";
@@ -11,9 +11,10 @@ import InputError from "../InputError";
 import SelectRol from "./SelectRol";
 import SelectClinic from "./SelectClinic";
 
-function FormEditUser({ user }) {
+function FormEditUser({ user, auth }) {
 
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -35,8 +36,15 @@ function FormEditUser({ user }) {
 
     if (datos.state == "success" && !cargando) {
       navigate("/panel/users");
+    }else {
+      setError(datos.message);
     }
   };
+
+  const setErrorEmail = () =>{
+    setError("");
+   
+  }
 
   return (
     <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
@@ -58,14 +66,16 @@ function FormEditUser({ user }) {
             name="email"
             {...register("email")}
             defaultValue={user.email}
+            onFocus={() => setErrorEmail()}
           ></InputText>
-          <InputError message={errors.email?.message}></InputError>
+          <InputError message={errors.email ? errors.email?.message : error }></InputError>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12">
           <InputLabel>Rol</InputLabel>
           <SelectRol
             name="id_rol"
             defaultValue={user.id_rol}
+            auth={auth}
             {...register("id_rol")}
           />
         </div>
@@ -74,6 +84,7 @@ function FormEditUser({ user }) {
           <SelectClinic
             name="id_clinic"
             defaultValue={user.id_clinic}
+            auth={auth}
             {...register("id_clinic")}
           />
         </div>

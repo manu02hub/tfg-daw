@@ -4,7 +4,8 @@ import YupPassword from "yup-password";
 YupPassword(yup);
 
 export const schema = yup
-  .object().shape({
+  .object()
+  .shape({
     name: yup
       .string()
       .min(3, "El nombre debe tener al menos 3 caracteres")
@@ -22,5 +23,8 @@ export const schema = yup
     passwordConfirmation: yup
       .string()
       .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden"),
+      current: yup
+      .string()
+      .min(8, "Debe contener mínimo 8 caracteres"),
   })
   .required();

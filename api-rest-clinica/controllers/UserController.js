@@ -119,7 +119,7 @@ const getAllUsers = async (req, res) => {
 
     const id = req.params.id;
 
-    const allUsers = await User.find({ _id: { $not: { $eq: id } } } ).sort({ date: -1 }).populate('id_rol').exec();
+    const allUsers = await User.find({ _id: { $not: { $eq: id } } }).sort({ date: -1 }).populate('id_rol').exec();
 
     return res.status(200).json({
         state: "success",
@@ -160,40 +160,55 @@ const updateUser = async (req, res) => {
     let user = req.user;
     let pass;
     let respuesta;
+    let equal;
 
     delete user.iat;
     delete user.exp;
     delete user.date;
 
-    //Encontrar user
-    // { _id: { $not: {$eq: ObjectId("6437dbb72da4067593ea32ed") } } }
-
-    // {$and: [{ _id: { $not: {$eq: ObjectId("64382c2fc7584cd90e86de17") } } }, {email:"manuel@gmail.com"} ]}
-
+    const userPass = await User.findOne({ _id: id });
     const userFind = await User.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { email: parameters.email }] });
+    console.log(id);
+
 
     if (userFind) {
 
         respuesta = res.status(200).json({
-            state: "success",
+            state: "error",
             message: "El usuario ya existe"
         });
 
-
     } else {
 
-        if (user.password) {
-            pass = await bycrypt.hash(parameters.password, 10);
-            parameters.password = pass;
+        console.log(userPass);
+
+        if (parameters.current) {
+            equal = bycrypt.compareSync(parameters.current, userPass.password);
+            console.log(equal);
+
+            if (!equal) {
+                respuesta = res.status(200).json({
+                    state: "error",
+                    message: "La contraseña no es correcta",
+                });
+            } else {
+
+                if (user.password) {
+                    pass = await bycrypt.hash(parameters.password, 10);
+                    parameters.password = pass;
+                }
+            }
+
+        } else {
+            const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
+
+            respuesta = res.status(200).json({
+                state: "success",
+                message: "Usuario editado correctamente",
+                user: userUpdate
+            });
         }
 
-        const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
-
-        respuesta = res.status(200).json({
-            state: "success",
-            message: "Usuario editado correctamente",
-            user: userUpdate
-        });
     }
 
     return respuesta;

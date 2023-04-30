@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../helpers/Validate";
@@ -9,9 +9,9 @@ import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
 import InputError from "../../components/InputError";
 
-function FormNewPassword() {
-
+function FormNewPassword({ user }) {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -33,7 +33,13 @@ function FormNewPassword() {
 
     if (datos.state == "success" && !cargando) {
       navigate("/panel/users");
+    } else {
+      setError(datos.message);
     }
+  };
+
+  const setErrorPass = () => {
+    setError("");
   };
 
   return (
@@ -42,8 +48,12 @@ function FormNewPassword() {
       <InputText
         type="password"
         name="current"
-        defaultValue="aaaaaaaaa"
+        {...register("current")}
+        onFocus={() => setErrorPass()}
       ></InputText>
+      <InputError
+        message={errors.current ? errors.current?.message : error}
+      ></InputError>
 
       <div className="separadorForm">
         <InputLabel>New Password</InputLabel>

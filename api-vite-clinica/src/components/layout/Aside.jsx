@@ -19,7 +19,7 @@ function Aside({ permissionsAuth }) {
       </div>
       <div className="listadoRoutes">
         {permissionsAuth &&
-          checkPermission(permissionsAuth, "gestion-admin-user") && (
+          (checkPermission(permissionsAuth, "gestion-admin-user") || checkPermission(permissionsAuth, "gestion-clinic-user")) && (
             <div className="cajaListado">
               <NavLink className="cajaSelect" to={"/panel/users"}>
                 <FaUserAlt className="iconoSide" />
