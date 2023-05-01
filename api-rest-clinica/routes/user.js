@@ -10,7 +10,7 @@ router.get("/getUsers-clinic/:id/:clinic", middleware.auth, UserController.getUs
 router.get("/edit-user/:id", middleware.auth, UserController.editUser);
 router.get("/get-user/:id", middleware.auth, UserController.getUser);
 router.put("/update-user/:id", middleware.auth, UserController.updateUser);
-router.delete("/delete-user/:id", middleware.auth, UserController.deleteUser);
+router.post("/delete-user/:id", middleware.auth, UserController.deleteUser);
 router.post("/create-user", middleware.auth, UserController.createUser);
 router.post("/login", UserController.login);
 

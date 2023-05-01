@@ -10,6 +10,7 @@ import InputText from "../InputText";
 import InputError from "../InputError";
 import SelectRol from "./SelectRol";
 import SelectClinic from "./SelectClinic";
+import BtnPrimary from "../BtnPrimary";
 
 function FormEditUser({ user, auth }) {
 
@@ -26,7 +27,6 @@ function FormEditUser({ user, auth }) {
 
   const onSubmit = async (data) => {
     let newUser = data;
-    console.log(newUser);
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "user/update-user/" + user._id,
@@ -90,7 +90,7 @@ function FormEditUser({ user, auth }) {
         </div>
       </div>
       <div className="separadorBtn">
-        <input type="submit" className="btnsColor" value={"Save"}></input>
+        <BtnPrimary >Save</BtnPrimary>
       </div>
     </form>
   );

@@ -10,6 +10,7 @@ import { schema } from "../../helpers/Validate";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import SelectRol from "../../components/user/SelectRol";
 import SelectClinic from "../../components/user/SelectClinic";
+import BtnPrimary from "../BtnPrimary";
 
 function FormCreateUser({ auth }) {
   const navigate = useNavigate();
@@ -114,7 +115,7 @@ function FormCreateUser({ auth }) {
       </div>
 
       <div className="separadorBtn">
-        <input type="submit" className="btnsColor" value={"Crear"}></input>
+        <BtnPrimary>Crear</BtnPrimary>
       </div>
     </form>
   );

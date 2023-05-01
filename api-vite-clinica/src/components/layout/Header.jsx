@@ -32,10 +32,10 @@ function Header() {
       {show && (
         <div className="sub-menu-wrap">
           <div className="sub-menu">
-            <Link className="sub-menu-link">
+            <NavLink to={"/panel/users/user-edit/"+auth._id} className="sub-menu-link">
               <AiFillSetting className="sub-menu-icon"></AiFillSetting>
               <p>Settings</p>
-            </Link>
+            </NavLink>
             <NavLink className="sub-menu-link" to={"/logout"}>
               <BiLogOut className="sub-menu-icon"></BiLogOut>
               <p>Log Out</p>

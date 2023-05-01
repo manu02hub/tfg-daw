@@ -1,54 +1,57 @@
 import React, { useState } from "react";
 import ToothSensation from "../../assets/logo.png";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "../../helpers/Validate";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import { useForm } from "../../hooks/useForm";
 import { Global } from "../../helpers/Global";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import useAuth from "../../hooks/useAuth";
+import InputLabel from "../../components/InputLabel";
+import InputText from "../../components/InputText";
+import InputError from "../../components/InputError";
 
 function Login() {
-  const [estado, setStado] = useState(false);
-  const { form, changed } = useForm({});
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
   const { auth, setAuth } = useAuth();
 
-  const login = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    //Datos del formulario
-    let userLogin = form;
+  const login = async (data) => {
+    let user = data;
+    console.log(user);
 
-    // console.log(userLogin);
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "user/login",
+      "POST",
+      user
+    );
 
-    //Persistir datos en el navegador
-    const request = await fetch(Global.url + "user/login", {
-      method: "POST",
-      body: JSON.stringify(userLogin),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-
-    const data = await request.json();
-
-    console.log(data);
-
-    if (data.state == "success") {
-      setStado(true);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+    if (datos.state == "success" && !cargando) {
+      localStorage.setItem("token", datos.token);
+      localStorage.setItem("user", JSON.stringify(datos.user));
+      setAuth(datos.user);
+      navigate("/panel/users");
+    } else {
+      setError(datos.message);
     }
+  };
 
-    setAuth(data.user)
+  const setErrorEmail = () => {
+    setError("");
   };
 
   if (auth._id) {
     return <Navigate to={"/panel/users"} replace={true} />;
   } else {
-
-    if (estado) {
-     
-      return <Navigate to={"/panel/users"} replace={true} />;
-    }
-
     return (
       <div className="login">
         <div className="containerLogin">
@@ -57,19 +60,29 @@ function Login() {
           </div>
           {/* <h3>¡¡Bienvenido de nuevo!!</h3> */}
           <div className="contenedorForm">
-            <form onSubmit={(e) => login(e)}>
-              <input
+            <form onSubmit={handleSubmit(login)} className="formLogin">
+              <InputLabel>Email</InputLabel>
+              <InputText
                 type="email"
-                placeholder="Correo Electronico"
-                onChange={changed}
                 name="email"
-              ></input>
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={changed}
-                name="password"
-              ></input>
+              
+                {...register("email")}
+                onFocus={() => setErrorEmail()}
+              ></InputText>
+              <InputError
+                message={errors.email ? errors.email?.message : error}
+              ></InputError>
+              
+                <InputLabel>New Password</InputLabel>
+                <InputText
+                  type="password"
+                  name="password"
+                 
+                  {...register("password")}
+                ></InputText>
+                <InputError message={errors.password?.message}></InputError>
+             
+
               <div className="contenedorLink">
                 {/* <Link>Forgot your password?</Link> */}
               </div>

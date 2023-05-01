@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
 import InputError from "../../components/InputError";
+import BtnPrimary from "../BtnPrimary";
 
-function FormNewPassword({ user }) {
+function FormNewPassword({ user, auth }) {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -40,20 +41,25 @@ function FormNewPassword({ user }) {
 
   const setErrorPass = () => {
     setError("");
+    console.log(error);
   };
 
   return (
     <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
-      <InputLabel>Current Password</InputLabel>
-      <InputText
-        type="password"
-        name="current"
-        {...register("current")}
-        onFocus={() => setErrorPass()}
-      ></InputText>
-      <InputError
-        message={errors.current ? errors.current?.message : error}
-      ></InputError>
+      {auth._id == user._id && (
+        <>
+          <InputLabel>Current Password</InputLabel>
+          <InputText
+            type="password"
+            name="current"
+            {...register("current")}
+            onFocus={() => setErrorPass()}
+          ></InputText>
+          <InputError
+            message={errors.current ? errors.current?.message : error}
+          ></InputError>
+        </>
+      )}
 
       <div className="separadorForm">
         <InputLabel>New Password</InputLabel>
@@ -75,7 +81,7 @@ function FormNewPassword({ user }) {
         <InputError message={errors.passwordConfirmation?.message}></InputError>
       </div>
       <div className="separadorBtn">
-        <input type="submit" className="btnsColor" value={"Save"}></input>
+        <BtnPrimary>Save</BtnPrimary>
       </div>
     </form>
   );

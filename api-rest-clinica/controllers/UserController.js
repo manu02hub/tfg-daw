@@ -78,8 +78,8 @@ const login = async (req, res) => {
         pass = bycrypt.compareSync(parameters.password, userFind.password);
 
         if (!pass) {
-            respuesta = res.status(400).json({
-                state: "success",
+            respuesta = res.status(200).json({
+                state: "error",
                 message: "No te has identificado correctamente"
             });
         } else {
@@ -106,7 +106,7 @@ const login = async (req, res) => {
 
     } else {
         respuesta = res.status(400).json({
-            state: "success",
+            state: "error",
             message: "El usuario no existe"
         });
     }
@@ -166,40 +166,19 @@ const updateUser = async (req, res) => {
     delete user.exp;
     delete user.date;
 
-    const userPass = await User.findOne({ _id: id });
-    const userFind = await User.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { email: parameters.email }] });
-    console.log(id);
+    if (parameters.email) {
+        var userFind = await User.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { email: parameters.email }] });
 
 
-    if (userFind) {
+        if (userFind) {
 
-        respuesta = res.status(200).json({
-            state: "error",
-            message: "El usuario ya existe"
-        });
-
-    } else {
-
-        console.log(userPass);
-
-        if (parameters.current) {
-            equal = bycrypt.compareSync(parameters.current, userPass.password);
-            console.log(equal);
-
-            if (!equal) {
-                respuesta = res.status(200).json({
-                    state: "error",
-                    message: "La contraseña no es correcta",
-                });
-            } else {
-
-                if (user.password) {
-                    pass = await bycrypt.hash(parameters.password, 10);
-                    parameters.password = pass;
-                }
-            }
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "El usuario ya existe"
+            });
 
         } else {
+
             const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
 
             respuesta = res.status(200).json({
@@ -208,7 +187,48 @@ const updateUser = async (req, res) => {
                 user: userUpdate
             });
         }
+    }
 
+
+    if (parameters.current) {
+        var userPass = await User.findOne({ _id: id });
+        equal = bycrypt.compareSync(parameters.current, userPass.password);
+
+
+        if (!equal) {
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "La contraseña no es correcta",
+            });
+        } else {
+
+            if (parameters.password) {
+                pass = await bycrypt.hash(parameters.password, 10);
+                parameters.password = pass;
+
+                const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
+
+                respuesta = res.status(200).json({
+                    state: "success",
+                    message: "Usuario editado correctamente",
+                    user: userUpdate
+                });
+            }
+        }
+    }
+
+    if (!parameters.email && !parameters.current) {
+
+        pass = await bycrypt.hash(parameters.password, 10);
+        parameters.password = pass;
+
+        const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
+
+        respuesta = res.status(200).json({
+            state: "success",
+            message: "Usuario editado correctamente",
+            user: userUpdate
+        });
     }
 
     return respuesta;
@@ -216,13 +236,39 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     let id = req.params.id;
+    let parameters = req.body;
+    let equal;
+    let respuesta;
 
-    await User.findByIdAndDelete(id);
+    const user = await User.findOne({ _id: parameters.id });
 
-    return res.status(200).json({
-        state: "success",
-        message: "Usuario eliminado correctamente",
-    });
+    console.log(user);
+
+    if (user) {
+        equal = bycrypt.compareSync(parameters.password, user.password);
+
+        if (equal) {
+            await User.findByIdAndDelete(id);
+
+            respuesta = res.status(200).json({
+                state: "success",
+                message: "Usuario eliminado correctamente",
+            });
+        }else{
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "La contraseña no es correcta",
+            });
+        }
+    } else {
+
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "No se encuentra al usuario",
+        });
+    }
+
+    return respuesta;
 }
 
 module.exports = {

@@ -9,17 +9,19 @@ import HeaderSection from "../../components/HeaderSection";
 import FormEditUser from "../../components/user/FormEditUser";
 import FormNewPassword from "../../components/user/FormNewPassword";
 import Modal from "../../components/Modal";
+import DeleteAccount from "../../components/user/DeleteAccount";
 
 function EditUser() {
-  const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const { auth } = useAuth();
 
   useEffect(() => {
+    setLoading(true);
     getUser();
-  }, []);
+  }, [id]);
 
   const getUser = async () => {
     const { datos, cargando } = await PeticionAJAX(
@@ -29,17 +31,12 @@ function EditUser() {
 
     if (datos.state == "success" && !cargando) {
       setUser(datos.user);
+      console.log(datos.user);
       setLoading(false);
     }
   };
 
-  const confirmUserDeletion = () => {
-    setConfirmingUserDeletion(true);
-  };
-
-  const closeModal = () => {
-    setConfirmingUserDeletion(false);
-  };
+  
 
   return (
     <>
@@ -77,7 +74,7 @@ function EditUser() {
                         Ensure your account is using a long, random password to
                         stay secure.
                       </p>
-                      <FormNewPassword user={user}/>
+                      <FormNewPassword user={user} auth={auth} />
                     </section>
                   </div>
                 </div>
@@ -89,34 +86,18 @@ function EditUser() {
               <CardBasic>
                 <div className="row">
                   <div className="col-sm-12 col-md-10 col-lg-8">
-                    <section className="section-card">
-                      <h2>Delete Account</h2>
-                      <p>
-                        Once your account is deleted, all of its resources and
-                        data will be permanently deleted. Before deleting your
-                        account, please download any data or information that
-                        you wish to retain.
-                      </p>
-                      <div className="separadorBtn">
-                        <button
-                          onClick={() => confirmUserDeletion()}
-                          className="btnDelete"
-                        >
-                          Delete Account
-                        </button>
-                      </div>
-                    </section>
+                    <DeleteAccount user={user} auth={auth}/>
                   </div>
                 </div>
               </CardBasic>
             </div>
           </div>
 
-          {confirmingUserDeletion && (
+          {/* {confirmingUserDeletion && (
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
               <p>Este es mi modal</p>
             </Modal>
-          )}
+          )} */}
         </>
       )}
     </>

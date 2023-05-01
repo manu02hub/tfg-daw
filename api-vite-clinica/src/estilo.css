@@ -23,6 +23,23 @@ body {
   padding: 10px;
 }
 
+.formLogin{
+  display: flex;
+  flex-direction: column;
+}
+
+.formLogin span{
+  margin-top: -5px;
+}
+
+.formLogin label{
+  font-weight: 500;
+  font-size: 0.885rem;
+  line-height: 1.25rem;
+  color: rgb(55 65 81);
+  margin-top: 10px;
+}
+
 .imagenLogo {
   width: 100%;
   height: auto;
@@ -35,6 +52,10 @@ body {
   width: 50%;
   height: auto;
   margin-bottom: 15px;
+}
+
+.loginInput{
+  border: 2px solid #bdbdbd;
 }
 
 .containerLogin h3 {
@@ -528,6 +549,7 @@ hr {
   justify-content: flex-start;
 }
 
+.btnModal button,
 .separadorBtn input[type="submit"],
 .separadorBtn input[type="reset"],
 .separadorBtn button {
@@ -536,16 +558,16 @@ hr {
   padding-left: 15px;
   padding-right: 15px;
   border-radius: 3px;
-  border: none;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: 600;
   font-size: 0.75rem;
   cursor: pointer;
-  color: white;
 }
 
 .btnsColor {
+  border: none;
+  color: white;
   background: #0277b5;
   transition: all 300ms;
 }
@@ -555,8 +577,18 @@ hr {
 }
 
 .btnDelete {
+  border: none;
+  color: white;
   background: #d32f2f;
   transition: all 300ms;
+}
+
+.btnCancel {
+  border: 1px solid rgb(209 213 219);
+  background: white;
+  transition: all 300ms;
+  color: #212121;
+  margin-left: 5px;
 }
 
 .btnDelete:hover {
@@ -581,6 +613,7 @@ hr {
 }
 
 /*--------------------------EDIT USER -----------------------------------------------*/
+.formDelete label,
 .formEdit label,
 .formCreate label {
   margin-bottom: 2px;
@@ -590,6 +623,7 @@ hr {
   color: rgb(55 65 81);
 }
 
+.formDelete input,
 .formEdit input,
 .formCreate input,
 .formEdit select,
@@ -617,7 +651,8 @@ hr {
 }
 
 .cardShowUser h2,
-.cardComponent h2 {
+.cardComponent h2,
+.section-modal h2 {
   font-size: 1.1rem;
   line-height: 1.75rem;
   --tw-text-opacity: 1;
@@ -627,7 +662,8 @@ hr {
 }
 
 .cardShowUser p,
-.cardComponent p {
+.cardComponent p,
+.section-modal p {
   font-size: 0.875rem;
   line-height: 1.25rem;
   margin-top: 4px;
@@ -918,6 +954,18 @@ table .deleteTable {
   /* margin-top: 15%; */
   margin-left: 25%;
   margin-right: 25%;
+}
+
+.section-modal{
+  margin: 20px;
+}
+
+.btnModal{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 27px;
+  margin-top: 20px;
 }
 
 /*-------------------------GRID SYSTEM------------------------------------------*/
