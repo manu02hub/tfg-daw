@@ -1,23 +1,41 @@
 const Therapy = require("../models/Therapy");
 
-const createTherapy = (req, res) => {
+const createTherapy = async (req, res) => {
 
     let parametros = req.body;
+    let respuesta;
+    var therapy;
 
-    const therapyCreate = new Therapy(parametros);
 
-    therapyCreate.save();
+    if (parametros.name) {
+        therapy = await Therapy.findOne({ name: parametros.name });
 
-    return res.status(200).json({
-        state: "success",
-        therapy: therapyCreate
-    });
+        if (therapy) {
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "Ya existe el tratamiento"
+            });
+        } else {
+
+            therapy = new Therapy(parametros);
+            await therapy.save();
+
+            respuesta = res.status(200).json({
+                state: "success",
+                therapy: therapy
+            });
+        }
+    }
+
+    return respuesta;
 
 }
 
 const getAllTherapies = async (req, res) => {
 
     const therapies = await Therapy.find({}).exec();
+
+    console.log(therapies);
 
     return res.status(200).json({
         state: "success",
@@ -53,14 +71,29 @@ const deleteTherapy = async (req, res) => {
 const updateTherapy = async (req, res) => {
     let id = req.params.id;
     let parameters = req.body;
+    var therapy;
 
-    const therapyEdit = await Therapy.findByIdAndUpdate(id, parameters, { new: true });
+    therapy = await Therapy.findOne({ name: parameters.name });
 
-    return res.status(200).json({
-        state: "success",
-        message: "Terapia editada correctamente",
-        therapy: therapyEdit
-    });
+    if (therapy) {
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "Ya existe el tratamiento"
+        });
+
+    } else {
+
+        therapy = await Therapy.findByIdAndUpdate(id, parameters, { new: true });
+
+        respuesta = res.status(200).json({
+            state: "success",
+            message: "Terapia editada correctamente",
+            therapy: therapy
+
+        });
+    }
+
+    return respuesta;
 
 }
 

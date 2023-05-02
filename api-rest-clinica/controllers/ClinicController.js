@@ -1,17 +1,33 @@
 const Clinic = require("../models/Clinic");
+const User = require("../models/User");
+const bycrypt = require("bcrypt");
 
-const createClinic = (req, res) => {
+const createClinic = async (req, res) => {
 
+    var clinica
+    let respuesta;
     let parametros = req.body;
 
-    const cliniCreate = new Clinic(parametros);
+    clinica = await Clinic.findOne({ direction: parametros.direction });
 
-    cliniCreate.save();
+    if (clinica) {
 
-    return res.status(200).json({
-        state: "success",
-        clinic: cliniCreate
-    });
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "Ya hay una clinica con esa dirección"
+        });
+    } else {
+
+        clinica = new Clinic(parametros);
+        await clinica.save();
+
+        respuesta = res.status(200).json({
+            state: "success",
+            clinic: clinica
+        });
+    }
+
+    return respuesta;
 
 }
 
@@ -39,28 +55,83 @@ const getClinic = async (req, res) => {
 
 const deleteClinic = async (req, res) => {
 
+    var usuariosClinicas;
     let id = req.params.id;
+    let parameters = req.body;
+    let equal;
+    let respuesta;
 
-    await Clinic.findByIdAndDelete(id);
+    const user = await User.findOne({ _id: parameters.id });
 
-    return res.status(200).json({
-        state: "success",
-        message: "Clinica eliminada correctamente"
-    });
+    if (user) {
+        equal = bycrypt.compareSync(parameters.password, user.password);
+
+        if (equal) {
+
+
+            usuariosClinicas = await User.findOne({ id_clinic: id });
+
+            if (usuariosClinicas) {
+
+                respuesta = res.status(200).json({
+                    state: "error",
+                    message: "No se puede eliminar la clinica, tienes usuarios asociados",
+                });
+
+            } else {
+
+                await Clinic.findByIdAndDelete(id);
+
+                respuesta = res.status(200).json({
+                    state: "success",
+                    message: "Clinica eliminada correctamente",
+                });
+            }
+
+
+        } else {
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "La contraseña no es correcta",
+            });
+        }
+    } else {
+
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "No se encuentra al usuario",
+        });
+    }
+
+    return respuesta;
 
 }
 
 const updateClinic = async (req, res) => {
     let id = req.params.id;
     let parameters = req.body;
+    let respuesta;
+    var clinic;
 
-    const clinicEdit = await Clinic.findByIdAndUpdate(id, parameters, { new: true });
+    clinic = await Clinic.findOne({ direction: parameters.direction })
 
-    return res.status(200).json({
-        state: "success",
-        message: "Clinica editada correctamente",
-        clinic: clinicEdit
-    });
+    if (clinic) {
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "Ya existe una clinic con esa dirección",
+        });
+    } else {
+
+        clinic = await Clinic.findByIdAndUpdate(id, parameters, { new: true });
+
+        respuesta = res.status(200).json({
+            state: "success",
+            message: "Clinica editada correctamente",
+            clinic: clinic
+        });
+    }
+
+    return respuesta;
 
 }
 

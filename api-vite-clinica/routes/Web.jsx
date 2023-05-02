@@ -34,11 +34,11 @@ function Web() {
             </Route>
             <Route path="clinics" element={<Clinicas />}>
               <Route index="clinic-index" element={<IndexClinic />}></Route>
-              <Route path="clinic-edit" element={<EditClinic />}></Route>
+              <Route path="clinic-edit/:id" element={<EditClinic />}></Route>
             </Route>
             <Route path="therapies" element={<Tratamientos />}>
               <Route index="therapie-index" element={<IndexTherapie />}></Route>
-              <Route path="therapie-edit" element={<EditTherapie />}></Route>
+              <Route path="therapie-edit/:id" element={<EditTherapie />}></Route>
             </Route>
             <Route path="gabinetes" element={<Gabinetes />}>
               <Route index="gabinete-index" element={<IndexGabinete />}></Route>

@@ -43,21 +43,6 @@ function CardUser({ userInfo, showCard, setId, users, setUsers }) {
     }
   };
 
-  // const deleteUser = async (id) => {
-  //   let usuarios;
-
-  //   const { datos, cargando } = await PeticionAJAX(
-  //     Global.url + "user/delete-user/" + id,
-  //     "DELETE"
-  //   );
-
-  //   if (datos.state == "success" && !cargando) {
-  //     usuarios = users.filter((user) => user._id !== id);
-  //     setUsers(usuarios);
-  //     toast.success("Se ha eliminado el usuario correctamente");
-  //   }
-  // };
-
   return (
     <div className="col-lg-4 col-md-6 col-sm-12">
       {!loading && (

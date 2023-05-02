@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import CardBasic from "../../components/CardBasic";
 import TableClinic from "../../components/clinic/TableClinic";
 import FormCreateClinic from "../../components/clinic/FormCreateClinic";
 import HeaderSection from "../../components/HeaderSection";
+import Spinner from "../../components/Spinner";
 
 function IndexClinic() {
+  const [loading, setLoading] = useState(true);
+  const [clinics, setClinics] = useState({});
+
   return (
     <>
+      {loading && <Spinner />}
       <HeaderSection title={"Clinicas"} />
       <div className="row">
         <div className="col-lg-8 col-md-12 col-sm-12">
@@ -22,7 +27,7 @@ function IndexClinic() {
                 </form>
               </div>
             </div>
-            <TableClinic />
+            <TableClinic load={loading} setLoad={setLoading} clinics={clinics} setClinics={setClinics}/>
           </CardBasic>
         </div>
 
@@ -30,7 +35,7 @@ function IndexClinic() {
           <CardBasic>
             <span>Añadir Clinica</span>
 
-            <FormCreateClinic />
+            <FormCreateClinic clinics={clinics} setClinics={setClinics} />
           </CardBasic>
         </div>
       </div>

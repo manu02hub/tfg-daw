@@ -1,37 +1,89 @@
-import React from "react";
+import React, { useState } from "react";
+import { Global } from "../../helpers/Global";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "../../helpers/Validate";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
 import InputError from "../../components/InputError";
+import BtnPrimary from "../BtnPrimary";
+import BtnReset from "../BtnReset";
 
-function FormCreateTherapie() {
+function FormCreateTherapie({ therapies, setTherapies }) {
+  const [error, setError] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (data) => {
+    setError("");
+    let therapy = data;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "therapy/create-therapy",
+      "POST",
+      therapy
+    );
+
+    if (datos.state == "success" && !cargando) {
+      console.log(datos.therapy);
+      
+      setTherapies([...therapies, datos.therapy]);
+    } else {
+      setError(datos.message);
+    }
+  };
+
+  const setErrorName = () => {
+    setError("");
+  };
+
   return (
-    <form className="formCreate">
+    <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
       <div className="separadorForm">
         <InputLabel>Name</InputLabel>
         <InputText
           type="text"
           name="name"
-          defaultValue="Tooth Sensation"
+          {...register("name")}
+          onFocus={() => setErrorName()}
         ></InputText>
+        <InputError
+          message={errors.name ? errors.name?.message : error}
+        ></InputError>
       </div>
 
       <div className="separadorForm">
-        <InputLabel>Precio</InputLabel>
-        <InputText type="number" name="precio" defaultValue={50}></InputText>
+        <InputLabel>Price</InputLabel>
+        <InputText
+          type="number"
+          name="price"
+          {...register("price")}
+        ></InputText>
+        <InputError message={errors.price?.message}></InputError>
       </div>
 
       <div className="separadorForm">
-        <InputLabel>Descuento</InputLabel>
-        <InputText type="number" name="descuento" defaultValue={0}></InputText>
+        <InputLabel>Discount</InputLabel>
+        <InputText
+          type="number"
+          name="discount"
+          {...register("discount")}
+        ></InputText>
+        <InputError message={errors.discount?.message}></InputError>
       </div>
 
       <div className="separadorBtn btnCreate">
-        <input
-          type="submit"
-          className="btnsColor"
-          value={"Add Therapie"}
-        ></input>
-        <input type="reset" className="btnReset" value={"Reset"}></input>
+        <div className="separadorBtn btnCreate">
+          <BtnPrimary>Add Therapy</BtnPrimary>
+          <BtnReset>Reset</BtnReset>
+        </div>
       </div>
     </form>
   );

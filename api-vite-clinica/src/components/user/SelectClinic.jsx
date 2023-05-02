@@ -30,10 +30,7 @@ function SelecClinic({ auth, ...props }, ref) {
       {!loading && (
         <select {...props} ref={input}>
           {clinics.map((clinic) => {
-            if (
-              auth &&
-              checkPermission(auth.permissions, "add-adminClinic")
-            ) {
+            if (auth && checkPermission(auth.permissions, "add-adminClinic")) {
               return (
                 clinic._id == auth.id_clinic && (
                   <option key={clinic._id} value={clinic._id}>
@@ -42,24 +39,12 @@ function SelecClinic({ auth, ...props }, ref) {
                 )
               );
             } else {
-
               return (
                 <option key={clinic._id} value={clinic._id}>
                   {clinic.name}
                 </option>
               );
             }
-
-            // if (
-            //   auth &&
-            //   checkPermission(auth.permissions, "gestion-admin-user")
-            // ) {
-            //   return (
-            //     <option key={clinic._id} value={clinic._id}>
-            //       {clinic.name}
-            //     </option>
-            //   );
-            // }
           })}
         </select>
       )}

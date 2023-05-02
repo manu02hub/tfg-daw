@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import InputLabel from "../../components/InputLabel";
-import InputText from "../../components/InputText";
-import InputError from "../../components/InputError";
 import { Global } from "../../helpers/Global";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../helpers/Validate";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
+import InputLabel from "../../components/InputLabel";
+import InputText from "../../components/InputText";
+import InputError from "../../components/InputError";
 import SelectRol from "../../components/user/SelectRol";
 import SelectClinic from "../../components/user/SelectClinic";
 import BtnPrimary from "../BtnPrimary";
@@ -44,7 +44,6 @@ function FormCreateUser({ auth }) {
 
   const setErrorEmail = () =>{
     setError("");
-    console.log("metodo");
   }
 
   return (

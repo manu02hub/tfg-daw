@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import HeaderSection from "../../components/HeaderSection";
 import CardBasic from "../../components/CardBasic";
 import TableTherapie from "../../components/therapie/TableTherapie";
 import FormCreateTherapie from "../../components/therapie/FormCreateTherapie";
+import Spinner from "../../components/Spinner";
 
 function IndexTherapie() {
+  const [loading, setLoading] = useState(true);
+  const [therapies, setTherapies] = useState({});
+
   return (
     <>
+      {loading && <Spinner />}
       <HeaderSection title={"Tratamientos"} />
       <div className="row">
         <div className="col-lg-8 col-md-12 col-sm-12">
@@ -22,13 +27,21 @@ function IndexTherapie() {
                 </form>
               </div>
             </div>
-            <TableTherapie />
+            <TableTherapie
+              load={loading}
+              setLoad={setLoading}
+              therapies={therapies}
+              setTherapies={setTherapies}
+            />
           </CardBasic>
         </div>
         <div className="col-lg-4 col-md-12 col-sm-12">
           <CardBasic>
             <span>Añadir Clinica</span>
-            <FormCreateTherapie />
+            <FormCreateTherapie
+              therapies={therapies}
+              setTherapies={setTherapies}
+            />
           </CardBasic>
         </div>
       </div>

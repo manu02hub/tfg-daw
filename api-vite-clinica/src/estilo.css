@@ -596,12 +596,15 @@ hr {
 }
 
 .btnReset {
-  background: #bdbdbd;
+  border: 1px solid rgb(209 213 219);
+  background: white;
   transition: all 300ms;
+  color: #212121;
+  margin-left: 5px;
 }
 
 .btnReset:hover {
-  background: #787878;
+  background: #eae8e8;
 }
 
 .errorForm {
@@ -779,7 +782,7 @@ hr {
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-around;
+  justify-content: flex-end;
 }
 
 .btnCreate input {
@@ -860,6 +863,10 @@ table .editTable {
 
 table .deleteTable {
   background-color: #d54646;
+}
+
+.total{
+  color: #d54646;
 }
 
 .boxImg {

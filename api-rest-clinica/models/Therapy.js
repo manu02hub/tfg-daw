@@ -9,7 +9,7 @@ const TherapySchema = Schema({
         type: Number,
         required: true,
     },
-    descuento: {
+    discount: {
         type: Number,
         require: true
     }

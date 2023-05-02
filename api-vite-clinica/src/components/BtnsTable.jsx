@@ -1,7 +1,7 @@
 import React from "react";
 
-function BtnsTable({ children, className = "" }) {
-  return <button className={`btnsAction ` + className}>{children}</button>;
+function BtnsTable({ children, className = "", onClick}) {
+  return <button type="button" className={`btnsAction ` + className} onClick={onClick}>{children}</button>;
 }
 
 export default BtnsTable;

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { useParams } from 'react-router-dom';
 import CardBasic from "../../components/CardBasic";
-import InputLabel from "../../components/InputLabel";
-import InputText from "../../components/InputText";
-import InputError from "../../components/InputError";
 import HeaderSection from "../../components/HeaderSection";
+import FormEditTherapy from '../../components/therapie/FormEditTherapy';
 
 function EditTherapie() {
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
   return (
     <>
       <HeaderSection title={"Edit Therapie"}/>
@@ -19,39 +20,7 @@ function EditTherapie() {
                   <p>
                     Change your prices in your clinic
                   </p>
-                  <form className="formEdit">
-                    <InputLabel>Name</InputLabel>
-                    <InputText
-                      type="text"
-                      name="name"
-                      defaultValue="Empaste"
-                    ></InputText>
-
-                    <div className="separadorForm">
-                      <InputLabel>Precio</InputLabel>
-                      <InputText
-                        type="number"
-                        name="precio"
-                        defaultValue={50}
-                      ></InputText>
-                    </div>
-
-                    <div className="separadorForm">
-                      <InputLabel>Descuento</InputLabel>
-                      <InputText
-                        type="number"
-                        name="descuento"
-                        defaultValue={10}
-                      ></InputText>
-                    </div>
-                    <div className="separadorBtn">
-                      <input
-                        type="submit"
-                        className="btnsColor"
-                        value={"Save"}
-                      ></input>
-                    </div>
-                  </form>
+                  <FormEditTherapy id={id} loading={loading} setLoading={setLoading}/>
                 </section>
               </div>
             </div>

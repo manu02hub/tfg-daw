@@ -242,8 +242,6 @@ const deleteUser = async (req, res) => {
 
     const user = await User.findOne({ _id: parameters.id });
 
-    console.log(user);
-
     if (user) {
         equal = bycrypt.compareSync(parameters.password, user.password);
 

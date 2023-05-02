@@ -3,6 +3,7 @@ const cors = require('cors');
 const userRoutes = require("../routes/user");
 const clinicRoutes = require("../routes/clinic");
 const rolRoutes = require("../routes/rol");
+const therapyRoutes = require("../routes/therapy");
 
 const lanzarServidor = () => {
     //Crear servidor node
@@ -17,9 +18,10 @@ const lanzarServidor = () => {
     app.use(express.urlencoded({ extended: true }));
 
     //Cargar rutas
+    app.use("/api/rol",rolRoutes);
     app.use("/api/user",userRoutes);
     app.use("/api/clinic",clinicRoutes);
-    app.use("/api/rol",rolRoutes);
+    app.use("/api/therapy",therapyRoutes);
 
     //Ruta de prueba
 
