@@ -51,5 +51,10 @@ export const schema = yup
       .typeError("Campo Requerido")
       .min(0, "El descuento debe estar entre 0 y 100")
       .max(100, "El descuento debe estar entre 0 y 100"),
+    reference: yup
+      .string()
+      .trim()
+      .min(5, "Campo requerido, debe contener mínimo 5 caracteres")
+      .max(30, "Máximo 30 caracteres"),
   })
   .required();

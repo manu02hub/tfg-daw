@@ -113,7 +113,7 @@ const updateClinic = async (req, res) => {
     let respuesta;
     var clinic;
 
-    clinic = await Clinic.findOne({ direction: parameters.direction })
+    clinic = await Clinic.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { direction: parameters.direction }] });
 
     if (clinic) {
         respuesta = res.status(200).json({

@@ -2,10 +2,11 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-function Clinicas() {
+function Therapies() {
   const { auth } = useAuth();
+
   return (
-    <div className="row">
+     <div className="row">
       <div className="col-lg-12 col-md-12 col-sm-12">
         <div className="section-information">
           {auth._id ? <Outlet /> : <Navigate to={"/"} replace={true} />}
@@ -15,4 +16,4 @@ function Clinicas() {
   );
 }
 
-export default Clinicas;
+export default Therapies;

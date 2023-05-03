@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import Table from "../Table";
@@ -8,7 +9,6 @@ import TdTable from "../TdTable";
 import clinicImage from "../../assets/clinic.jpg";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-import { Link } from "react-router-dom";
 import BtnsTable from "../BtnsTable";
 import ModalClinicDelete from "./ModalClinicDelete";
 

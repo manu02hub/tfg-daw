@@ -11,7 +11,6 @@ import NavLink from "../NavLink";
 import { checkPermission } from "../../helpers/CheckPermissions";
 
 function Aside({ permissionsAuth }) {
-
   return (
     <aside className="aside">
       <div className="logoAside">
@@ -19,7 +18,8 @@ function Aside({ permissionsAuth }) {
       </div>
       <div className="listadoRoutes">
         {permissionsAuth &&
-          (checkPermission(permissionsAuth, "gestion-admin-user") || checkPermission(permissionsAuth, "gestion-clinic-user")) && (
+          (checkPermission(permissionsAuth, "gestion-admin-user") ||
+            checkPermission(permissionsAuth, "gestion-clinic-user")) && (
             <div className="cajaListado">
               <NavLink className="cajaSelect" to={"/panel/users"}>
                 <FaUserAlt className="iconoSide" />
@@ -48,12 +48,15 @@ function Aside({ permissionsAuth }) {
             </div>
           )}
 
-        <div className="cajaListado">
-          <NavLink className="cajaSelect" to={"/panel/gabinetes"}>
-            <BsFillDoorOpenFill className="iconoSide" />
-            <span className="spanSide">Gabinetes</span>
-          </NavLink>
-        </div>
+        {permissionsAuth &&
+          checkPermission(permissionsAuth, "gestion-gabinetes") && (
+            <div className="cajaListado">
+              <NavLink className="cajaSelect" to={"/panel/cabinets"}>
+                <BsFillDoorOpenFill className="iconoSide" />
+                <span className="spanSide">Gabinetes</span>
+              </NavLink>
+            </div>
+          )}
       </div>
     </aside>
   );

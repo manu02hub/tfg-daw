@@ -4,6 +4,7 @@ const userRoutes = require("../routes/user");
 const clinicRoutes = require("../routes/clinic");
 const rolRoutes = require("../routes/rol");
 const therapyRoutes = require("../routes/therapy");
+const cabinetRoutes = require("../routes/cabinet");
 
 const lanzarServidor = () => {
     //Crear servidor node
@@ -22,6 +23,7 @@ const lanzarServidor = () => {
     app.use("/api/user",userRoutes);
     app.use("/api/clinic",clinicRoutes);
     app.use("/api/therapy",therapyRoutes);
+    app.use("/api/cabinet",cabinetRoutes);
 
     //Ruta de prueba
 

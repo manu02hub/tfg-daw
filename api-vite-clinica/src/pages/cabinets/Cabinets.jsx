@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-function Gabinetes() {
+function Cabinets() {
     const { auth } = useAuth();
 
     return (
@@ -16,4 +16,4 @@ function Gabinetes() {
     );
 }
 
-export default Gabinetes
+export default Cabinets

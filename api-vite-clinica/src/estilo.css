@@ -839,11 +839,13 @@ tbody .boxTbody {
   margin-right: 5px;
 }
 
+.btnsCardCabinet a,
 table a {
   text-decoration: none;
   color: white;
 }
 
+.btnsCardCabinet .btnsAction,
 table .btnsAction {
   color: white;
   padding-right: 10px;
@@ -856,11 +858,13 @@ table .btnsAction {
   cursor: pointer;
 }
 
+.btnsCardCabinet .editTable,
 table .editTable {
   background-color: #f0ce25;
   margin-right: 5px;
 }
 
+.btnsCardCabinet .deleteTable,
 table .deleteTable {
   background-color: #d54646;
 }
@@ -973,6 +977,24 @@ table .deleteTable {
   justify-content: flex-end;
   margin-right: 27px;
   margin-top: 20px;
+}
+
+/*-------------------------CABINET----------------------------------------*/
+
+.boxCardCabinet{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.boxCardCabinet .dataCabinet p{
+  margin-bottom: 3px;
+}
+
+.boxCabinet{
+  margin-bottom: 5px;
+  margin-right: 5px;
 }
 
 /*-------------------------GRID SYSTEM------------------------------------------*/

@@ -35,8 +35,6 @@ const getAllTherapies = async (req, res) => {
 
     const therapies = await Therapy.find({}).exec();
 
-    console.log(therapies);
-
     return res.status(200).json({
         state: "success",
         therapies
@@ -73,7 +71,7 @@ const updateTherapy = async (req, res) => {
     let parameters = req.body;
     var therapy;
 
-    therapy = await Therapy.findOne({ name: parameters.name });
+    therapy = await Therapy.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { name: parameters.name }] });
 
     if (therapy) {
         respuesta = res.status(200).json({
