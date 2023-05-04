@@ -4,7 +4,8 @@ import {
   FaUserAlt,
   FaClinicMedical,
   FaTooth,
-  FaUserShield,
+  FaUserNurse,
+  FaUsers
 } from "react-icons/fa";
 import { BsFillDoorOpenFill } from "react-icons/bs";
 import NavLink from "../NavLink";
@@ -22,7 +23,7 @@ function Aside({ permissionsAuth }) {
             checkPermission(permissionsAuth, "gestion-clinic-user")) && (
             <div className="cajaListado">
               <NavLink className="cajaSelect" to={"/panel/users"}>
-                <FaUserAlt className="iconoSide" />
+                <FaUserNurse className="iconoSide" />
                 <span className="spanSide">Usuarios</span>
               </NavLink>
             </div>
@@ -57,6 +58,13 @@ function Aside({ permissionsAuth }) {
               </NavLink>
             </div>
           )}
+
+        <div className="cajaListado">
+          <NavLink className="cajaSelect" to={"/panel/patients"}>
+            <FaUsers className="iconoSide" />
+            <span className="spanSide">Pacientes</span>
+          </NavLink>
+        </div>
       </div>
     </aside>
   );

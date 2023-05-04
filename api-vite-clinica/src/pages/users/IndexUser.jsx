@@ -3,12 +3,13 @@ import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import { BsPersonFillAdd } from "react-icons/bs";
 import CardUser from "../../components/user/CardUser";
-import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import CardShowUser from "../../components/user/CardShowUser";
 import HeaderSection from "../../components/HeaderSection";
 import Spinner from "../../components/Spinner";
 import TabsUser from "../../components/user/TabsUser";
+import Search from "../../components/Search";
+import BtnAdd from "../../components/BtnAdd";
 import { checkPermission } from "../../helpers/CheckPermissions";
 
 function IndexUser() {
@@ -42,17 +43,10 @@ function IndexUser() {
 
       <HeaderSection title={"Usuarios"}>
         <div className="headerSearch">
-          <form>
-            <input
-              type="search"
-              placeholder="Search... "
-              className="inputSearch"
-            ></input>
-            <Link to={"/panel/users/user-create"} className="btnAdd">
-              <BsPersonFillAdd></BsPersonFillAdd>
-              <span>Add User</span>
-            </Link>
-          </form>
+          <Search />
+          <BtnAdd to={"/panel/users/user-create"} add={"Add User"}>
+            <BsPersonFillAdd></BsPersonFillAdd>
+          </BtnAdd>
         </div>
       </HeaderSection>
 

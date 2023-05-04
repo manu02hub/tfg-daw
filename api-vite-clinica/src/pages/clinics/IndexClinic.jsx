@@ -27,7 +27,12 @@ function IndexClinic() {
                 </form>
               </div>
             </div>
-            <TableClinic load={loading} setLoad={setLoading} clinics={clinics} setClinics={setClinics}/>
+            <TableClinic
+              load={loading}
+              setLoad={setLoading}
+              clinics={clinics}
+              setClinics={setClinics}
+            />
           </CardBasic>
         </div>
 

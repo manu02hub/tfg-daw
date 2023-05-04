@@ -18,6 +18,8 @@ import Cabinets from "../src/pages/cabinets/Cabinets";
 import IndexCabinet from "../src/pages/cabinets/IndexCabinet";
 import EditTherapie from "../src/pages/therapies/EditTherapie";
 import EditCabinet from "../src/pages/cabinets/EditCabinet";
+import Patients from "../src/pages/patients/Patients";
+import IndexPatient from "../src/pages/patients/IndexPatient";
 
 function Web() {
   return (
@@ -44,6 +46,10 @@ function Web() {
             <Route path="cabinets" element={<Cabinets />}>
               <Route index="cabinet-index" element={<IndexCabinet />}></Route>
               <Route path="cabinet-edit/:id" element={<EditCabinet />}></Route>
+            </Route>
+            <Route path="patients" element={<Patients />}>
+              <Route index="patients-index" element={<IndexPatient />}></Route>
+             
             </Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>
