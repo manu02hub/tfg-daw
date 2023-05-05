@@ -4,8 +4,8 @@ const { Schema, model } = require("mongoose");
 const PatientSchema = Schema({
 
     history_number: {
-        type: String,
-        require: true
+        type: Number,
+        default: 000001
     },
 
     name: {
@@ -23,7 +23,7 @@ const PatientSchema = Schema({
         required: true
     },
 
-    sex: {
+    gender: {
         type: String,
         required: true
     },
@@ -33,25 +33,43 @@ const PatientSchema = Schema({
         required: true
     },
 
-    odontograma: {
-        type: String,
+    odontogram: {
+        type: Number,
+        required: false
+    },
+
+    mobile_phone: {
+        type: Number,
         required: true
     },
 
     date: {
-        type: Date.now(),
-        required: true
+        type: Date,
+        default: Date.now()
     },
 
     active: {
-        type: true,
-        required: true
+        type: Boolean,
+        default: true
+    },
+
+    id_direction: {
+        type: Schema.ObjectId,
+        ref: "Direction",
+        default:null
     },
 
     id_contact: {
         type: Schema.ObjectId,
-        ref: "Contact"
+        ref: "Contact",
+        default:null
     },
+
+    tutors: [{
+        type: Schema.ObjectId,
+        ref: "Tutor",
+        default:null
+    }],
 
 });
 

@@ -20,6 +20,9 @@ import EditTherapie from "../src/pages/therapies/EditTherapie";
 import EditCabinet from "../src/pages/cabinets/EditCabinet";
 import Patients from "../src/pages/patients/Patients";
 import IndexPatient from "../src/pages/patients/IndexPatient";
+import CreatePatient from "../src/pages/patients/CreatePatient";
+import EditPatient from "../src/pages/patients/EditPatient";
+import ShowPatient from "../src/pages/patients/ShowPatient";
 
 function Web() {
   return (
@@ -41,7 +44,10 @@ function Web() {
             </Route>
             <Route path="therapies" element={<Therapies />}>
               <Route index="therapie-index" element={<IndexTherapie />}></Route>
-              <Route path="therapie-edit/:id" element={<EditTherapie />}></Route>
+              <Route
+                path="therapie-edit/:id"
+                element={<EditTherapie />}
+              ></Route>
             </Route>
             <Route path="cabinets" element={<Cabinets />}>
               <Route index="cabinet-index" element={<IndexCabinet />}></Route>
@@ -49,7 +55,9 @@ function Web() {
             </Route>
             <Route path="patients" element={<Patients />}>
               <Route index="patients-index" element={<IndexPatient />}></Route>
-             
+              <Route path="patients-create" element={<CreatePatient />}></Route>
+              <Route path="patients-edit" element={<EditPatient />}></Route>
+              <Route path="patients-show" element={<ShowPatient />}></Route>
             </Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>

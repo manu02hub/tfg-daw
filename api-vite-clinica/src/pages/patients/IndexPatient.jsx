@@ -12,14 +12,7 @@ function IndexPatient() {
 
   return (
     <>
-      <HeaderSection title={"Pacientes"}>
-        <div className="headerSearch">
-          <Search />
-          <BtnAdd to={""} add={"Add Patient"}>
-            <BsPersonFillAdd></BsPersonFillAdd>
-          </BtnAdd>
-        </div>
-      </HeaderSection>
+      <HeaderSection title={"Pacientes"}/>
 
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
@@ -33,7 +26,7 @@ function IndexPatient() {
                   <label>Search: </label>
                   <input className="inputSearch"></input>
                 </form>
-                <BtnAdd to={""} add={"Add Patient"}>
+                <BtnAdd to={"patients-create"} add={"Add Patient"}>
                   <BsPersonFillAdd></BsPersonFillAdd>
                 </BtnAdd>
               </div>

@@ -23,16 +23,16 @@ body {
   padding: 10px;
 }
 
-.formLogin{
+.formLogin {
   display: flex;
   flex-direction: column;
 }
 
-.formLogin span{
+.formLogin span {
   margin-top: -5px;
 }
 
-.formLogin label{
+.formLogin label {
   font-weight: 500;
   font-size: 0.885rem;
   line-height: 1.25rem;
@@ -54,7 +54,7 @@ body {
   margin-bottom: 15px;
 }
 
-.loginInput{
+.loginInput {
   border: 2px solid #bdbdbd;
 }
 
@@ -84,7 +84,9 @@ input[type="range"] {
 input[type="email"],
 input[type="password"],
 input[type="text"],
+input[type="date"],
 input[type="number"],
+input[type="phone"],
 select {
   width: 93%;
   margin-bottom: 10px;
@@ -97,6 +99,8 @@ select {
   font-family: "Roboto";
   font-weight: 500;
 }
+input[type="date"],
+input[type="phone"],
 input[type="email"]:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -869,7 +873,7 @@ table .deleteTable {
   background-color: #d54646;
 }
 
-.total{
+.total {
   color: #d54646;
 }
 
@@ -967,11 +971,11 @@ table .deleteTable {
   margin-right: 25%;
 }
 
-.section-modal{
+.section-modal {
   margin: 20px;
 }
 
-.btnModal{
+.btnModal {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -981,21 +985,31 @@ table .deleteTable {
 
 /*-------------------------CABINET----------------------------------------*/
 
-.boxCardCabinet{
+.boxCardCabinet {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
 
-.boxCardCabinet .dataCabinet p{
+.boxCardCabinet .dataCabinet p {
   margin-bottom: 3px;
 }
 
-.boxCabinet{
+.boxCabinet {
   margin-bottom: 5px;
   margin-right: 5px;
 }
+
+.subtitleForm {
+  margin-top: 20px;
+}
+
+.subtitleForm p{
+  font-weight: bold;
+  color: #0277b5;
+}
+
 
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {

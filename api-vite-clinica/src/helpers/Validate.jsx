@@ -56,5 +56,15 @@ export const schema = yup
       .trim()
       .min(5, "Campo requerido, debe contener mínimo 5 caracteres")
       .max(30, "Máximo 30 caracteres"),
+    surnames: yup
+      .string()
+      .trim()
+      .min(3, "Campo requerido, al menos 3 caracteres")
+      .max(30, "Máximo 30 caracteres"),
+    nif: yup
+      .string()
+      .trim()
+      .length(9, "Necesario 9 caracteres").matches(/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i,"Necsarios 8 numeros 1 letra")
+      
   })
   .required();

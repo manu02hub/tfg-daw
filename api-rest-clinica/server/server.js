@@ -5,6 +5,7 @@ const clinicRoutes = require("../routes/clinic");
 const rolRoutes = require("../routes/rol");
 const therapyRoutes = require("../routes/therapy");
 const cabinetRoutes = require("../routes/cabinet");
+const patientRoutes = require("../routes/patient");
 
 const lanzarServidor = () => {
     //Crear servidor node
@@ -19,19 +20,12 @@ const lanzarServidor = () => {
     app.use(express.urlencoded({ extended: true }));
 
     //Cargar rutas
-    app.use("/api/rol",rolRoutes);
-    app.use("/api/user",userRoutes);
-    app.use("/api/clinic",clinicRoutes);
-    app.use("/api/therapy",therapyRoutes);
-    app.use("/api/cabinet",cabinetRoutes);
-
-    //Ruta de prueba
-
-    app.get('/ruta-prueba', (req, res) => {
-        return res.status(200).json({
-            mesaage: "Funciona correctamente"
-        })
-    });
+    app.use("/api/rol", rolRoutes);
+    app.use("/api/user", userRoutes);
+    app.use("/api/clinic", clinicRoutes);
+    app.use("/api/therapy", therapyRoutes);
+    app.use("/api/cabinet", cabinetRoutes);
+    app.use("/api/patient", patientRoutes);
 
     //Poner servidor a escuchar peticiones http
     app.listen(puerto, () => {
