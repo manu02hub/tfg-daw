@@ -13,7 +13,7 @@ import Modal from "../Modal";
 import BtnDelete from "../BtnDelete";
 import BtnCancel from "../BtnCancel";
 
-function ModalUserDelete({ confirm, setConfirm, user, auth }) {
+function ModalUserDelete({ confirm, setConfirm, user, auth, users, setUsers }) {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -35,12 +35,17 @@ function ModalUserDelete({ confirm, setConfirm, user, auth }) {
     );
 
     if (datos.state == "success" && !cargando) {
-    //   usuarios = user.filter((u) => u._id !== id);
-      closeModal();
-      toast.success("Se ha eliminado el usuario correctamente");
-      navigate("/panel/users");
-    }else{
-        setError(datos.message);
+      if (users) {
+        usuarios = users.filter((u) => u._id !== user._id);
+        closeModal();
+        setUsers(usuarios);
+        toast.success("Se ha eliminado el usuario correctamente");
+      } else {
+        closeModal();
+        navigate("/panel/users");
+      }
+    } else {
+      setError(datos.message);
     }
   };
 
@@ -48,9 +53,9 @@ function ModalUserDelete({ confirm, setConfirm, user, auth }) {
     setConfirm(false);
   };
 
-  const setErrorPass = () =>{
+  const setErrorPass = () => {
     setError("");
-  }
+  };
 
   return (
     <>
@@ -65,25 +70,25 @@ function ModalUserDelete({ confirm, setConfirm, user, auth }) {
             </p>
 
             <form className="formDelete" onSubmit={handleSubmit(deleteUser)}>
-             
-                <InputLabel>Password</InputLabel>
+              <InputLabel>Password</InputLabel>
 
-                <InputText
-                  type="password"
-                  name="password"
-                  {...register("password")}
-                  onFocus={() => setErrorPass()}
-                ></InputText>
+              <InputText
+                type="password"
+                name="password"
+                {...register("password")}
+                onFocus={() => setErrorPass()}
+              ></InputText>
 
-                <InputText
-                  type="hidden"
-                  name="id"
-                  defaultValue={auth._id}
-                  {...register("id")}
-                ></InputText>
-                <br/>
-                <InputError message={errors.password ? errors.password?.message : error }></InputError>
-            
+              <InputText
+                type="hidden"
+                name="id"
+                defaultValue={auth._id}
+                {...register("id")}
+              ></InputText>
+              <br />
+              <InputError
+                message={errors.password ? errors.password?.message : error}
+              ></InputError>
 
               <div className="btnModal">
                 <BtnDelete>Delete Account</BtnDelete>

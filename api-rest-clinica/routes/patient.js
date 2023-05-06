@@ -5,10 +5,10 @@ const middleware = require("../middlewares/auth");
 const PatientController = require("../controllers/PatientController");
 
 router.post("/create-patient", middleware.auth, PatientController.createPatient);
-// router.get("/all-clinics", middleware.auth, ClinicController.getAllClinics);
-// router.get("/get-clinic/:id", middleware.auth, ClinicController.getClinic);
-// router.post("/delete-clinic/:id", middleware.auth, ClinicController.deleteClinic);
-// router.put("/update-clinic/:id", middleware.auth, ClinicController.updateClinic);
+router.get("/all-patients", middleware.auth, PatientController.getAllPatients);
+router.get("/get-patient/:id", middleware.auth, PatientController.getPatient);
+router.post("/delete-patient/:id", middleware.auth, PatientController.deletePatient);
+router.put("/update-patient/:id", middleware.auth, PatientController.updatePatient);
 
 
 module.exports = router;

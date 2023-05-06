@@ -54,10 +54,10 @@ function Web() {
               <Route path="cabinet-edit/:id" element={<EditCabinet />}></Route>
             </Route>
             <Route path="patients" element={<Patients />}>
-              <Route index="patients-index" element={<IndexPatient />}></Route>
-              <Route path="patients-create" element={<CreatePatient />}></Route>
-              <Route path="patients-edit" element={<EditPatient />}></Route>
-              <Route path="patients-show" element={<ShowPatient />}></Route>
+              <Route index="patient-index" element={<IndexPatient />}></Route>
+              <Route path="patient-create" element={<CreatePatient />}></Route>
+              <Route path="patient-edit/:id" element={<EditPatient />}></Route>
+              <Route path="patient-show/:id" element={<ShowPatient />}></Route>
             </Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>

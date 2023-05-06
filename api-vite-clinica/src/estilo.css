@@ -858,6 +858,7 @@ table .btnsAction {
   padding-bottom: 5px;
   border-radius: 3px;
   font-size: 15px;
+  margin: 2px;
   border: none;
   cursor: pointer;
 }
@@ -865,12 +866,19 @@ table .btnsAction {
 .btnsCardCabinet .editTable,
 table .editTable {
   background-color: #f0ce25;
-  margin-right: 5px;
 }
 
 .btnsCardCabinet .deleteTable,
 table .deleteTable {
   background-color: #d54646;
+}
+
+table .showTable {
+  background-color: #0277b5;
+}
+
+table .therapyTable {
+  background-color: #5ce1e6;
 }
 
 .total {
@@ -1005,11 +1013,91 @@ table .deleteTable {
   margin-top: 20px;
 }
 
-.subtitleForm p{
+.subtitleForm p {
   font-weight: bold;
   color: #0277b5;
 }
 
+/*---------------------------SHOW USER ---------------------------------------*/
+
+.patientData {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.namePatient {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.patientDirection p,
+.patientPersonal p {
+  margin-bottom: 3px;
+}
+
+.patientDirection p span,
+.patientPersonal p span {
+  color: black;
+  margin-right: 3px;
+}
+
+.dataContact {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.dataContact p {
+  margin-bottom: 3px;
+  margin-left: 3px;
+}
+
+.timeline{
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.section-timeline{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.date{
+  display: flex;
+  margin-right: 10px;
+}
+
+.date p{
+  margin-top: 0;
+}
+
+ .therapies{
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+}
+
+.therapies .circleLine{
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  margin-top: 3px;
+  height: 100%;
+}
+
+.circleLine hr{
+  height: 100%;
+  margin-top: 0px;
+}
+
+.circleLine .circle{
+  background-color: #065a88;
+  border-radius: 100%;
+}
 
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {

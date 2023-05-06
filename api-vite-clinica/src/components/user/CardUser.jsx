@@ -97,6 +97,8 @@ function CardUser({ userInfo, showCard, setId, users, setUsers }) {
             setConfirm={setConfirmingUserDeletion}
             user={userInfo}
             auth={auth}
+            users={users}
+            setUsers={setUsers}
           />
         </>
       )}

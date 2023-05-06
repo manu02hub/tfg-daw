@@ -5,6 +5,7 @@ import Search from "../../components/Search";
 import BtnAdd from "../../components/BtnAdd";
 import CardBasic from "../../components/CardBasic";
 import TablePatient from "../../components/patient/TablePatient";
+import Spinner from "../../components/Spinner";
 
 function IndexPatient() {
   const [loading, setLoading] = useState(true);
@@ -12,6 +13,7 @@ function IndexPatient() {
 
   return (
     <>
+     {loading && <Spinner />}
       <HeaderSection title={"Pacientes"}/>
 
       <div className="row">
@@ -26,7 +28,7 @@ function IndexPatient() {
                   <label>Search: </label>
                   <input className="inputSearch"></input>
                 </form>
-                <BtnAdd to={"patients-create"} add={"Add Patient"}>
+                <BtnAdd to={"patient-create"} add={"Add Patient"}>
                   <BsPersonFillAdd></BsPersonFillAdd>
                 </BtnAdd>
               </div>

@@ -6,21 +6,32 @@ import Table from "../Table";
 import Thead from "../Thead";
 import Tbody from "../Tbody";
 import TdTable from "../TdTable";
+import { FaTooth } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
+import { IoDocumentText } from "react-icons/io5";
 import BtnsTable from "../BtnsTable";
 import ModalPatientDelete from "./ModalPatientDelete";
 
 function TablePatient({ load, setLoad, patients, setPatients }) {
-  
   const [idPatient, setIdPatient] = useState(0);
   const [confirmingPatientDeletion, setConfirmingPatientDeletion] =
     useState(false);
 
-  const menuT = ["Nº Historial", "Nombre", "Apellidos", "Email", "Nif",  "Odontograma", "Telefono", "Activo", "Acciones"];
+  const menuT = [
+    "Nº Historial",
+    "Nombre",
+    "Apellidos",
+    "Email",
+    "Nif",
+    "Odontograma",
+    "Telefono",
+    "Activo",
+    "Acciones",
+  ];
 
   useEffect(() => {
-    // getClinics();
+    getPatients();
   }, []);
 
   const getPatients = async () => {
@@ -51,16 +62,21 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
             {patients.map((patient) => {
               return (
                 <tr key={patient._id}>
-                  <TdTable>
-                    <img src={patientImage} width={50} />
-                    {patient.name}
-                  </TdTable>
+                  <TdTable>{patient.history_number}</TdTable>
 
-                  <TdTable> {patient.direction}</TdTable>
+                  <TdTable> {patient.name}</TdTable>
 
-                  <TdTable>{patient.city}</TdTable>
+                  <TdTable>{patient.surnames}</TdTable>
 
-                  <TdTable>{patient.c_postal}</TdTable>
+                  <TdTable>{"manuel@gmail.com"}</TdTable>
+
+                  <TdTable>{patient.nif}</TdTable>
+
+                  <TdTable>{patient.odontogram}</TdTable>
+
+                  <TdTable>{patient.mobile_phone}</TdTable>
+
+                  <TdTable>{patient.active ? "Activo" : "No activo"}</TdTable>
 
                   <TdTable>
                     <BtnsTable className={"editTable"}>
@@ -71,9 +87,21 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
 
                     <BtnsTable
                       className={"deleteTable"}
-                      onClick={() => confirmPatientDeletion(clinic._id)}
+                      onClick={() => confirmPatientDeletion(patient._id)}
                     >
                       <MdDelete />
+                    </BtnsTable>
+
+                    <BtnsTable className={"showTable"}>
+                      <Link to={"patient-show/" + patient._id}>
+                        <IoDocumentText size={15} />
+                      </Link>
+                    </BtnsTable>
+
+                    <BtnsTable className={"therapyTable"}>
+                      <Link to={"patient-edit/" + patient._id}>
+                        <FaTooth/>
+                      </Link>
                     </BtnsTable>
                   </TdTable>
                 </tr>

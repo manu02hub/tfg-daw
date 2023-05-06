@@ -1,4 +1,5 @@
 const Patient = require("../models/Patient");
+const User = require("../models/User");
 const bycrypt = require("bcrypt");
 
 
@@ -29,7 +30,7 @@ const createPatient = async (req, res) => {
     //Validar?
 
     // let patientCrypt = await bycrypt.hash(parameters, 10);
-   
+
 
     const patientCreate = new Patient(parameters);
 
@@ -53,17 +54,16 @@ const createPatient = async (req, res) => {
 
 }
 
-// const getAllUsers = async (req, res) => {
+const getAllPatients = async (req, res) => {
 
-//     const id = req.params.id;
+    //  const allPatients = await Patient.find({}).sort({ date: -1 }).populate('id_rol').exec();
+    const patients = await Patient.find({}).sort({ date: -1 });
 
-//     const allUsers = await User.find({ _id: { $not: { $eq: id } } }).sort({ date: -1 }).populate('id_rol').exec();
-
-//     return res.status(200).json({
-//         state: "success",
-//         allUsers,
-//     });
-// }
+    return res.status(200).json({
+        state: "success",
+        patients,
+    });
+}
 
 // const getUsersClinic = async (req, res) => {
 
@@ -79,141 +79,112 @@ const createPatient = async (req, res) => {
 
 // }
 
-// const editUser = async (req, res) => {
+const getPatient = async (req, res) => {
 
-//     const id = req.params.id;
+    const id = req.params.id;
 
-//     const user = await User.findOne({ _id: id });
+    const patient = await Patient.findOne({ _id: id });
 
-//     return res.status(200).json({
-//         state: "success",
-//         user,
-//     });
+    return res.status(200).json({
+        state: "success",
+        patient,
+    });
 
-// }
+}
 
-// const updateUser = async (req, res) => {
-//     let id = req.params.id;
-//     let parameters = req.body;
-//     let user = req.user;
-//     let pass;
-//     let respuesta;
-//     let equal;
+const updatePatient = async (req, res) => {
+    let id = req.params.id;
+    let parameters = req.body;
+    let respuesta;
+    var patient;
 
-//     delete user.iat;
-//     delete user.exp;
-//     delete user.date;
+    patient = await Patient.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { mobile_phone: parameters.mobile_phone }] });
 
-//     if (parameters.email) {
-//         var userFind = await User.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { email: parameters.email }] });
+    if (patient) {
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "Ya existe un paciente con ese número de teléfono",
+        });
+    } else {
 
+        patient = await Patient.findByIdAndUpdate(id, parameters, { new: true });
 
-//         if (userFind) {
+        respuesta = res.status(200).json({
+            state: "success",
+            message: "Clinica editada correctamente",
+            patient: patient
+        });
+    }
 
-//             respuesta = res.status(200).json({
-//                 state: "error",
-//                 message: "El usuario ya existe"
-//             });
+    return respuesta;
 
-//         } else {
-
-//             const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
-
-//             respuesta = res.status(200).json({
-//                 state: "success",
-//                 message: "Usuario editado correctamente",
-//                 user: userUpdate
-//             });
-//         }
-//     }
+}
 
 
-//     if (parameters.current) {
-//         var userPass = await User.findOne({ _id: id });
-//         equal = bycrypt.compareSync(parameters.current, userPass.password);
+const deletePatient = async (req, res) => {
+
+    var usuariosClinicas;
+    let id = req.params.id;
+    let parameters = req.body;
+    let equal;
+    let respuesta;
+
+    const user = await User.findOne({ _id: parameters.id });
+
+    if (user) {
+        equal = bycrypt.compareSync(parameters.password, user.password);
+
+        if (equal) {
+
+            await Patient.findByIdAndDelete(id);
+
+            respuesta = res.status(200).json({
+                state: "success",
+                message: "Paciente eliminado correctamente",
+            });
 
 
-//         if (!equal) {
-//             respuesta = res.status(200).json({
-//                 state: "error",
-//                 message: "La contraseña no es correcta",
-//             });
-//         } else {
+            // usuariosClinicas = await User.findOne({ id_clinic: id });
 
-//             if (parameters.password) {
-//                 pass = await bycrypt.hash(parameters.password, 10);
-//                 parameters.password = pass;
+            // if (usuariosClinicas) {
 
-//                 const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
+            //     respuesta = res.status(200).json({
+            //         state: "error",
+            //         message: "No se puede eliminar la clinica, tienes usuarios asociados",
+            //     });
 
-//                 respuesta = res.status(200).json({
-//                     state: "success",
-//                     message: "Usuario editado correctamente",
-//                     user: userUpdate
-//                 });
-//             }
-//         }
-//     }
+            // } else {
 
-//     if (!parameters.email && !parameters.current) {
+            //     await Patient.findByIdAndDelete(id);
 
-//         pass = await bycrypt.hash(parameters.password, 10);
-//         parameters.password = pass;
+            //     respuesta = res.status(200).json({
+            //         state: "success",
+            //         message: "Paciente eliminado correctamente",
+            //     });
+            // }
 
-//         const userUpdate = await User.findByIdAndUpdate(id, parameters, { new: true });
 
-//         respuesta = res.status(200).json({
-//             state: "success",
-//             message: "Usuario editado correctamente",
-//             user: userUpdate
-//         });
-//     }
+        } else {
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "La contraseña no es correcta",
+            });
+        }
+    } else {
 
-//     return respuesta;
-// }
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "No se encuentra al usuario",
+        });
+    }
 
-// const deleteUser = async (req, res) => {
-//     let id = req.params.id;
-//     let parameters = req.body;
-//     let equal;
-//     let respuesta;
+    return respuesta;
 
-//     const user = await User.findOne({ _id: parameters.id });
-
-//     if (user) {
-//         equal = bycrypt.compareSync(parameters.password, user.password);
-
-//         if (equal) {
-//             await User.findByIdAndDelete(id);
-
-//             respuesta = res.status(200).json({
-//                 state: "success",
-//                 message: "Usuario eliminado correctamente",
-//             });
-//         }else{
-//             respuesta = res.status(200).json({
-//                 state: "error",
-//                 message: "La contraseña no es correcta",
-//             });
-//         }
-//     } else {
-
-//         respuesta = res.status(200).json({
-//             state: "error",
-//             message: "No se encuentra al usuario",
-//         });
-//     }
-
-//     return respuesta;
-// }
-
+}
 module.exports = {
-    // getUser,
+    getAllPatients,
     createPatient,
-    // login,
-    // getAllUsers,
-    // getUsersClinic,
-    // editUser,
-    // updateUser,
-    // deleteUser
+    getPatient,
+    updatePatient,
+    deletePatient
 }
