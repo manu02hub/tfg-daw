@@ -23,6 +23,7 @@ import IndexPatient from "../src/pages/patients/IndexPatient";
 import CreatePatient from "../src/pages/patients/CreatePatient";
 import EditPatient from "../src/pages/patients/EditPatient";
 import ShowPatient from "../src/pages/patients/ShowPatient";
+import TherapyPatient from "../src/pages/patients/TherapyPatient";
 
 function Web() {
   return (
@@ -57,7 +58,7 @@ function Web() {
               <Route index="patient-index" element={<IndexPatient />}></Route>
               <Route path="patient-create" element={<CreatePatient />}></Route>
               <Route path="patient-edit/:id" element={<EditPatient />}></Route>
-              <Route path="patient-show/:id" element={<ShowPatient />}></Route>
+              <Route path="patient-therapy/:id" element={<TherapyPatient />}></Route>
             </Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>

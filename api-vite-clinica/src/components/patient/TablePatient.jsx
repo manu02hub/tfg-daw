@@ -99,7 +99,7 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
                     </BtnsTable>
 
                     <BtnsTable className={"therapyTable"}>
-                      <Link to={"patient-edit/" + patient._id}>
+                      <Link to={"patient-therapy/" + patient._id}>
                         <FaTooth/>
                       </Link>
                     </BtnsTable>
