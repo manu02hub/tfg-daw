@@ -1031,12 +1031,12 @@ table .therapyTable {
 }
 
 .patientData {
- margin-top: 15px;
+  margin-top: 15px;
 }
 
 .patientPersonal,
 .patientContact,
-.patientDirection{
+.patientDirection {
   width: 80%;
 }
 
@@ -1079,7 +1079,6 @@ table .therapyTable {
   margin: 0 auto;
 }
 
-/* The actual timeline (the vertical ruler) */
 .timeline::after {
   content: "";
   position: absolute;
@@ -1099,32 +1098,31 @@ table .therapyTable {
   width: 80%;
 }
 
-.container .boxInfoTimeline{
- padding: 5px;
+.container .boxInfoTimeline {
+  padding: 5px;
 }
 
-.boxInfoTimeline .infoTimeline{
+.boxInfoTimeline .infoTimeline {
   margin-top: 5px;
   margin-left: 15px;
 }
 
-.infoTimeline span{
+.infoTimeline span {
   margin-bottom: 8px;
 }
 
-.infoTimeline p{
+.infoTimeline p {
   margin-bottom: 3px;
 }
 
-.therapiesDate{
+.therapiesDate {
   margin-top: 10px;
 }
 
-.therapiesDate .therapyName{
-  font-weight: bold
+.therapiesDate .therapyName {
+  font-weight: bold;
 }
 
-/* The circles on the timeline */
 .container::after {
   content: "";
   position: absolute;
@@ -1138,14 +1136,44 @@ table .therapyTable {
   z-index: 1;
 }
 
-/* Place the container to the right */
 .right {
   left: 5%;
 }
 
-/* Fix the circle for containers on the right side */
 .right::after {
   left: -16px;
+}
+
+/**----------------------CALENDAR-----------------------------------*/
+
+:root {
+  --fc-border-color: #f4f4f4;
+  --fc-page-bg-color: #ffffff;
+  --fc-small-font-size: 0.95rem;
+  --fc-highlight-color: #f9f9f9;
+  --fc-bg-event-opacity: 0.3;
+  --fc-neutral-bg-color: #f9f9f9;
+  --fc-today-bg-color: #e8fff3;
+  --fc-now-indicator-color: #f1416c;
+  --fc-list-event-hover-bg-color: #f9f9f9;
+  --fc-button-text-color: #7e8299;
+  --fc-button-bg-color: #f9f9f9;
+  --fc-button-border-color: #f9f9f9;
+  --fc-button-hover-bg-color: #f9f9f9;
+  --fc-button-hover-border-color: #f9f9f9;
+  --fc-button-active-bg-color: #f4f4f4;
+  --fc-button-active-border-color: #f4f4f4;
+  --fc-event-border-color: #009ef7;
+  --fc-event-bg-color: #009ef7;
+  --fc-event-text-color: #ffffff;
+}
+
+.fc-scrollgrid-sync-inner {
+  padding: 0.75rem 0.5rem;
+}
+
+.fc-col-header-cell-cushion {
+  color: rgb(100 116 139);
 }
 
 /* Media queries - Responsive timeline on screens less than 600px wide */

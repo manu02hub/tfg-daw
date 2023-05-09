@@ -5,7 +5,8 @@ import {
   FaClinicMedical,
   FaTooth,
   FaUserNurse,
-  FaUsers
+  FaUsers,
+  FaCalendarDay
 } from "react-icons/fa";
 import { BsFillDoorOpenFill } from "react-icons/bs";
 import NavLink from "../NavLink";
@@ -63,6 +64,13 @@ function Aside({ permissionsAuth }) {
           <NavLink className="cajaSelect" to={"/panel/patients"}>
             <FaUsers className="iconoSide" />
             <span className="spanSide">Pacientes</span>
+          </NavLink>
+        </div>
+
+        <div className="cajaListado">
+          <NavLink className="cajaSelect" to={"/panel/calendar"}>
+            <FaCalendarDay className="iconoSide" />
+            <span className="spanSide">Calendar</span>
           </NavLink>
         </div>
       </div>

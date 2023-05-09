@@ -24,6 +24,8 @@ import CreatePatient from "../src/pages/patients/CreatePatient";
 import EditPatient from "../src/pages/patients/EditPatient";
 import ShowPatient from "../src/pages/patients/ShowPatient";
 import TherapyPatient from "../src/pages/patients/TherapyPatient";
+import Calendar from "../src/pages/calendar/Calendar";
+import IndexCalendar from "../src/pages/calendar/IndexCalendar";
 
 function Web() {
   return (
@@ -59,6 +61,9 @@ function Web() {
               <Route path="patient-create" element={<CreatePatient />}></Route>
               <Route path="patient-edit/:id" element={<EditPatient />}></Route>
               <Route path="patient-therapy/:id" element={<TherapyPatient />}></Route>
+            </Route>
+            <Route path="calendar" element={<Calendar />}>
+              <Route index="calendar-index" element={<IndexCalendar />}></Route>
             </Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>
