@@ -131,8 +131,13 @@ const getUsersClinic = async (req, res) => {
 
     const id_clinic = req.params.clinic;
     const id = req.params.id;
+    var allUsers;
 
-    const allUsers = await User.find({ $and: [{ _id: { $not: { $eq: id } } }, { id_clinic: id_clinic }] }).populate('id_rol').exec();
+    if (id_clinic) {
+        allUsers = await User.find({ $and: [{ _id: { $not: { $eq: id } } }, { id_clinic: id_clinic }] }).populate('id_rol').exec();
+    } else {
+        allUsers = await User.find({ id_clinic: id }).exec();
+    }
 
     return res.status(200).json({
         state: "success",
@@ -140,6 +145,7 @@ const getUsersClinic = async (req, res) => {
     });
 
 }
+
 
 const editUser = async (req, res) => {
 
@@ -252,7 +258,7 @@ const deleteUser = async (req, res) => {
                 state: "success",
                 message: "Usuario eliminado correctamente",
             });
-        }else{
+        } else {
             respuesta = res.status(200).json({
                 state: "error",
                 message: "La contraseña no es correcta",

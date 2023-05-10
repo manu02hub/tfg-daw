@@ -34,8 +34,8 @@ const PatientSchema = Schema({
     },
 
     odontogram: {
-        type: Number,
-        required: false
+        type: Schema.ObjectId,
+        ref: "Odontogram",
     },
 
     mobile_phone: {

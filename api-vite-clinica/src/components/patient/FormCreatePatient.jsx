@@ -10,6 +10,7 @@ import InputLabel from "../InputLabel";
 import InputText from "../InputText";
 import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
+import SelectOdontogram from "../odontogram/SelectOdontogram";
 
 function FormCreatePatient() {
   const [error, setError] = useState("");
@@ -106,10 +107,9 @@ function FormCreatePatient() {
                 <div className="col-lg-2 col-md-6 col-sm-6">
                   <div className="separadorForm">
                     <InputLabel>Gender</InputLabel>
-                    <select  {...register("gender")}>
+                    <select {...register("gender")}>
                       <option value={"M"}>M</option>
                       <option value={"W"}>W</option>
-                    
                     </select>
                   </div>
                 </div>
@@ -117,10 +117,10 @@ function FormCreatePatient() {
                 <div className="col-lg-2 col-md-6 col-sm-6">
                   <div className="separadorForm">
                     <InputLabel>Odontogram</InputLabel>
-                    <select  {...register("odontogram")}>
-                      <option value={0}>Adulto</option>
-                      <option value={1}>Infantil</option>
-                    </select>
+                    <SelectOdontogram
+                      {...register("odontogram")}
+                      name={"odontogram"}
+                    />
                   </div>
                 </div>
               </div>
@@ -172,7 +172,6 @@ function FormCreatePatient() {
                     type="text"
                     name="street"
                     {...register("street")}
-                  
                   ></InputText>
 
                   <InputError

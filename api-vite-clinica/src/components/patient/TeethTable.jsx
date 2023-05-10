@@ -2,32 +2,53 @@ import React, { useState, useEffect } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import Table from "../Table";
-import Thead from "../Thead";
 import Tbody from "../Tbody";
 import TdTable from "../TdTable";
-import BtnsTable from "../BtnsTable";
-import { MdDelete } from "react-icons/md";
-import { ObjectSchema, object } from "yup";
 import { menorMayor } from "../../helpers/MenorMayor";
 import { mayorMenor } from "../../helpers/MayorMenor";
+import TeethCard from "../tooth/TeethCard";
+import ModalTooth from "../tooth/ModalTooth";
 
-function TeethTable({ odontogram }) {
+function TeethTable({ patient, idOdontogram, clinic }) {
+  const id = 1;
+
+  const [odontogram, setOdontogram] = useState({});
+
+  const [teeth, setTeeth] = useState({});
+  const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(true);
+
   const [arrayTeethUp, setArrayTeethUp] = useState([]);
   const [arrayTeethDown, setArrayTeethDown] = useState([]);
   const [indexUp, setIndexUp] = useState();
   const [indexDown, setIndexDown] = useState();
 
   const url = "http://localhost/img/tfg-clinic/adulto/";
-  const id = "6458ef5db746a25c730d5e12";
 
   useEffect(() => {
-    getTeeth();
+    getOdontogram();
   }, []);
+
+  const showModal = (teeth) => {
+    setTeeth(teeth);
+    setConfirm(true);
+  };
+
+  const getOdontogram = async () => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "odontogram/get-odontogram/" + idOdontogram,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setOdontogram(datos.odontogram);
+      getTeeth();
+    }
+  };
 
   const getTeeth = async () => {
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "tooth/get-teethOdontogram/" + id,
+      Global.url + "tooth/get-teethOdontogram/" + idOdontogram,
       "GET"
     );
 
@@ -109,12 +130,8 @@ function TeethTable({ odontogram }) {
           ],
         });
 
-        setIndexUp([
-          55, 54, 53, 52, 51, 61, 62, 63, 64, 65
-        ]);
-        setIndexDown([
-          85, 84, 83, 82, 81, 71, 72, 73, 74, 75
-        ]);
+        setIndexUp([55, 54, 53, 52, 51, 61, 62, 63, 64, 65]);
+        setIndexDown([85, 84, 83, 82, 81, 71, 72, 73, 74, 75]);
 
         setArrayTeethDown({
           filas: [
@@ -148,10 +165,10 @@ function TeethTable({ odontogram }) {
     <>
       <Table>
         {!loading && (
-          <Tbody>
-            {arrayTeethUp.filas.map((fila) => {
+          <Tbody className={"tbodyPieces"}>
+            {arrayTeethUp.filas.map((fila, indice) => {
               return (
-                <tr>
+                <tr key={indice}>
                   {fila.fila.map((teeth) => {
                     return teeth.map((t) => {
                       return (
@@ -159,8 +176,11 @@ function TeethTable({ odontogram }) {
                           {(t.number == 14 || t.number == 54) &&
                           t.letter == "b" ? (
                             <>
-                              <TdTable>
-                                <img src={url + t.img} />{" "}
+                              <TdTable key={t._id} select={id == 1 ? true : false}>
+                                <TeethCard
+                                  imagen={url + t.img}
+                                  onClick={() => showModal(t)}
+                                />
                               </TdTable>
                               <TdTable />
                               <TdTable />
@@ -170,8 +190,11 @@ function TeethTable({ odontogram }) {
                               <TdTable />
                             </>
                           ) : (
-                            <TdTable>
-                              <img src={url + t.img} />{" "}
+                            <TdTable key={t._id}>
+                              <TeethCard
+                                imagen={url + t.img}
+                                onClick={() => showModal(t)}
+                              />
                             </TdTable>
                           )}
                         </>
@@ -184,19 +207,19 @@ function TeethTable({ odontogram }) {
 
             <tr>
               {indexUp.map((i) => {
-                return <TdTable>{i}</TdTable>;
+                return <TdTable key={i}>{i}</TdTable>;
               })}
             </tr>
 
             <tr>
               {indexDown.map((i) => {
-                return <TdTable>{i}</TdTable>;
+                return <TdTable key={i}>{i}</TdTable>;
               })}
             </tr>
 
-            {arrayTeethDown.filas.map((fila) => {
+            {arrayTeethDown.filas.map((fila, indice) => {
               return (
-                <tr>
+                <tr key={indice}>
                   {fila.fila.map((teeth) => {
                     return teeth.map((t) => {
                       return (
@@ -204,8 +227,11 @@ function TeethTable({ odontogram }) {
                           {(t.number == 44 || t.number == 84) &&
                           t.letter == "b" ? (
                             <>
-                              <TdTable>
-                                <img src={url + t.img} />{" "}
+                              <TdTable key={t._id}>
+                                <TeethCard
+                                  imagen={url + t.img}
+                                  onClick={() => showModal(t)}
+                                />
                               </TdTable>
                               <TdTable />
                               <TdTable />
@@ -215,8 +241,11 @@ function TeethTable({ odontogram }) {
                               <TdTable />
                             </>
                           ) : (
-                            <TdTable>
-                              <img src={url + t.img} />{" "}
+                            <TdTable key={t._id}>
+                              <TeethCard
+                                imagen={url + t.img}
+                                onClick={() => showModal(t)}
+                              />
                             </TdTable>
                           )}
                         </>
@@ -229,6 +258,7 @@ function TeethTable({ odontogram }) {
           </Tbody>
         )}
       </Table>
+      <ModalTooth confirm={confirm} setConfirm={setConfirm} clinic={clinic} patient={patient} teeth={teeth}></ModalTooth>
     </>
   );
 }

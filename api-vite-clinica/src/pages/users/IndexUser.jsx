@@ -31,6 +31,7 @@ function IndexUser() {
       "GET"
     );
 
+
     if (datos.state == "success" && !cargando) {
       setUsers(datos.allUsers);
       setLoading(false);

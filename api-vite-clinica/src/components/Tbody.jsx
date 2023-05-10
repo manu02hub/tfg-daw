@@ -1,8 +1,8 @@
 import React from "react";
 
-function Tbody({children}) {
+function Tbody({children, className}) {
   return (
-    <tbody>
+    <tbody className={className}>
       {children}
     </tbody>
   );

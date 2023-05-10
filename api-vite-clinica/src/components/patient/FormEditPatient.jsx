@@ -10,6 +10,7 @@ import InputLabel from "../InputLabel";
 import InputText from "../InputText";
 import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
+import SelectOdontogram from "../odontogram/SelectOdontogram";
 
 function FormEditPatient({ id, loading, setLoading }) {
   const [patient, setPatient] = useState({});
@@ -143,13 +144,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     <div className="col-lg-2 col-md-6 col-sm-6">
                       <div className="separadorForm">
                         <InputLabel>Odontogram</InputLabel>
-                        <select
-                          {...register("odontogram")}
-                          defaultValue={patient.odontogram}
-                        >
-                          <option value={0}>Adulto</option>
-                          <option value={1}>Infantil</option>
-                        </select>
+                        <SelectOdontogram {...register("odontogram")} name={"odontogram"} defaultValue={patient._id}/>
                       </div>
                     </div>
                   </div>

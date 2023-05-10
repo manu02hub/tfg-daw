@@ -1,9 +1,9 @@
 import React from "react";
 
-function TdTable({children, className}) {
+function TdTable({ children, className, select }) {
   return (
-    <td>
-      <div className={"boxTbody "+className}>{children}</div>
+    <td className={select ? "tdActive" : ""}>
+      <div className={"boxTbody " + className}>{children}</div>
     </td>
   );
 }

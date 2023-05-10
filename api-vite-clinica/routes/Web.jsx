@@ -60,6 +60,7 @@ function Web() {
               <Route index="patient-index" element={<IndexPatient />}></Route>
               <Route path="patient-create" element={<CreatePatient />}></Route>
               <Route path="patient-edit/:id" element={<EditPatient />}></Route>
+              <Route path="patient-show/:id" element={<ShowPatient />}></Route>
               <Route path="patient-therapy/:id" element={<TherapyPatient />}></Route>
             </Route>
             <Route path="calendar" element={<Calendar />}>

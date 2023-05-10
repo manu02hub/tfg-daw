@@ -36,8 +36,6 @@ function EditUser() {
     }
   };
 
-  
-
   return (
     <>
       <HeaderSection title={"Edit User"} />
