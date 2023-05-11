@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "../../helpers/Validate";
-import { Global } from "../../helpers/Global";
-import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
 import Modal from "../Modal";
@@ -12,38 +7,141 @@ import BtnCancel from "../BtnCancel";
 import SelectTherapy from "../therapie/SelectTherapy";
 import SelectUserClinic from "../user/SelectUserClinic";
 
-function ModalTooth({ confirm, setConfirm, clinic, patient, teeth }) {
-  const [newTeeth, setTeeth] = useState(teeth);
+function ModalTooth({
+  confirm,
+  setConfirm,
+  clinic,
+  patient,
+  teeth,
+  patientTherapies,
+  setPatientTherapies,
+  users,
+  setUsers,
+  therapies,
+  setTherapies,
+  tooth,
+  setTooth,
+}) {
 
-  useEffect(() => {
-    setTeeth(teeth);
-  }, [teeth]);
+  const getTherapy = async (id) => {
+    let therapy;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "therapy/get-therapy/" + id,
+      "GET"
+    );
 
-  const addTherapy = async (data) => {
-    let usuarios = data;
-    console.log(data);
+    if (datos.state == "success" && !cargando) {
+      // setOdontogram(datos.odontogram);
+      // getTeeth();
+      therapy = datos.therapy;
+    }
 
-    // const { datos, cargando } = await PeticionAJAX(
-    //   Global.url + "user/delete-user/" + user._id,
-    //   "POST",
-    //   usuarios
-    // );
+    return therapy;
+  };
 
-    // if (datos.state == "success" && !cargando) {
-    //   // usuarios = users.filter((u) => u._id !== user._id);
-    //   closeModal();
-    //   setUsers(usuarios);
-    // } else {
-    //   setError(datos.message);
-    // }
+  const getUser = async (id) => {
+    let user;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "user/get-user/" + id,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      // setOdontogram(datos.odontogram);
+      // getTeeth();
+      user = datos.user;
+      setLoading(false);
+    }
+
+    return user;
+  };
+
+  const getTeeth = async (id) => {
+    let teeth;
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "tooth/get-teeth/" + id,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      // setOdontogram(datos.odontogram);
+      // getTeeth();
+      teeth = datos.teeth;
+    }
+
+    return teeth;
+  };
+
+
+  const findUser = (users) =>{
+
+    if(users.length < 1){
+
+    }else{
+      
+    }
+  }
+
+  const findTherapies = (therapies) =>{
+
+    if(therapies.length < 1){
+
+    }else{
+      
+    }
+  }
+
+
+  const findTooth = (tooth) =>{
+
+    if(tooth.length < 1){
+
+    }else{
+      
+    }
+  }
+
+
+  const addTherapy = (e) => {
+    e.preventDefault();
+
+    let encontrado;
+    let i = 0;
+
+    let id_patient = e.target.id_patient.value;
+    let id_therapy = e.target.id_therapy.value;
+    let id_teeth = teeth._id;
+    let id_user = e.target.id_user.value;
+    let complete = false;
+
+    let therapy_has_patient = {
+      id_patient: id_patient,
+      id_therapy: id_therapy,
+      id_teeth: [id_teeth],
+      id_user: id_user,
+      complete: complete,
+    };
+
+    if (patientTherapies.length >= 1) {
+      do {
+        if (patientTherapies[i].id_therapy == id_therapy) {
+          patientTherapies[i].id_teeth.push(id_teeth);
+          encontrado = true;
+        } else {
+          i++;
+        }
+      } while (!encontrado && i < patientTherapies.length);
+
+      if (!encontrado) {
+        setPatientTherapies([...patientTherapies, therapy_has_patient]);
+      }
+    } else {
+      setPatientTherapies([...patientTherapies, therapy_has_patient]);
+    }
+
+    closeModal();
   };
 
   const closeModal = () => {
@@ -58,33 +156,27 @@ function ModalTooth({ confirm, setConfirm, clinic, patient, teeth }) {
             <h2>Añadir Tratamiento</h2>
             <br />
 
-            <form className="formCreate" onSubmit={handleSubmit(addTherapy)}>
+            <form className="formCreate" onSubmit={(e) => addTherapy(e)}>
               <InputLabel>Pieza</InputLabel>
 
-              {newTeeth && (
-                <select {...register("id_teeth")} defaultValue={newTeeth._id}>
-                  <option defaultValue={newTeeth._id}>
-                    {newTeeth.number}
-                    {newTeeth.letter}
-                  </option>
-                </select>
-              )}
+              <select name="id_teeth">
+                <option value={teeth._id}>{teeth.number + teeth.letter}</option>
+              </select>
 
               <div className="separadorForm">
                 <InputLabel>Terapia</InputLabel>
-                <SelectTherapy {...register("id_therapy")} />
+                <SelectTherapy name="id_therapy" />
               </div>
 
               <div className="separadorForm">
                 <InputLabel>Clinico</InputLabel>
-                <SelectUserClinic clinic={clinic} {...register("id_user")} />
+                <SelectUserClinic clinic={clinic} name={"id_user"} />
               </div>
 
               <InputText
                 type="hidden"
-                name="id"
                 defaultValue={patient}
-                {...register("id_pacient")}
+                name={"id_patient"}
               ></InputText>
 
               <div className="btnModalAdd">

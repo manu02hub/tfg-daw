@@ -7,12 +7,20 @@ import HeaderSection from "../../components/HeaderSection";
 import CardBasic from "../../components/CardBasic";
 import TableTherapyPatient from "../../components/patient/TableTherapyPatient";
 import TeethTable from "../../components/patient/TeethTable";
+import ModalTooth from "../../components/tooth/ModalTooth";
 
 function TherapyPatient() {
+  const [confirm, setConfirm] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const [teeth, setTeeth] = useState(0);
 
   const [patient, setPatient] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [patientTherapies, setPatientTherapies] = useState({});
+  const [patientTherapies, setPatientTherapies] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [therapies, setTherapies] = useState([]);
+  const [tooth, setTooth] = useState([]);
+
   const { id } = useParams();
   const { auth } = useAuth();
 
@@ -41,9 +49,16 @@ function TherapyPatient() {
             <div className="col-sm-12 col-md-12 col-lg-12">
               <CardBasic>
                 <TeethTable
-                  patient={patient._id}
+                  setConfirm={setConfirm}
+                  setTeeth={setTeeth}
+                  patientTherapies={patientTherapies}
                   idOdontogram={patient.odontogram}
-                  clinic = {auth.id_clinic}
+                  users={users}
+                  setUsers={setUsers}
+                  therapies={therapies}
+                  setTherapies={setTherapies}
+                  tooth={tooth}
+                  setTooth={setTooth}
                 />
               </CardBasic>
             </div>
@@ -51,10 +66,22 @@ function TherapyPatient() {
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-12">
               <CardBasic>
-                <TableTherapyPatient />
+                <TableTherapyPatient
+                  patientTherapies={patientTherapies}
+                  setPatientTherapies={setPatientTherapies}
+                />
               </CardBasic>
             </div>
           </div>
+          <ModalTooth
+            confirm={confirm}
+            setConfirm={setConfirm}
+            clinic={auth.id_clinic}
+            patient={patient._id}
+            teeth={teeth}
+            patientTherapies={patientTherapies}
+            setPatientTherapies={setPatientTherapies}
+          ></ModalTooth>
         </>
       )}
     </>

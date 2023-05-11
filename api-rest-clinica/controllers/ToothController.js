@@ -29,15 +29,17 @@ const createTooth = async (req, res) => {
 
 }
 
-// const getTheet = async (req, res) => {
+const getTheet = async (req, res) => {
 
-//     const odontograms = await Odontogram.find({}).exec();
+    let id = req.params.id;
 
-//     return res.status(200).json({
-//         state: "success",
-//         odontograms
-//     });
-// }
+    const teeth = await Tooth.find({ _id: id }).exec();
+
+    return res.status(200).json({
+        state: "success",
+        teeth
+    });
+}
 
 
 const getTheetOdontogram = async (req, res) => {
@@ -56,4 +58,5 @@ const getTheetOdontogram = async (req, res) => {
 module.exports = {
     createTooth,
     getTheetOdontogram,
+    getTheet,
 }

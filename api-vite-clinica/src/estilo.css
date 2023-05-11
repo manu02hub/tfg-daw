@@ -1210,9 +1210,9 @@ table .therapyTable {
   margin-top: 20px;
 }
 
-/* dropShadow{
+.shadowImg{
   filter: drop-shadow(0 0 0.75rem #0277b5);
-} */
+}
 
 
 /**----------------------CALENDAR-----------------------------------*/

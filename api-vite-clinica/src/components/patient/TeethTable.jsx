@@ -7,15 +7,11 @@ import TdTable from "../TdTable";
 import { menorMayor } from "../../helpers/MenorMayor";
 import { mayorMenor } from "../../helpers/MayorMenor";
 import TeethCard from "../tooth/TeethCard";
-import ModalTooth from "../tooth/ModalTooth";
 
-function TeethTable({ patient, idOdontogram, clinic }) {
-  const id = 1;
-
+function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
+  
   const [odontogram, setOdontogram] = useState({});
 
-  const [teeth, setTeeth] = useState({});
-  const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [arrayTeethUp, setArrayTeethUp] = useState([]);
@@ -29,8 +25,29 @@ function TeethTable({ patient, idOdontogram, clinic }) {
     getOdontogram();
   }, []);
 
-  const showModal = (teeth) => {
-    setTeeth(teeth);
+  useEffect(() => {
+    checkTeeth();
+  }, [patientTherapies]);
+
+  const checkTeeth = (id) => {
+    let find;
+    let response = false;
+
+    patientTherapies.forEach((element) => {
+
+      find = element.id_teeth.indexOf(id);
+
+
+      if (find != -1) {
+        response = true;
+      }
+    });
+
+    return response;
+  };
+
+  const changeTeeth = (teethObj) => {
+    setTeeth(teethObj);
     setConfirm(true);
   };
 
@@ -176,10 +193,11 @@ function TeethTable({ patient, idOdontogram, clinic }) {
                           {(t.number == 14 || t.number == 54) &&
                           t.letter == "b" ? (
                             <>
-                              <TdTable key={t._id} select={id == 1 ? true : false}>
+                              <TdTable key={t._id}>
                                 <TeethCard
+                                  select={checkTeeth(t._id)}
                                   imagen={url + t.img}
-                                  onClick={() => showModal(t)}
+                                  onClick={() => changeTeeth(t)}
                                 />
                               </TdTable>
                               <TdTable />
@@ -192,8 +210,9 @@ function TeethTable({ patient, idOdontogram, clinic }) {
                           ) : (
                             <TdTable key={t._id}>
                               <TeethCard
+                                select={checkTeeth(t._id)}
                                 imagen={url + t.img}
-                                onClick={() => showModal(t)}
+                                onClick={() => changeTeeth(t)}
                               />
                             </TdTable>
                           )}
@@ -229,8 +248,9 @@ function TeethTable({ patient, idOdontogram, clinic }) {
                             <>
                               <TdTable key={t._id}>
                                 <TeethCard
+                                  select={checkTeeth(t._id)}
                                   imagen={url + t.img}
-                                  onClick={() => showModal(t)}
+                                  onClick={() => changeTeeth(t)}
                                 />
                               </TdTable>
                               <TdTable />
@@ -243,8 +263,9 @@ function TeethTable({ patient, idOdontogram, clinic }) {
                           ) : (
                             <TdTable key={t._id}>
                               <TeethCard
+                                select={checkTeeth(t._id)}
                                 imagen={url + t.img}
-                                onClick={() => showModal(t)}
+                                onClick={() => changeTeeth(t)}
                               />
                             </TdTable>
                           )}
@@ -258,7 +279,6 @@ function TeethTable({ patient, idOdontogram, clinic }) {
           </Tbody>
         )}
       </Table>
-      <ModalTooth confirm={confirm} setConfirm={setConfirm} clinic={clinic} patient={patient} teeth={teeth}></ModalTooth>
     </>
   );
 }
