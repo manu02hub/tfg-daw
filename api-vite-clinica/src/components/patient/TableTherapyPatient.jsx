@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import Table from "../Table";
@@ -8,61 +8,91 @@ import TdTable from "../TdTable";
 import BtnsTable from "../BtnsTable";
 import { MdDelete } from "react-icons/md";
 
-function TableTherapyPatient({ patientTherapies }) {
-  const menuT = ["Pieza", "Tratamiento", "Profesional", "Precio", "Acciones"];
-  const [loading, setLoading] = useState(true);
+function TableTherapyPatient({ patientTherapies, therapies, tooth }) {
+  const menuT = [
+    "Pieza",
+    "Tratamiento",
+    "Precio",
+    "Descuento",
+    "Total",
+    "Acciones",
+  ];
 
-  // const getTherapy = async (id) => {
-  //   let therapy;
+  useEffect(() => {
+    listTherapyPrice();
+  }, [patientTherapies]);
 
-  //   const { datos, cargando } = await PeticionAJAX(
-  //     Global.url + "therapy/get-therapy/" + id,
-  //     "GET"
-  //   );
+  const [list, setList] = useState([]);
+  const priceTherapy = useState([]);
 
-  //   if (datos.state == "success" && !cargando) {
-  //     // setOdontogram(datos.odontogram);
-  //     // getTeeth();
-  //     therapy = datos.therapy;
-  //   }
+  console.log(list);
 
-  //   return therapy;
-  // };
+  const listTherapyPrice = () => {
+    let size;
+    var auxTherapies = [];
+    var auxTooth = [];
+    let listTherapyTeeth;
 
-  // const getUser = async (id) => {
-  //   let user;
+    console.log("Longitud patinet" + patientTherapies.length);
 
-  //   const { datos, cargando } = await PeticionAJAX(
-  //     Global.url + "user/get-user/" + id,
-  //     "GET"
-  //   );
+    if (patientTherapies.length != 0) {
+      if (patientTherapies.length == 1) {
+        listTherapyTeeth = {
+          therapiesTable: therapies,
+          toothTable: tooth,
+        };
 
-  //   if (datos.state == "success" && !cargando) {
-  //     // setOdontogram(datos.odontogram);
-  //     // getTeeth();
-  //     user = datos.user;
-  //     setLoading(false)
-  //   }
+        setList([...list, listTherapyTeeth]);
+      } else {
+        
+        size = patientTherapies.length - 1;
 
-  //   return user;
-  // };
+        let find = list.indexOf(
+          (ltp) => patientTherapies[size].id_therapy == ltp.therapies[0]._id
+        );
+        auxTooth = tooth.filter(
+          (t) => t._id == patientTherapies[size].id_teeth
+        );
 
-  // const getTeeth = async (id) => {
-  //   let teeth;
+        if (find != -1) {
+          list[find].teeth.push(auxTooth);
+        } else {
+          auxTherapies = therapies.filter(
+            (t) => t._id == patientTherapies[size].id_therapy
+          );
+          listTherapyTeeth = {
+            therapiesTable: auxTherapies,
+            toothTable: auxTooth,
+          };
+          setList([...list, listTherapyTeeth]);
+        }
+      }
+    }
+  };
 
-  //   const { datos, cargando } = await PeticionAJAX(
-  //     Global.url + "tooth/get-teeth/" + id,
-  //     "GET"
-  //   );
+  // useEffect(() => {
+  //   price();
+  // }, [patientTherapies]);
 
-  //   if (datos.state == "success" && !cargando) {
-  //     // setOdontogram(datos.odontogram);
-  //     // getTeeth();
-  //     teeth = datos.teeth;
-  //   }
+  const getToothByTherapy = (therapy) => {
+    let aux;
 
-  //   return teeth;
-  // };
+    if (therapies.length >= 1) {
+      aux = patientTherapies.filter((pt) => pt.id_therapy == therapy._id);
+    }
+
+    return aux;
+  };
+
+  const price = (therapy) => {
+    let aux = [];
+
+    if (patientTherapies.length >= 1) {
+      aux = getToothByTherapy(therapy);
+    }
+
+    return aux.length;
+  };
 
   return (
     <>
@@ -70,22 +100,32 @@ function TableTherapyPatient({ patientTherapies }) {
         <Thead menu={menuT} />
 
         <Tbody>
-          {patientTherapies.length >= 1 &&
-            patientTherapies.map((pt, index) => {
+          {therapies.length >= 1 &&
+            therapies.map((therapy, index) => {
               return (
                 <tr key={index}>
                   <TdTable>
-                    
-                    {pt.id_teeth.map((t) => {
-                      return t;
+                    {getToothByTherapy(therapy).map((teeth) => {
+                      return tooth.map((t) => {
+                        if (t._id == teeth.id_teeth) {
+                          return t.number + "" + t.letter + " ";
+                        }
+                      });
                     })}
                   </TdTable>
 
-                  <TdTable>{pt.id_therapy}</TdTable>
+                  <TdTable>{therapy.name}</TdTable>
 
-                  <TdTable>{pt.id_user}</TdTable>
+                  <TdTable>{therapy.price}</TdTable>
 
-                  <TdTable>50 €</TdTable>
+                  <TdTable> {therapy.discount} </TdTable>
+
+                  <TdTable>
+                    {" "}
+                    {(therapy.price -
+                      therapy.price * (therapy.discount / 100)) *
+                      price(therapy)}{" "}
+                  </TdTable>
 
                   <TdTable>
                     <BtnsTable className={"deleteTable"}>
@@ -101,9 +141,11 @@ function TableTherapyPatient({ patientTherapies }) {
 
             <TdTable> </TdTable>
 
-            <TdTable></TdTable>
+            <TdTable> </TdTable>
 
-            <TdTable>100 €</TdTable>
+            <TdTable> </TdTable>
+
+            <TdTable> €</TdTable>
 
             <TdTable>
               <BtnsTable className={"showTable"}>

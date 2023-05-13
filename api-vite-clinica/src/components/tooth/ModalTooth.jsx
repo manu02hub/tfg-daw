@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Global } from "../../helpers/Global";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import InputLabel from "../../components/InputLabel";
 import InputText from "../../components/InputText";
 import Modal from "../Modal";
@@ -10,18 +12,18 @@ import SelectUserClinic from "../user/SelectUserClinic";
 function ModalTooth({
   confirm,
   setConfirm,
-  clinic,
   patient,
   teeth,
   patientTherapies,
   setPatientTherapies,
-  users,
-  setUsers,
   therapies,
   setTherapies,
   tooth,
   setTooth,
 }) {
+
+
+  const [list, setList] = useState()
 
   const getTherapy = async (id) => {
     let therapy;
@@ -32,79 +34,76 @@ function ModalTooth({
     );
 
     if (datos.state == "success" && !cargando) {
-      // setOdontogram(datos.odontogram);
-      // getTeeth();
       therapy = datos.therapy;
     }
 
     return therapy;
   };
 
-  const getUser = async (id) => {
-    let user;
-
-    const { datos, cargando } = await PeticionAJAX(
-      Global.url + "user/get-user/" + id,
-      "GET"
-    );
-
-    if (datos.state == "success" && !cargando) {
-      // setOdontogram(datos.odontogram);
-      // getTeeth();
-      user = datos.user;
-      setLoading(false);
-    }
-
-    return user;
-  };
-
   const getTeeth = async (id) => {
-    let teeth;
+    let teethGet;
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "tooth/get-teeth/" + id,
       "GET"
     );
 
     if (datos.state == "success" && !cargando) {
-      // setOdontogram(datos.odontogram);
-      // getTeeth();
-      teeth = datos.teeth;
+      teethGet = datos.teeth;
+      // console.log(teethGet);
     }
-
-    return teeth;
+    
+    return teethGet;
   };
 
+  const findTherapy = async (therapiesArr, id) => {
+    let therapyGet;
+    let i = 0;
+    let find = false;
 
-  const findUser = (users) =>{
+    if (therapiesArr.length < 1) {
+      therapyGet = await getTherapy(id);
+      setTherapies([...therapiesArr, therapyGet]);
+    } else {
+      do {
+        if (therapiesArr[i]._id == id) {
+          find = true;
+        } else {
+          i++;
+        }
+      } while (!find && i < therapiesArr.length);
 
-    if(users.length < 1){
-
-    }else{
-      
+      if (!find) {
+        therapyGet = await getTherapy(id);
+        setTherapies([...therapiesArr, therapyGet]);
+      }
     }
-  }
+  };
 
-  const findTherapies = (therapies) =>{
+  const findTooth = async (toothArr, id) => {
+    let teethGet;
+    let i = 0;
+    let find = false;
 
-    if(therapies.length < 1){
+    if (toothArr.length < 1) {
+      teethGet = await getTeeth(id);
+      setTooth([...toothArr, teethGet]);
+    } else {
+      do {
+        if (toothArr[i]._id == id) {
+          find = true;
+        } else {
+          i++;
+        }
+      } while (!find && i < toothArr.length);
 
-    }else{
-      
+      if (!find) {
+        teethGet = await getTeeth(id);
+        setTooth([...toothArr, teethGet]);
+      }
     }
-  }
+  };
 
-
-  const findTooth = (tooth) =>{
-
-    if(tooth.length < 1){
-
-    }else{
-      
-    }
-  }
-
-
-  const addTherapy = (e) => {
+  const addTherapy = async(e) => {
     e.preventDefault();
 
     let encontrado;
@@ -113,33 +112,42 @@ function ModalTooth({
     let id_patient = e.target.id_patient.value;
     let id_therapy = e.target.id_therapy.value;
     let id_teeth = teeth._id;
-    let id_user = e.target.id_user.value;
     let complete = false;
 
     let therapy_has_patient = {
       id_patient: id_patient,
       id_therapy: id_therapy,
-      id_teeth: [id_teeth],
-      id_user: id_user,
+      id_teeth: id_teeth,
       complete: complete,
     };
 
-    if (patientTherapies.length >= 1) {
-      do {
-        if (patientTherapies[i].id_therapy == id_therapy) {
-          patientTherapies[i].id_teeth.push(id_teeth);
-          encontrado = true;
-        } else {
-          i++;
-        }
-      } while (!encontrado && i < patientTherapies.length);
+    // if (patientTherapies.length >= 1) {
+    //   do {
+    //     if (patientTherapies[i].id_therapy == id_therapy) {
+    //       patientTherapies[i].id_teeth.push(id_teeth);
+    //       // findTooth(tooth, id_teeth);
+    //       encontrado = true;
+    //     } else {
+    //       i++;
+    //     }
+    //   } while (!encontrado && i < patientTherapies.length);
 
-      if (!encontrado) {
-        setPatientTherapies([...patientTherapies, therapy_has_patient]);
-      }
-    } else {
-      setPatientTherapies([...patientTherapies, therapy_has_patient]);
-    }
+    //   if (!encontrado) {
+    //     setPatientTherapies([...patientTherapies, therapy_has_patient]);
+    //     // findUser(users, id_user);
+    //     // findTherapy(therapies, id_therapy);
+    //     // findTooth(tooth, id_teeth);
+    //   }
+    // } else {
+    //   setPatientTherapies([...patientTherapies, therapy_has_patient]);
+    //   // findUser(users, id_user);
+    //   // findTherapy(therapies, id_therapy);
+    //   // findTooth(tooth, id_teeth);
+    // }
+
+    await findTherapy(therapies, id_therapy);
+    await findTooth(tooth, id_teeth);
+    setPatientTherapies([...patientTherapies, therapy_has_patient]);
 
     closeModal();
   };
@@ -166,11 +174,6 @@ function ModalTooth({
               <div className="separadorForm">
                 <InputLabel>Terapia</InputLabel>
                 <SelectTherapy name="id_therapy" />
-              </div>
-
-              <div className="separadorForm">
-                <InputLabel>Clinico</InputLabel>
-                <SelectUserClinic clinic={clinic} name={"id_user"} />
               </div>
 
               <InputText

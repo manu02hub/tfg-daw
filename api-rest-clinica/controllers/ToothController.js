@@ -33,11 +33,11 @@ const getTheet = async (req, res) => {
 
     let id = req.params.id;
 
-    const teeth = await Tooth.find({ _id: id }).exec();
+    const teeth = await Tooth.findById(id).exec();
 
     return res.status(200).json({
         state: "success",
-        teeth
+        teeth: teeth
     });
 }
 
