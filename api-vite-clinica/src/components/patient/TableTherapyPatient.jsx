@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Global } from "../../helpers/Global";
-import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import Table from "../Table";
 import Thead from "../Thead";
 import Tbody from "../Tbody";
 import TdTable from "../TdTable";
 import BtnsTable from "../BtnsTable";
 import { MdDelete } from "react-icons/md";
+import { FaSave } from "react-icons/fa";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
 
-function TableTherapyPatient({ patientTherapies, therapies, tooth }) {
+function TableTherapyPatient({
+  patientTherapies,
+  setPatientTherapies,
+  listTable,
+  setListTable,
+  price,
+  setPrice,
+}) {
   const menuT = [
     "Pieza",
     "Tratamiento",
@@ -18,89 +25,57 @@ function TableTherapyPatient({ patientTherapies, therapies, tooth }) {
     "Acciones",
   ];
 
-  const [list, setList] = useState([]);
-  const [priceTherapy, setPriceTherapy] = useState([]);
-  const [total, setTotal] = useState(0);
-
   useEffect(() => {
-    listTherapyPrice();
-    priceByTherapy();
-    console.log("aaa");
-    // totalTherapies();
-  }, [patientTherapies]);
+    calcTotal();
+  }, [price]);
 
-  const listTherapyPrice = () => {
-    let size;
-    var auxTherapies;
-    var auxTooth;
-    let listTherapyTeeth;
-    let find = false;
-    let i = 0;
+  const calcTotal = () => {
+    let total = 0;
 
-    if (patientTherapies.length != 0) {
-      if (patientTherapies.length == 1) {
-        listTherapyTeeth = {
-          therapiesTable: therapies[0],
-          toothTable: tooth,
-        };
+    price.forEach((element) => {
+      total = total + element;
+    });
 
-        setList([...list, listTherapyTeeth]);
-      } else {
-        size = patientTherapies.length - 1;
-
-        auxTooth = tooth.filter(
-          (t) => t._id == patientTherapies[size].id_teeth
-        );
-
-        do {
-          if (patientTherapies[size].id_therapy == list[i].therapiesTable._id) {
-            find = true;
-            list[i].toothTable.push(auxTooth[0]);
-          } else {
-            i++;
-          }
-        } while (!find && i < list.length);
-
-        if (!find) {
-          auxTherapies = therapies.filter(
-            (t) => t._id == patientTherapies[size].id_therapy
-          );
-
-          listTherapyTeeth = {
-            therapiesTable: auxTherapies[0],
-            toothTable: auxTooth,
-          };
-
-          setList([...list, listTherapyTeeth]);
-        }
-      }
-    }
+    return total;
   };
 
-  const priceByTherapy = () => {
-    let price = 0;
-    let discount = 0;
-    let teeth = 0;
-    let priceTotal = 0;
+  const deleteTherapy = (id, index) => {
+    let auxList;
+    let auxPatientTherapies;
+    let auxPrice;
 
-    if (list.length >= 1) {
-      list.forEach((element) => {
-        price = element.therapiesTable.price;
-        discount = element.therapiesTable.discount;
-        teeth = element.toothTable.length;
-        priceTotal = (price - price * (discount / 100)) * teeth;
-      });
+    auxList = listTable.filter((lt) => {
+      return lt.therapiesTable._id !== id;
+    });
+
+    auxPatientTherapies = patientTherapies.filter((pt) => {
+      return pt.id_therapy !== id;
+    });
+
+    console.log(auxPatientTherapies);
+
+    if (index === 0) {
+      auxPrice = price.shift();
+      console.log(auxPrice);
+
+    } else {
+
+      auxPrice = price.slice(index - 1, index);
+      setPrice(auxPrice);
     }
+
+    setListTable(auxList);
+    setPatientTherapies(auxPatientTherapies);
   };
 
   return (
     <>
-      {/* <Table>
+      <Table>
         <Thead menu={menuT} />
 
         <Tbody>
-          {list.length >= 1 &&
-            list.map((therapy, index) => {
+          {listTable.length >= 1 &&
+            listTable.map((therapy, index) => {
               return (
                 <tr key={index}>
                   <TdTable>
@@ -115,10 +90,15 @@ function TableTherapyPatient({ patientTherapies, therapies, tooth }) {
 
                   <TdTable> {therapy.therapiesTable.discount} </TdTable>
 
-                  <TdTable></TdTable>
+                  <TdTable>{price[index]}</TdTable>
 
                   <TdTable>
-                    <BtnsTable className={"deleteTable"}>
+                    <BtnsTable
+                      className={"deleteTable btnTherapiesTeeth"}
+                      onClick={() =>
+                        deleteTherapy(therapy.therapiesTable._id, index)
+                      }
+                    >
                       <MdDelete />
                     </BtnsTable>
                   </TdTable>
@@ -126,75 +106,28 @@ function TableTherapyPatient({ patientTherapies, therapies, tooth }) {
               );
             })}
 
-          <tr>
-            <TdTable></TdTable>
+          {listTable.length >= 1 && (
+            <tr>
+              <TdTable></TdTable>
 
-            <TdTable> </TdTable>
+              <TdTable> </TdTable>
 
-            <TdTable> </TdTable>
+              <TdTable> </TdTable>
 
-            <TdTable> </TdTable>
+              <TdTable> </TdTable>
 
-            <TdTable>{total} €</TdTable>
+              <TdTable>{calcTotal()}</TdTable>
 
-            <TdTable>
-              <BtnsTable className={"showTable"}>
-                <MdDelete />
-              </BtnsTable>
-            </TdTable>
-          </tr>
-        </Tbody>
-      </Table> */}
-
-      <Table>
-        <Thead menu={menuT} />
-
-        <Tbody>
-          {patientTherapies.length >= 1 &&
-            patientTherapies.map((therapy, index) => {
-              return (
-                <tr key={index}>
-                  <TdTable>
-                    {/* {therapy.toothTable.map((teeth) => {
-                      return teeth.number + "" + teeth.letter + " ";
-                    })} */}
-                    {therapy.id_teeth}
-                  </TdTable>
-
-                  <TdTable>{therapy.id_therapy}</TdTable>
-
-                  {/* <TdTable>{therapy.therapiesTable.price}</TdTable>
-
-                  <TdTable> {therapy.therapiesTable.discount} </TdTable> */}
-
-                  <TdTable></TdTable>
-
-                  <TdTable>
-                    <BtnsTable className={"deleteTable"}>
-                      <MdDelete />
-                    </BtnsTable>
-                  </TdTable>
-                </tr>
-              );
-            })}
-
-          <tr>
-            <TdTable></TdTable>
-
-            <TdTable> </TdTable>
-
-            <TdTable> </TdTable>
-
-            <TdTable> </TdTable>
-
-            <TdTable>{total} €</TdTable>
-
-            <TdTable>
-              <BtnsTable className={"showTable"}>
-                <MdDelete />
-              </BtnsTable>
-            </TdTable>
-          </tr>
+              <TdTable>
+                <BtnsTable className={"showTable btnTherapiesTeeth"}>
+                  <FaSave />
+                </BtnsTable>
+                <BtnsTable className={"pdf btnTherapiesTeeth"}>
+                  <BsFileEarmarkPdfFill />
+                </BtnsTable>
+              </TdTable>
+            </tr>
+          )}
         </Tbody>
       </Table>
     </>

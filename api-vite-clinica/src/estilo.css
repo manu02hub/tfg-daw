@@ -895,12 +895,21 @@ table .deleteTable {
   background-color: #d54646;
 }
 
+.boxTbody .btnTherapiesTeeth{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 table .showTable {
   background-color: #0277b5;
 }
 
 table .therapyTable {
   background-color: #5ce1e6;
+}
+
+table .pdf{
+  background-color: #BDBDBD;
 }
 
 .total {

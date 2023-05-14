@@ -16,12 +16,13 @@ function ModalTooth({
   teeth,
   patientTherapies,
   setPatientTherapies,
-  therapies,
-  setTherapies,
-  tooth,
-  setTooth,
+  listTable,
+  setListTable,
+  price,
+  setPrice,
 }) {
-  const [list, setList] = useState([]);
+  const [therapies, setTherapies] = useState([]);
+  const [tooth, setTooth] = useState([]);
 
   const getTherapy = async (id) => {
     let therapy;
@@ -105,9 +106,13 @@ function ModalTooth({
     e.preventDefault();
 
     let auxTooth;
-    let auxTherapies;
+    let auxTherapy;
+    let priceTherapy;
+    let discount;
+    let listTherapyTeeth;
     let find;
     let i = 0;
+    let auxPrice;
 
     let id_patient = e.target.id_patient.value;
     let id_therapy = e.target.id_therapy.value;
@@ -121,43 +126,80 @@ function ModalTooth({
       complete: complete,
     };
 
-    await findTherapy(therapies, id_therapy);
-    await findTooth(tooth, id_teeth);
+    // await findTherapy(therapies, id_therapy);
+    // await findTooth(tooth, id_teeth);
 
-    if (list.length == 0) {
+    //Si la lista es 0
+    if (listTable.length == 0) {
+      //Recogemos la terapia y la pieza dental de la base de datos con los ids recogidos del form
+      auxTherapy = await getTherapy(id_therapy);
+      auxTooth = await getTeeth(id_teeth);
 
+      //Lo almacenamos en un objeto
       listTherapyTeeth = {
-        therapiesTable: therapies,
-        toothTable: tooth,
+        therapiesTable: auxTherapy,
+        toothTable: [auxTooth],
       };
 
-      setList([...list, listTherapyTeeth]);
+      //Calculamos el precio de la terapia por una pieza
+      discount = auxTherapy.discount;
+      priceTherapy = auxTherapy.price - auxTherapy.price * (discount / 100);
 
+      //Seteamos los arrays
+      setListTable([...listTable, listTherapyTeeth]);
+      setPrice([...price, priceTherapy]);
+
+      // En caso de que el array tenga datos
     } else {
 
-      auxTooth = tooth.filter((t) => t._id == id_teeth);
+      //Recogemos la nueva pieza
+      auxTooth = await getTeeth(id_teeth);
+      //Variable auxiliar donde guardamos el array de precios de las terapias* piezas
+      auxPrice = price;
 
       do {
-        if (list[i].therapiesTable._id == id_therapy) {
+        //si el tratamiento existe añadimos la nueva pieza
+        if (listTable[i].therapiesTable._id == id_therapy) {
           find = true;
-          list[i].toothTable.push(auxTooth[0]);
+          //Recogemos el descuento
+          discount = listTable[i].therapiesTable.discount;
+
+          //Calculamos el precio
+          priceTherapy =
+            listTable[i].therapiesTable.price -
+            listTable[i].therapiesTable.price * (discount / 100);
+            //Añadimos la pieza nueva
+          listTable[i].toothTable.push(auxTooth);
+
+          //Seteamos el precio por elnumero de piezas
+          auxPrice[i] = priceTherapy * listTable[i].toothTable.length;
+
+          //Seteamos la variable
+          setPrice(auxPrice);
         } else {
           i++;
         }
-      } while (!find && i < list.length);
+      } while (!find && i < listTable.length);
 
+      //Si no encuentra la terapia
       if (!find) {
 
-        auxTherapies = therapies.filter(
-          (t) => t._id == id_therapy
-        );
+        //Recogemos de la bd la nueva terapia
+        auxTherapy = await getTherapy(id_therapy);
 
+        //Creamos nuevo objeto
         listTherapyTeeth = {
-          therapiesTable: auxTherapies[0],
-          toothTable: auxTooth,
+          therapiesTable: auxTherapy,
+          toothTable: [auxTooth],
         };
 
-        setList([...list, listTherapyTeeth]);
+        //Recogemos el descuento y calculamos el precio
+        discount = auxTherapy.discount;
+        priceTherapy = auxTherapy.price - auxTherapy.price * (discount / 100);
+
+        //Seteamos variables
+        setListTable([...listTable, listTherapyTeeth]);
+        setPrice([...price, priceTherapy]);
       }
     }
 

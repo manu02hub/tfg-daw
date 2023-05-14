@@ -17,8 +17,8 @@ function TherapyPatient() {
 
   const [patient, setPatient] = useState({});
   const [patientTherapies, setPatientTherapies] = useState([]);
-  const [therapies, setTherapies] = useState([]);
-  const [tooth, setTooth] = useState([]);
+  const [listTable, setListTable] = useState([]);
+  const [price, setPrice] = useState([]);
 
   const { id } = useParams();
   const { auth } = useAuth();
@@ -62,8 +62,10 @@ function TherapyPatient() {
                 <TableTherapyPatient
                   patientTherapies={patientTherapies}
                   setPatientTherapies={setPatientTherapies}
-                  therapies={therapies}
-                  tooth={tooth}
+                  listTable={listTable}
+                  setListTable={setListTable}
+                  price={price}
+                  setPrice={setPrice}
                 />
               </CardBasic>
             </div>
@@ -75,10 +77,10 @@ function TherapyPatient() {
             teeth={teeth}
             patientTherapies={patientTherapies}
             setPatientTherapies={setPatientTherapies}
-            therapies={therapies}
-            setTherapies={setTherapies}
-            tooth={tooth}
-            setTooth={setTooth}
+            listTable={listTable}
+            setListTable={setListTable}
+            price={price}
+            setPrice={setPrice}
           ></ModalTooth>
         </>
       )}
