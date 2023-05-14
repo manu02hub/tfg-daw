@@ -21,9 +21,7 @@ function ModalTooth({
   tooth,
   setTooth,
 }) {
-
-
-  const [list, setList] = useState()
+  const [list, setList] = useState([]);
 
   const getTherapy = async (id) => {
     let therapy;
@@ -51,7 +49,7 @@ function ModalTooth({
       teethGet = datos.teeth;
       // console.log(teethGet);
     }
-    
+
     return teethGet;
   };
 
@@ -103,10 +101,12 @@ function ModalTooth({
     }
   };
 
-  const addTherapy = async(e) => {
+  const addTherapy = async (e) => {
     e.preventDefault();
 
-    let encontrado;
+    let auxTooth;
+    let auxTherapies;
+    let find;
     let i = 0;
 
     let id_patient = e.target.id_patient.value;
@@ -121,32 +121,46 @@ function ModalTooth({
       complete: complete,
     };
 
-    // if (patientTherapies.length >= 1) {
-    //   do {
-    //     if (patientTherapies[i].id_therapy == id_therapy) {
-    //       patientTherapies[i].id_teeth.push(id_teeth);
-    //       // findTooth(tooth, id_teeth);
-    //       encontrado = true;
-    //     } else {
-    //       i++;
-    //     }
-    //   } while (!encontrado && i < patientTherapies.length);
-
-    //   if (!encontrado) {
-    //     setPatientTherapies([...patientTherapies, therapy_has_patient]);
-    //     // findUser(users, id_user);
-    //     // findTherapy(therapies, id_therapy);
-    //     // findTooth(tooth, id_teeth);
-    //   }
-    // } else {
-    //   setPatientTherapies([...patientTherapies, therapy_has_patient]);
-    //   // findUser(users, id_user);
-    //   // findTherapy(therapies, id_therapy);
-    //   // findTooth(tooth, id_teeth);
-    // }
-
     await findTherapy(therapies, id_therapy);
     await findTooth(tooth, id_teeth);
+
+    if (list.length == 0) {
+
+      listTherapyTeeth = {
+        therapiesTable: therapies,
+        toothTable: tooth,
+      };
+
+      setList([...list, listTherapyTeeth]);
+
+    } else {
+
+      auxTooth = tooth.filter((t) => t._id == id_teeth);
+
+      do {
+        if (list[i].therapiesTable._id == id_therapy) {
+          find = true;
+          list[i].toothTable.push(auxTooth[0]);
+        } else {
+          i++;
+        }
+      } while (!find && i < list.length);
+
+      if (!find) {
+
+        auxTherapies = therapies.filter(
+          (t) => t._id == id_therapy
+        );
+
+        listTherapyTeeth = {
+          therapiesTable: auxTherapies[0],
+          toothTable: auxTooth,
+        };
+
+        setList([...list, listTherapyTeeth]);
+      }
+    }
+
     setPatientTherapies([...patientTherapies, therapy_has_patient]);
 
     closeModal();

@@ -18,114 +18,104 @@ function TableTherapyPatient({ patientTherapies, therapies, tooth }) {
     "Acciones",
   ];
 
+  const [list, setList] = useState([]);
+  const [priceTherapy, setPriceTherapy] = useState([]);
+  const [total, setTotal] = useState(0);
+
   useEffect(() => {
     listTherapyPrice();
+    priceByTherapy();
+    console.log("aaa");
+    // totalTherapies();
   }, [patientTherapies]);
-
-  const [list, setList] = useState([]);
-  const priceTherapy = useState([]);
-
-  console.log(list);
 
   const listTherapyPrice = () => {
     let size;
-    var auxTherapies = [];
-    var auxTooth = [];
+    var auxTherapies;
+    var auxTooth;
     let listTherapyTeeth;
-
-    console.log("Longitud patinet" + patientTherapies.length);
+    let find = false;
+    let i = 0;
 
     if (patientTherapies.length != 0) {
       if (patientTherapies.length == 1) {
         listTherapyTeeth = {
-          therapiesTable: therapies,
+          therapiesTable: therapies[0],
           toothTable: tooth,
         };
 
         setList([...list, listTherapyTeeth]);
       } else {
-        
         size = patientTherapies.length - 1;
 
-        let find = list.indexOf(
-          (ltp) => patientTherapies[size].id_therapy == ltp.therapies[0]._id
-        );
         auxTooth = tooth.filter(
           (t) => t._id == patientTherapies[size].id_teeth
         );
 
-        if (find != -1) {
-          list[find].teeth.push(auxTooth);
-        } else {
+        do {
+          if (patientTherapies[size].id_therapy == list[i].therapiesTable._id) {
+            find = true;
+            list[i].toothTable.push(auxTooth[0]);
+          } else {
+            i++;
+          }
+        } while (!find && i < list.length);
+
+        if (!find) {
           auxTherapies = therapies.filter(
             (t) => t._id == patientTherapies[size].id_therapy
           );
+
           listTherapyTeeth = {
-            therapiesTable: auxTherapies,
+            therapiesTable: auxTherapies[0],
             toothTable: auxTooth,
           };
+
           setList([...list, listTherapyTeeth]);
         }
       }
     }
   };
 
-  // useEffect(() => {
-  //   price();
-  // }, [patientTherapies]);
+  const priceByTherapy = () => {
+    let price = 0;
+    let discount = 0;
+    let teeth = 0;
+    let priceTotal = 0;
 
-  const getToothByTherapy = (therapy) => {
-    let aux;
-
-    if (therapies.length >= 1) {
-      aux = patientTherapies.filter((pt) => pt.id_therapy == therapy._id);
+    if (list.length >= 1) {
+      list.forEach((element) => {
+        price = element.therapiesTable.price;
+        discount = element.therapiesTable.discount;
+        teeth = element.toothTable.length;
+        priceTotal = (price - price * (discount / 100)) * teeth;
+      });
     }
-
-    return aux;
-  };
-
-  const price = (therapy) => {
-    let aux = [];
-
-    if (patientTherapies.length >= 1) {
-      aux = getToothByTherapy(therapy);
-    }
-
-    return aux.length;
   };
 
   return (
     <>
-      <Table>
+      {/* <Table>
         <Thead menu={menuT} />
 
         <Tbody>
-          {therapies.length >= 1 &&
-            therapies.map((therapy, index) => {
+          {list.length >= 1 &&
+            list.map((therapy, index) => {
               return (
                 <tr key={index}>
                   <TdTable>
-                    {getToothByTherapy(therapy).map((teeth) => {
-                      return tooth.map((t) => {
-                        if (t._id == teeth.id_teeth) {
-                          return t.number + "" + t.letter + " ";
-                        }
-                      });
+                    {therapy.toothTable.map((teeth) => {
+                      return teeth.number + "" + teeth.letter + " ";
                     })}
                   </TdTable>
 
-                  <TdTable>{therapy.name}</TdTable>
+                  <TdTable>{therapy.therapiesTable.name}</TdTable>
 
-                  <TdTable>{therapy.price}</TdTable>
+                  <TdTable>{therapy.therapiesTable.price}</TdTable>
 
-                  <TdTable> {therapy.discount} </TdTable>
+                  <TdTable> {therapy.therapiesTable.discount} </TdTable>
 
-                  <TdTable>
-                    {" "}
-                    {(therapy.price -
-                      therapy.price * (therapy.discount / 100)) *
-                      price(therapy)}{" "}
-                  </TdTable>
+                  <TdTable></TdTable>
 
                   <TdTable>
                     <BtnsTable className={"deleteTable"}>
@@ -145,7 +135,59 @@ function TableTherapyPatient({ patientTherapies, therapies, tooth }) {
 
             <TdTable> </TdTable>
 
-            <TdTable> €</TdTable>
+            <TdTable>{total} €</TdTable>
+
+            <TdTable>
+              <BtnsTable className={"showTable"}>
+                <MdDelete />
+              </BtnsTable>
+            </TdTable>
+          </tr>
+        </Tbody>
+      </Table> */}
+
+      <Table>
+        <Thead menu={menuT} />
+
+        <Tbody>
+          {patientTherapies.length >= 1 &&
+            patientTherapies.map((therapy, index) => {
+              return (
+                <tr key={index}>
+                  <TdTable>
+                    {/* {therapy.toothTable.map((teeth) => {
+                      return teeth.number + "" + teeth.letter + " ";
+                    })} */}
+                    {therapy.id_teeth}
+                  </TdTable>
+
+                  <TdTable>{therapy.id_therapy}</TdTable>
+
+                  {/* <TdTable>{therapy.therapiesTable.price}</TdTable>
+
+                  <TdTable> {therapy.therapiesTable.discount} </TdTable> */}
+
+                  <TdTable></TdTable>
+
+                  <TdTable>
+                    <BtnsTable className={"deleteTable"}>
+                      <MdDelete />
+                    </BtnsTable>
+                  </TdTable>
+                </tr>
+              );
+            })}
+
+          <tr>
+            <TdTable></TdTable>
+
+            <TdTable> </TdTable>
+
+            <TdTable> </TdTable>
+
+            <TdTable> </TdTable>
+
+            <TdTable>{total} €</TdTable>
 
             <TdTable>
               <BtnsTable className={"showTable"}>
