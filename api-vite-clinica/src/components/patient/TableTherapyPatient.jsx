@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Global } from "../../helpers/Global";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import Table from "../Table";
 import Thead from "../Thead";
 import Tbody from "../Tbody";
@@ -7,6 +10,7 @@ import BtnsTable from "../BtnsTable";
 import { MdDelete } from "react-icons/md";
 import { FaSave } from "react-icons/fa";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
+import TherapyPatient from "../../pages/patients/TherapyPatient";
 
 function TableTherapyPatient({
   patientTherapies,
@@ -16,6 +20,9 @@ function TableTherapyPatient({
   price,
   setPrice,
 }) {
+
+  const navigate = useNavigate();
+
   const menuT = [
     "Pieza",
     "Tratamiento",
@@ -52,20 +59,34 @@ function TableTherapyPatient({
       return pt.id_therapy !== id;
     });
 
-    console.log(auxPatientTherapies);
-
     if (index === 0) {
       auxPrice = price.shift();
       console.log(auxPrice);
-
     } else {
-
       auxPrice = price.slice(index - 1, index);
       setPrice(auxPrice);
     }
 
     setListTable(auxList);
     setPatientTherapies(auxPatientTherapies);
+  };
+
+  const saveTherapiesPatient = async () => {
+
+    patientTherapies.forEach(async (element, index) => {
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url + "therapy_has_patient/create-therapy_has_patient",
+        "POST",
+        element
+      );
+      if (
+        datos.state == "success" &&
+        !cargando &&
+        index == patientTherapies.length - 1
+      ) {
+        navigate("/panel/patients");
+      }
+    });
   };
 
   return (
@@ -119,7 +140,10 @@ function TableTherapyPatient({
               <TdTable>{calcTotal()}</TdTable>
 
               <TdTable>
-                <BtnsTable className={"showTable btnTherapiesTeeth"}>
+                <BtnsTable
+                  className={"showTable btnTherapiesTeeth"}
+                  onClick={() => saveTherapiesPatient()}
+                >
                   <FaSave />
                 </BtnsTable>
                 <BtnsTable className={"pdf btnTherapiesTeeth"}>

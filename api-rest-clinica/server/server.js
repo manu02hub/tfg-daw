@@ -8,6 +8,7 @@ const cabinetRoutes = require("../routes/cabinet");
 const patientRoutes = require("../routes/patient");
 const odontogramRoutes = require("../routes/odontogram");
 const toothRoutes = require("../routes/tooth");
+const therapy_has_patientRoutes = require("../routes/therapy_has_patient");
 
 const lanzarServidor = () => {
     //Crear servidor node
@@ -30,6 +31,7 @@ const lanzarServidor = () => {
     app.use("/api/patient", patientRoutes);
     app.use('/api/odontogram', odontogramRoutes);
     app.use('/api/tooth', toothRoutes);
+    app.use('/api/therapy_has_patient', therapy_has_patientRoutes);
 
     //Poner servidor a escuchar peticiones http
     app.listen(puerto, () => {

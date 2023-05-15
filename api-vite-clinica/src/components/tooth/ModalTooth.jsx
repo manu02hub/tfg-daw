@@ -116,13 +116,13 @@ function ModalTooth({
 
     let id_patient = e.target.id_patient.value;
     let id_therapy = e.target.id_therapy.value;
-    let id_teeth = teeth._id;
+    let id_tooth = teeth._id;
     let complete = false;
 
     let therapy_has_patient = {
       id_patient: id_patient,
       id_therapy: id_therapy,
-      id_teeth: id_teeth,
+      id_tooth: id_tooth,
       complete: complete,
     };
 
@@ -133,7 +133,7 @@ function ModalTooth({
     if (listTable.length == 0) {
       //Recogemos la terapia y la pieza dental de la base de datos con los ids recogidos del form
       auxTherapy = await getTherapy(id_therapy);
-      auxTooth = await getTeeth(id_teeth);
+      auxTooth = await getTeeth(id_tooth);
 
       //Lo almacenamos en un objeto
       listTherapyTeeth = {
@@ -153,7 +153,7 @@ function ModalTooth({
     } else {
 
       //Recogemos la nueva pieza
-      auxTooth = await getTeeth(id_teeth);
+      auxTooth = await getTeeth(id_tooth);
       //Variable auxiliar donde guardamos el array de precios de las terapias* piezas
       auxPrice = price;
 

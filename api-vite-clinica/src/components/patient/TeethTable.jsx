@@ -35,7 +35,7 @@ function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
 
     patientTherapies.forEach((element) => {
 
-      find = element.id_teeth.indexOf(id);
+      find = element.id_tooth.indexOf(id);
 
 
       if (find != -1) {

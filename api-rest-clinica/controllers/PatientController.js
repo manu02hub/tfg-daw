@@ -181,10 +181,44 @@ const deletePatient = async (req, res) => {
     return respuesta;
 
 }
+
+const searchNIFphone = async (req, res) => {
+
+    let patient;
+    let data = req.params.data;
+
+    if (data) {
+        patient = await Patient.findOne({ $or: [{ nif: data }, { mobile_phone: data }] });
+
+        if (patient) {
+            respuesta = res.status(200).json({
+                state: "success",
+                message: "Encontrado",
+                patient: patient._id
+            });
+
+        } else {
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "No existe el paciente",
+            });
+        }
+
+    } else {
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "El campo no puede estar vacio",
+        });
+    }
+
+
+}
+
 module.exports = {
     getAllPatients,
     createPatient,
     getPatient,
     updatePatient,
-    deletePatient
+    deletePatient,
+    searchNIFphone
 }
