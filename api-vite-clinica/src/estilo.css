@@ -1013,7 +1013,7 @@ table .pdf {
   align-items: center;
   justify-content: center;
   display: flex;
-  z-index: 1;
+  z-index: 50;
   inset: 0px;
   position: fixed;
   opacity: 1;
@@ -1318,7 +1318,7 @@ table .pdf {
   color: white;
 }
 
-.fc-list-day-side-text
+.fc-list-day-side-text,
 .fc-event-title,
 .fc-event-time {
   color: #212121;
@@ -1336,11 +1336,33 @@ table .pdf {
   }
 }
 
+.boxSearchPatient{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.boxSearchPatient button{
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-left: 3px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #065a88;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+
 .multiple option {
   padding: 5px;
   border-radius: 3px;
   margin-bottom: 3px;
   cursor: pointer;
+}
+
+.timeMargin{
+  margin-right: 3px;
 }
 
 select[multiple]:focus option:checked {

@@ -10,17 +10,29 @@ import InputError from "../InputError";
 import SelectTherapy from "../therapie/SelectTherapy";
 import SelectUserClinic from "../user/SelectUserClinic";
 import SelectTherapyPatient from "./SelectTherapyPatient";
+import { FiSearch } from "react-icons/fi";
 
-function ModalCalendarCreate({ confirm, setConfirm, clinic }) {
+function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date }) {
+  const [errorPatient, setErrorPatient] = useState("");
+  const [errorTime, setErrorTime] = useState("");
 
-  const [error, setError] = useState("");
   const [patient, setPatient] = useState(0);
+  const [selectedValues, setSelectedValues] = useState([]);
+
+  const handleSelectChange = (event) => {
+    const selectedOptions = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedValues(selectedOptions);
+  };
 
   const checkPatient = async (e) => {
-    let patient = e.target.value;
+    e.preventDefault();
+    let patient = e.target.patient.value;
 
     if (patient == "") {
-      setError("El campo no puede estar vacío");
+      setErrorPatient("El campo no puede estar vacío");
     } else {
       const { datos, cargando } = await PeticionAJAX(
         Global.url + "patient/searchNIF/" + patient,
@@ -30,20 +42,66 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic }) {
       if (datos.state == "success" && !cargando) {
         setPatient(datos.patient);
       } else {
-        setError(datos.message);
+        setErrorPatient(datos.message);
       }
     }
   };
 
+  const addTherapy = async (e) => {
+    e.preventDefault();
+
+    let dateDefault = new Date();
+    let time = e.target.time.value;
+    let id_user;
+    let id_therapy_has_patient;
+    let id_cabinet;
+    let arrTime;
+    let appointment;
+
+    if (time !== "") {
+      id_user = e.target.user.value;
+      id_therapy_has_patient = selectedValues;
+      id_cabinet = toglleTab;
+
+      dateDefault = date;
+      arrTime = time.split(":");
+      console.log(dateDefault);
+      dateDefault = dateDefault+"T"+time;
+      // dateDefault.setMinutes(arrTime[1]);
+
+      appointment = {
+        id_therapy_has_patient: id_therapy_has_patient,
+        id_user: id_user,
+        id_cabinet: id_cabinet,
+        date: dateDefault,
+      };
+
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url + "appointment/create-appointment",
+        "POST",
+        appointment
+      );
+
+      if (datos.state == "success" && !cargando) {
+        // setCabinets([...cabinets, datos.cabinet]);
+        closeModal();
+      } else {
+        setError(datos.message);
+      }
+    } else {
+      setErrorTime("Seleccione la hora de la cita");
+    }
+  };
+
   const closeModal = () => {
-    setError("");
+    setErrorPatient("");
+    setErrorTime("");
     setConfirm(false);
   };
 
-
-  const clearError = () =>{
-    setError("");
-  }
+  const clearError = () => {
+    setErrorTime("");
+  };
 
   return (
     <>
@@ -52,38 +110,65 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic }) {
           <div className="section-modal">
             <h2>Añadir Cita</h2>
             <br />
-
-            <form className="formCreate" onSubmit={(e) => addTherapy(e)}>
-              <div className="row">
-                <div className="col-lg-8 col-md-12 col-sm-12">
+            <div className="row">
+              <div className="col-lg-12 col-md-12 col-sm-12">
+                <form className="formCreate" onSubmit={(e) => checkPatient(e)}>
                   <InputLabel>
                     Numero de Telefono o Correo del Paciente
                   </InputLabel>
-                  <InputText
-                    type="text"
-                    name="patient"
-                    onBlur={(e) => {
-                      checkPatient(e);
-                    }}
-                    onFocus={() =>clearError()}
-                  ></InputText>
-                   <InputError message={error !== "" ? error : ""}></InputError>
-                </div>
-                <div className="col-lg-4 col-md-12 col-sm-12">
-                  <InputLabel>Time</InputLabel>
-                  <InputText type="time" ></InputText>
-                </div>
-              </div>
 
+                  <div className="boxSearchPatient">
+                    <InputText
+                      type="text"
+                      name="patient"
+                      // onBlur={(e) => {
+                      // checkPatient(e);
+                      // }}
+                      // onFocus={() => clearError()}
+                    ></InputText>
+                    <BtnPrimary>
+                      <FiSearch size={17} />
+                    </BtnPrimary>
+                  </div>
+                </form>
+
+                <InputError
+                  message={errorPatient !== "" ? errorPatient : ""}
+                ></InputError>
+              </div>
+            </div>
+
+            <form className="formCreate" onSubmit={(e) => addTherapy(e)}>
               <div className="separadorForm">
                 <InputLabel>Tratamientos</InputLabel>
 
-                <SelectTherapyPatient patient={patient}/>
+                <SelectTherapyPatient
+                  value={selectedValues}
+                  onChange={handleSelectChange}
+                  patient={patient}
+                  name="therapy_has_patient"
+                />
               </div>
-
-              <div className="separadorForm">
-                <InputLabel>User</InputLabel>
-                <SelectUserClinic clinic={clinic} />
+              <div className="row">
+                <div className="col-lg-8 col-md-12 col-sm-12">
+                  <div className="separadorForm">
+                    <InputLabel>User</InputLabel>
+                    <SelectUserClinic clinic={clinic} name="user" />
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-12 col-sm-12 timeMargin">
+                  <div className="separadorForm">
+                    <InputLabel>Time</InputLabel>
+                    <InputText
+                      type="time"
+                      name="time"
+                      onFocus={() => clearError()}
+                    ></InputText>
+                    <InputError
+                      message={errorTime !== "" ? errorTime : ""}
+                    ></InputError>
+                  </div>
+                </div>
               </div>
 
               {/* <InputText

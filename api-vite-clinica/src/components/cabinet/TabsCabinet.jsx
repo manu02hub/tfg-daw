@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Tabs from "../../components/Tabs";
 import Tab from "../../components/Tab";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import { Global } from "../../helpers/Global";
@@ -18,21 +17,6 @@ function TabsCabinet({ toglleTab, setToggleTab }) {
   useEffect(() => {
     getAllCabinets();
   }, []);
-
-  //   useEffect(() => {
-  //     getAllUsers();
-  //   }, [toglleTab]);
-
-  //   const getAllCabinets = () => {
-  //     switch (toglleTab) {
-  //       case 1:
-  //         getUsers();
-  //         break;
-  //       case 2:
-  //         getUsersClinic();
-  //         break;
-  //     }
-  //   };
 
   const getAllCabinets = async () => {
     const { datos, cargando } = await PeticionAJAX(

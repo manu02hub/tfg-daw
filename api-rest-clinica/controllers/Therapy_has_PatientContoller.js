@@ -33,7 +33,7 @@ const getTherapy_has_Patient = async (req, res) => {
 
     let id = req.params.id;
 
-    const therapy_has_patientGet = await Therapy_has_Patient.find({ id_patient: id, complete: false }).populate('id_therapy');
+    const therapy_has_patientGet = await Therapy_has_Patient.find({ id_patient: id, complete: false }).sort('id_therapy').populate('id_therapy').exec();
 
     return res.status(200).json({
         state: "success",

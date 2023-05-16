@@ -37,7 +37,7 @@ const getTheet = async (req, res) => {
 
     return res.status(200).json({
         state: "success",
-        teeth: teeth
+        teeth
     });
 }
 

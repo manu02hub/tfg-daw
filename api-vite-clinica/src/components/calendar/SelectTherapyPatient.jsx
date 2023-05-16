@@ -5,8 +5,8 @@ import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 function SelectTherapyPatient({ patient, ...props }, ref) {
   const input = ref ? ref : useRef();
   const [loading, setLoading] = useState(true);
-  const [patientTherapies, setPatientTherapies] = useState([]);
-  const [teeth, setTeeth] = useState({});
+  const [patientTherapies, setPatientTherapies] = useState({});
+  const [teeth, setTeeth] = useState([]);
 
   useEffect(() => {
     if (patient !== 0) {
@@ -14,10 +14,11 @@ function SelectTherapyPatient({ patient, ...props }, ref) {
     }
   }, [patient]);
 
-  console.log(teeth);
-
   const getTherapies_has_Patient = async () => {
     let aux;
+    let promises = [];
+    let resolvedPromises;
+    let teethAux;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "therapy_has_patient/get-therapy_has_patient/" + patient,
@@ -27,37 +28,37 @@ function SelectTherapyPatient({ patient, ...props }, ref) {
     if (datos.state == "success" && !cargando) {
       aux = datos.therapy_has_patient;
       setPatientTherapies(datos.therapy_has_patient);
-
-      aux.map(async (element, index) => {
-        const { datos, cargando } = await PeticionAJAX(
-          Global.url + "tooth/get-teeth/" + element.id_tooth,
-          "GET"
-        );
-
-        if (datos.state == "success" && !cargando){
-            console.log(datos);
-            setTeeth([...teeth, datos.teeth]);
-        }
-
-        if (datos.state == "success" && !cargando && index == aux.length - 1) {
-           
-          setTeeth([...teeth, datos.teeth]);
-          setLoading(false);
-        }
-      });
     } else {
       setError(datos.message);
     }
+
+    promises = aux.map(async (element) => {
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url + "tooth/get-teeth/" + element.id_tooth,
+        "GET"
+      );
+
+      if (datos.state == "success" && !cargando) {
+        console.log(datos);
+        return datos.teeth;
+      }
+    });
+
+    resolvedPromises = await Promise.all(promises);
+    teethAux = resolvedPromises.filter((teeth) => teeth); // Filter out undefined values
+
+    setTeeth(teethAux);
+    setLoading(false);
   };
 
   return (
     <>
       <select {...props} ref={input} multiple>
         {!loading &&
-          patientTherapies.map((therapy) => {
+          patientTherapies.map((therapy,index) => {
             return (
               <option key={therapy._id} value={therapy._id}>
-                {therapy.id_therapy.name}
+                {teeth[index].number + ""+ teeth[index].letter}  {therapy.id_therapy.name}
               </option>
             );
           })}
