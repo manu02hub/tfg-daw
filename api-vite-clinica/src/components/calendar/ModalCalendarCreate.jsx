@@ -12,7 +12,7 @@ import SelectUserClinic from "../user/SelectUserClinic";
 import SelectTherapyPatient from "./SelectTherapyPatient";
 import { FiSearch } from "react-icons/fi";
 
-function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date }) {
+function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date, appointments, setAppointments }) {
   const [errorPatient, setErrorPatient] = useState("");
   const [errorTime, setErrorTime] = useState("");
 
@@ -55,21 +55,17 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date }) {
     let id_user;
     let id_therapy_has_patient;
     let id_cabinet;
-    let arrTime;
     let appointment;
 
     if (time !== "") {
       id_user = e.target.user.value;
       id_therapy_has_patient = selectedValues;
       id_cabinet = toglleTab;
-
       dateDefault = date;
-      arrTime = time.split(":");
-      console.log(dateDefault);
       dateDefault = dateDefault+"T"+time;
-      // dateDefault.setMinutes(arrTime[1]);
 
       appointment = {
+        id_patient: patient,
         id_therapy_has_patient: id_therapy_has_patient,
         id_user: id_user,
         id_cabinet: id_cabinet,
@@ -83,7 +79,7 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date }) {
       );
 
       if (datos.state == "success" && !cargando) {
-        // setCabinets([...cabinets, datos.cabinet]);
+        setAppointments([...appointments, datos.appointment]);
         closeModal();
       } else {
         setError(datos.message);
@@ -96,6 +92,8 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date }) {
   const closeModal = () => {
     setErrorPatient("");
     setErrorTime("");
+    setSelectedValues([]);
+    setPatient("");
     setConfirm(false);
   };
 

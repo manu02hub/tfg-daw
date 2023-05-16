@@ -41,6 +41,18 @@ const getTherapy_has_Patient = async (req, res) => {
     });
 }
 
+const getTherapy_has_PatientById = async (req, res) => {
+
+    let id = req.params.id;
+
+    const therapy_has_patientGet = await Therapy_has_Patient.find({ _id: id }).populate('id_therapy').exec();
+
+    return res.status(200).json({
+        state: "success",
+        therapy_has_patient: therapy_has_patientGet,
+    });
+}
+
 const deleteTherapy_has_Patient = async (req, res) => {
 
     let id = req.params.id;
@@ -85,7 +97,7 @@ const deleteTherapy_has_Patient = async (req, res) => {
 
 module.exports = {
     createTherapy_has_Patient,
-    // getAllTherapies,
+    getTherapy_has_PatientById,
     getTherapy_has_Patient,
     // updateTherapy,
     deleteTherapy_has_Patient

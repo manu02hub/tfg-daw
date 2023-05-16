@@ -8,6 +8,12 @@ const AppointmentSchema = Schema({
         require: true
     }],
 
+    id_patient: {
+        type: Schema.ObjectId,
+        ref: "Patient",
+        require: true
+    },
+
     id_user: {
         type: Schema.ObjectId,
         ref: "User",

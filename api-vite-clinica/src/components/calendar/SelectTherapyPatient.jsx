@@ -39,7 +39,6 @@ function SelectTherapyPatient({ patient, ...props }, ref) {
       );
 
       if (datos.state == "success" && !cargando) {
-        console.log(datos);
         return datos.teeth;
       }
     });

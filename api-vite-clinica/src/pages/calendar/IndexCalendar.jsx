@@ -13,6 +13,7 @@ function IndexCalendar() {
   const [confirm, setConfirm] = useState(false);
   const [toglleTab, setToggleTab] = useState(0);
   const [date, setDate] = useState(dateDafault);
+  const [appointments, setAppointments] = useState({});
   const { auth } = useAuth();
 
   return (
@@ -29,6 +30,8 @@ function IndexCalendar() {
               toggleTab={toglleTab}
               loading={loading}
               setLoading={setLoading}
+              appointments={appointments}
+              setAppointments={setAppointments}
             />
           </CardBasic>
         </div>
@@ -39,6 +42,8 @@ function IndexCalendar() {
         clinic={auth.id_clinic}
         toglleTab={toglleTab}
         date={date}
+        appointments={appointments}
+        setAppointments={setAppointments}
       />
     </>
   );
