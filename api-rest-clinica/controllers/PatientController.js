@@ -194,7 +194,11 @@ const searchNIFphone = async (req, res) => {
             respuesta = res.status(200).json({
                 state: "success",
                 message: "Encontrado",
-                patient: patient._id
+                patient: {
+                    _id: patient._id,
+                    name: patient.name,
+                    surnames: patient.surnames
+                }
             });
 
         } else {

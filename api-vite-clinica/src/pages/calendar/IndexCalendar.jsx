@@ -9,11 +9,13 @@ import Spinner from "../../components/Spinner";
 
 function IndexCalendar() {
   const dateDafault = new Date();
+
   const [loading, setLoading] = useState(true);
   const [confirm, setConfirm] = useState(false);
   const [toglleTab, setToggleTab] = useState(0);
   const [date, setDate] = useState(dateDafault);
   const [appointments, setAppointments] = useState({});
+  const [events, setEvents] = useState([]);
   const { auth } = useAuth();
 
   return (
@@ -32,6 +34,8 @@ function IndexCalendar() {
               setLoading={setLoading}
               appointments={appointments}
               setAppointments={setAppointments}
+              events={events}
+              setEvents={setEvents}
             />
           </CardBasic>
         </div>
@@ -44,6 +48,8 @@ function IndexCalendar() {
         date={date}
         appointments={appointments}
         setAppointments={setAppointments}
+        events={events}
+        setEvents={setEvents}
       />
     </>
   );

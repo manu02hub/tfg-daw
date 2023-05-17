@@ -9,7 +9,7 @@ function SelectTherapyPatient({ patient, ...props }, ref) {
   const [teeth, setTeeth] = useState([]);
 
   useEffect(() => {
-    if (patient !== 0) {
+    if (patient._id) {
       getTherapies_has_Patient();
     }
   }, [patient]);
@@ -21,7 +21,7 @@ function SelectTherapyPatient({ patient, ...props }, ref) {
     let teethAux;
 
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "therapy_has_patient/get-therapy_has_patient/" + patient,
+      Global.url + "therapy_has_patient/get-therapy_has_patient/" + patient._id,
       "GET"
     );
 

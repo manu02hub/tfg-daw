@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import listPlugin from "@fullcalendar/list";
@@ -16,9 +16,11 @@ function FullCalendarCabinet({
   setLoading,
   appointments,
   setAppointments,
+  events,
+  setEvents,
 }) {
-  const [events, setEvents] = useState([]);
   const [render, setRender] = useState(false);
+  const [eventContentFunction, setEventContentFunction] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -27,11 +29,23 @@ function FullCalendarCabinet({
     }
   }, [toggleTab]);
 
-  useEffect(()=>{
-    setRender(false);
-  },[events])
+  useEffect(() => {
+    if (events.length >= 1) {
+      setRender(false);
+
+      const renderEventContent = (eventInfo) => (
+        <div>
+          <p>{eventInfo.timeText}</p>
+          <p>{eventInfo.event.title}</p>
+        </div>
+      );
+
+      setEventContentFunction(() => renderEventContent);
+    }
+  }, [events]);
 
   const dateClick = (info) => {
+    setRender(true);
     setConfirm(true);
     setDate(info.dateStr);
   };
@@ -86,7 +100,7 @@ function FullCalendarCabinet({
 
       if (datos.state == "success" && !cargando) {
         idAppointment = element._id;
-        title = datos.patient.name;
+        title = datos.patient.name +" "+datos.patient.surnames;
         date = element.date;
 
         eventCalendar = {
@@ -108,18 +122,18 @@ function FullCalendarCabinet({
     setLoading(false);
   };
 
-  const renderEventContent = (eventInfo) => {
-    setRender(true);
-    return (
-      <div>
-        <p>{eventInfo.timeText}</p>
-        <p>{eventInfo.event.title}</p>
-        {/* {eventInfo.event.extendedProps.descripcion.map((des) => {
-         return des.name;
-         })} */}
-      </div>
-    );
-  };
+  // const renderEventContent = useMemo(() => {
+
+  //   return (eventInfo) => (
+  //     <div>
+  //       <p>{eventInfo.timeText}</p>
+  //       <p>{eventInfo.event.title}</p>
+  //       {/* {eventInfo.event.extendedProps.description.map((des) => {
+  //        return des.name;
+  //        })} */}
+  //     </div>
+  //   );
+  // }, []);
 
   return (
     <>
@@ -137,9 +151,10 @@ function FullCalendarCabinet({
         dateClick={(info) => {
           dateClick(info);
         }}
+        loading={!loading}
         // weekends={false}
         events={events}
-        eventContent={!render && renderEventContent}
+        eventContent={!render && eventContentFunction}
       />
     </>
   );

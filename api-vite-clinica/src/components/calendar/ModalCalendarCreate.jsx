@@ -12,11 +12,21 @@ import SelectUserClinic from "../user/SelectUserClinic";
 import SelectTherapyPatient from "./SelectTherapyPatient";
 import { FiSearch } from "react-icons/fi";
 
-function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date, appointments, setAppointments }) {
+function ModalCalendarCreate({
+  confirm,
+  setConfirm,
+  clinic,
+  toglleTab,
+  date,
+  appointments,
+  setAppointments,
+  events,
+  setEvents,
+}) {
   const [errorPatient, setErrorPatient] = useState("");
   const [errorTime, setErrorTime] = useState("");
 
-  const [patient, setPatient] = useState(0);
+  const [patient, setPatient] = useState({});
   const [selectedValues, setSelectedValues] = useState([]);
 
   const handleSelectChange = (event) => {
@@ -29,13 +39,13 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date, app
 
   const checkPatient = async (e) => {
     e.preventDefault();
-    let patient = e.target.patient.value;
+    let patientValue = e.target.patient.value;
 
-    if (patient == "") {
+    if (patientValue == "") {
       setErrorPatient("El campo no puede estar vacío");
     } else {
       const { datos, cargando } = await PeticionAJAX(
-        Global.url + "patient/searchNIF/" + patient,
+        Global.url + "patient/searchNIF/" + patientValue,
         "GET"
       );
 
@@ -62,7 +72,7 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date, app
       id_therapy_has_patient = selectedValues;
       id_cabinet = toglleTab;
       dateDefault = date;
-      dateDefault = dateDefault+"T"+time;
+      dateDefault = dateDefault + "T" + time;
 
       appointment = {
         id_patient: patient,
@@ -79,7 +89,12 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date, app
       );
 
       if (datos.state == "success" && !cargando) {
-        setAppointments([...appointments, datos.appointment]);
+        // console.log(datos.appointment);
+        therapy_has_patient(
+          datos.appointment,
+        );
+        // setAppointments([...appointments, datos.appointment]);
+
         closeModal();
       } else {
         setError(datos.message);
@@ -87,6 +102,51 @@ function ModalCalendarCreate({ confirm, setConfirm, clinic, toglleTab, date, app
     } else {
       setErrorTime("Seleccione la hora de la cita");
     }
+  };
+
+  const therapy_has_patient = async (appointments) => {
+    let promises = [];
+    let therapy;
+
+    promises = appointments.id_therapy_has_patient.map(async (element) => {
+      console.log(element);
+
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url +
+          "therapy_has_patient/get-therapy_has_patientById/" +
+          element,
+        "GET"
+      );
+
+      if (datos.state == "success" && !cargando) {
+        console.log(datos.therapy_has_patient);
+        therapy = datos.therapy_has_patient;
+      }
+    });
+
+    const resolvedPromises = await Promise.all(promises);
+    const therapies = resolvedPromises.filter((the) => the); // Filter out undefined values
+
+    // setEvents(event);
+
+    // setLoading(false);
+
+    await createEvent(therapies, appointments);
+  };
+
+  const createEvent = async (thera, appointment) => {
+    console.log(patient);
+
+    let newEvent = {
+      id: appointment._id,
+      title: patient.name + " " + patient.surnames,
+      description: thera,
+      date: appointment.date,
+    };
+
+    console.log(newEvent);
+
+    setEvents([...events, newEvent]);
   };
 
   const closeModal = () => {
