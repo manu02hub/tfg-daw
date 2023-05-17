@@ -18,6 +18,7 @@ function FullCalendarCabinet({
   setAppointments,
 }) {
   const [events, setEvents] = useState([]);
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -25,6 +26,10 @@ function FullCalendarCabinet({
       getAppointments(toggleTab);
     }
   }, [toggleTab]);
+
+  useEffect(()=>{
+    setRender(false);
+  },[events])
 
   const dateClick = (info) => {
     setConfirm(true);
@@ -47,6 +52,7 @@ function FullCalendarCabinet({
   const therapy_has_patient = async (appointment) => {
     let promises = [];
     let auxTherapies = [];
+    let eventCalendar;
     let therapy;
     let idAppointment;
     let title;
@@ -82,35 +88,35 @@ function FullCalendarCabinet({
         idAppointment = element._id;
         title = datos.patient.name;
         date = element.date;
+
+        eventCalendar = {
+          id: idAppointment,
+          title: title,
+          date: date,
+          // description: auxTherapies,
+        };
+
+        return eventCalendar;
       }
     });
 
     const resolvedPromises = await Promise.all(promises);
-    const pa = resolvedPromises.filter((event) => event); // Filter out undefined values
+    const event = resolvedPromises.filter((event) => event); // Filter out undefined values
 
-    let event = {
-      id: idAppointment,
-      title: title,
-      date: date,
-      // description: auxTherapies,
-    };
-
-    setEvents([...events, event]);
-
-    // const resolvedPromises = await Promise.all(promises);
-    // const pa = resolvedPromises.filter((teeth) => teeth); // Filter out undefined values
+    setEvents(event);
 
     setLoading(false);
   };
 
   const renderEventContent = (eventInfo) => {
+    setRender(true);
     return (
       <div>
         <p>{eventInfo.timeText}</p>
         <p>{eventInfo.event.title}</p>
         {/* {eventInfo.event.extendedProps.descripcion.map((des) => {
-          return des.name;
-        })} */}
+         return des.name;
+         })} */}
       </div>
     );
   };
@@ -132,9 +138,8 @@ function FullCalendarCabinet({
           dateClick(info);
         }}
         // weekends={false}
-        loading={!loading && getAppointments}
         events={events}
-        eventContent={renderEventContent}
+        eventContent={!render && renderEventContent}
       />
     </>
   );
