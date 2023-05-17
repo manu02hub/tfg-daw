@@ -13,13 +13,11 @@ import SelectTherapyPatient from "./SelectTherapyPatient";
 import { FiSearch } from "react-icons/fi";
 
 function ModalCalendarCreate({
-  confirm,
-  setConfirm,
+  confirmModalCreate,
+  setConfirmModalCreate,
   clinic,
   toglleTab,
   date,
-  appointments,
-  setAppointments,
   events,
   setEvents,
 }) {
@@ -89,7 +87,6 @@ function ModalCalendarCreate({
       );
 
       if (datos.state == "success" && !cargando) {
-        // console.log(datos.appointment);
         therapy_has_patient(
           datos.appointment,
         );
@@ -109,7 +106,6 @@ function ModalCalendarCreate({
     let therapy;
 
     promises = appointments.id_therapy_has_patient.map(async (element) => {
-      console.log(element);
 
       const { datos, cargando } = await PeticionAJAX(
         Global.url +
@@ -119,7 +115,6 @@ function ModalCalendarCreate({
       );
 
       if (datos.state == "success" && !cargando) {
-        console.log(datos.therapy_has_patient);
         therapy = datos.therapy_has_patient;
       }
     });
@@ -135,7 +130,6 @@ function ModalCalendarCreate({
   };
 
   const createEvent = async (thera, appointment) => {
-    console.log(patient);
 
     let newEvent = {
       id: appointment._id,
@@ -143,8 +137,6 @@ function ModalCalendarCreate({
       description: thera,
       date: appointment.date,
     };
-
-    console.log(newEvent);
 
     setEvents([...events, newEvent]);
   };
@@ -154,7 +146,7 @@ function ModalCalendarCreate({
     setErrorTime("");
     setSelectedValues([]);
     setPatient("");
-    setConfirm(false);
+    setConfirmModalCreate(false);
   };
 
   const clearError = () => {
@@ -163,7 +155,7 @@ function ModalCalendarCreate({
 
   return (
     <>
-      {confirm && (
+      {confirmModalCreate && (
         <Modal show={confirm}>
           <div className="section-modal">
             <h2>Añadir Cita</h2>

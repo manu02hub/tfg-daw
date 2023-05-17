@@ -48,7 +48,6 @@ function ModalTooth({
 
     if (datos.state == "success" && !cargando) {
       teethGet = datos.teeth;
-      // console.log(teethGet);
     }
 
     return teethGet;

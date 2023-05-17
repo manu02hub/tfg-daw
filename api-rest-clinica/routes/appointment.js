@@ -6,6 +6,7 @@ const AppointmentController = require("../controllers/AppointmentContoller");
 
 router.post("/create-appointment", middleware.auth, AppointmentController.createAppointment);
 router.get("/getAppointment-cabinet/:id", middleware.auth, AppointmentController.getAppointmentsCabinet);
+router.get("/get-appointment/:id", middleware.auth, AppointmentController.getAppointment);
 router.delete("/delete-appointment/:id", middleware.auth, AppointmentController.deleteAppointment);
 
 

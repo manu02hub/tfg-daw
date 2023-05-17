@@ -61,7 +61,7 @@ function TableTherapyPatient({
 
     if (index === 0) {
       auxPrice = price.shift();
-      console.log(auxPrice);
+
     } else {
       auxPrice = price.slice(index - 1, index);
       setPrice(auxPrice);

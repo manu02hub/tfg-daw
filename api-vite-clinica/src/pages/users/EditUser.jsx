@@ -31,7 +31,6 @@ function EditUser() {
 
     if (datos.state == "success" && !cargando) {
       setUser(datos.user);
-      console.log(datos.user);
       setLoading(false);
     }
   };

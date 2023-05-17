@@ -41,17 +41,17 @@ const getAppointmentsCabinet = async (req, res) => {
     });
 }
 
-// const getTherapy = async (req, res) => {
+const getAppointment = async (req, res) => {
 
-//     let id = req.params.id;
+    let id = req.params.id;
 
-//     const therapyGet = await Therapy.findById(id);
+    const appointmentGet = await Appointment.findById(id);
 
-//     return res.status(200).json({
-//         state: "success",
-//         therapy: therapyGet,
-//     });
-// }
+    return res.status(200).json({
+        state: "success",
+        appointment: appointmentGet,
+    });
+}
 
 const deleteAppointment = async (req, res) => {
 
@@ -99,6 +99,6 @@ module.exports = {
     createAppointment,
     getAppointmentsCabinet,
     deleteAppointment,
-    // updateTherapy,
+    getAppointment
     // getTherapy
 }

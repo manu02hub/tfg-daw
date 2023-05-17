@@ -9,7 +9,7 @@ function SelectUserClinic({ clinic, ...props }, ref) {
 
   useEffect(() => {
     getUsersClnic();
-  }, []);
+  }, [clinic]);
 
   const getUsersClnic = async () => {
     const { datos, cargando } = await PeticionAJAX(

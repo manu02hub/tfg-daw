@@ -27,7 +27,6 @@ function Login() {
 
   const login = async (data) => {
     let user = data;
-    console.log(user);
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "user/login",

@@ -24,7 +24,6 @@ function FormNewPassword({ user, auth }) {
 
   const onSubmit = async (data) => {
     let newUser = data;
-    console.log(newUser);
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "user/update-user/" + user._id,
@@ -41,7 +40,6 @@ function FormNewPassword({ user, auth }) {
 
   const setErrorPass = () => {
     setError("");
-    console.log(error);
   };
 
   return (

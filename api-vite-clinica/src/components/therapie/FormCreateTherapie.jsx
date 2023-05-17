@@ -32,7 +32,6 @@ function FormCreateTherapie({ therapies, setTherapies }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      console.log(datos.therapy);
       
       setTherapies([...therapies, datos.therapy]);
     } else {

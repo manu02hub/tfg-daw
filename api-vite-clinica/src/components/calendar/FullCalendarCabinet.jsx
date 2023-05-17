@@ -9,7 +9,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 import esLocale from "@fullcalendar/core/locales/es";
 
 function FullCalendarCabinet({
-  setConfirm,
+  setConfirmModalCreate,
+  setConfirmModalEdit,
   setDate,
   toggleTab,
   loading,
@@ -18,10 +19,8 @@ function FullCalendarCabinet({
   setAppointments,
   events,
   setEvents,
+  setEvent,
 }) {
-  const [render, setRender] = useState(false);
-  const [eventContentFunction, setEventContentFunction] = useState(null);
-
   useEffect(() => {
     setLoading(true);
     if (toggleTab !== 0) {
@@ -29,24 +28,8 @@ function FullCalendarCabinet({
     }
   }, [toggleTab]);
 
-  useEffect(() => {
-    if (events.length >= 1) {
-      setRender(false);
-
-      const renderEventContent = (eventInfo) => (
-        <div>
-          <p>{eventInfo.timeText}</p>
-          <p>{eventInfo.event.title}</p>
-        </div>
-      );
-
-      setEventContentFunction(() => renderEventContent);
-    }
-  }, [events]);
-
   const dateClick = (info) => {
-    setRender(true);
-    setConfirm(true);
+    setConfirmModalCreate(true);
     setDate(info.dateStr);
   };
 
@@ -65,34 +48,14 @@ function FullCalendarCabinet({
 
   const therapy_has_patient = async (appointment) => {
     let promises = [];
-    let auxTherapies = [];
+    // let auxTherapies = [];
     let eventCalendar;
-    let therapy;
+    // let therapy;
     let idAppointment;
     let title;
-    let description;
     let date;
 
     promises = appointment.map(async (element) => {
-      for (
-        let index = 0;
-        index < element.id_therapy_has_patient.length;
-        index++
-      ) {
-        const { datos, cargando } = await PeticionAJAX(
-          Global.url +
-            "therapy_has_patient/get-therapy_has_patientById/" +
-            element.id_therapy_has_patient[index],
-          "GET"
-        );
-
-        if (datos.state == "success" && !cargando) {
-          therapy = datos.therapy_has_patient[0].id_therapy;
-
-          auxTherapies.push(therapy);
-        }
-      }
-
       const { datos, cargando } = await PeticionAJAX(
         Global.url + "patient/get-patient/" + element.id_patient,
         "GET"
@@ -100,7 +63,7 @@ function FullCalendarCabinet({
 
       if (datos.state == "success" && !cargando) {
         idAppointment = element._id;
-        title = datos.patient.name +" "+datos.patient.surnames;
+        title = datos.patient.name + " " + datos.patient.surnames;
         date = element.date;
 
         eventCalendar = {
@@ -122,18 +85,11 @@ function FullCalendarCabinet({
     setLoading(false);
   };
 
-  // const renderEventContent = useMemo(() => {
-
-  //   return (eventInfo) => (
-  //     <div>
-  //       <p>{eventInfo.timeText}</p>
-  //       <p>{eventInfo.event.title}</p>
-  //       {/* {eventInfo.event.extendedProps.description.map((des) => {
-  //        return des.name;
-  //        })} */}
-  //     </div>
-  //   );
-  // }, []);
+  const handleEventClick = (info) => {
+    setConfirmModalEdit(true);
+    setEvent(info.event.id);
+    // Handle the event click logic here
+  };
 
   return (
     <>
@@ -154,7 +110,7 @@ function FullCalendarCabinet({
         loading={!loading}
         // weekends={false}
         events={events}
-        eventContent={!render && eventContentFunction}
+        eventClick={handleEventClick}
       />
     </>
   );

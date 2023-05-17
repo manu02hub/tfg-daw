@@ -45,10 +45,6 @@ export const AuthProvider = ({ children }) => {
 
       data = await request.json();
 
-      // console.log(data);
-      console.log(data.user);
-      // console.log(data.permissionsUser);
-
       //Seteo estado auth
       setAuth(data.user);
       setLoading(false);

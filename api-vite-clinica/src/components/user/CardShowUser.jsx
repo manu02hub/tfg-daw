@@ -10,8 +10,6 @@ function CardShowUser({ id_user }) {
   const [clinic, setClinic] = useState({});
   const [loading, setLoading] = useState(true);
 
-  console.log(id_user);
-
   useEffect(() => {
     getUser();
   }, [id_user]);
