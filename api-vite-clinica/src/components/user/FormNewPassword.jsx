@@ -79,7 +79,7 @@ function FormNewPassword({ user, auth }) {
         <InputError message={errors.passwordConfirmation?.message}></InputError>
       </div>
       <div className="separadorBtn">
-        <BtnPrimary>Save</BtnPrimary>
+        <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
       </div>
     </form>
   );

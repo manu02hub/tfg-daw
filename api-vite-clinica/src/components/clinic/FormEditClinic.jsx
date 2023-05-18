@@ -121,7 +121,7 @@ function FormEditClinic({ id, loading, setLoading }) {
                 </div>
 
                 <div className="separadorBtn btnEditClinic">
-                  <BtnPrimary>Save</BtnPrimary>
+                  <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
                 </div>
               </div>
             </div>

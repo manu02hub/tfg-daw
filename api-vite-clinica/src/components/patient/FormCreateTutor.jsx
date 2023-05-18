@@ -190,7 +190,7 @@ function FormCreateTutor() {
                 </div>
               </div>
               <div className="separadorBtn">
-                  <BtnPrimary>Crear</BtnPrimary>
+                  <BtnPrimary className={"btnsPrimary"}>Crear</BtnPrimary>
                 </div>
             </form>
           </section>

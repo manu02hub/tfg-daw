@@ -6,11 +6,8 @@ import InputText from "../../components/InputText";
 import Modal from "../Modal";
 import BtnPrimary from "../BtnPrimary";
 import BtnCancel from "../BtnCancel";
-import InputError from "../InputError";
-import SelectTherapy from "../therapie/SelectTherapy";
 import SelectUserClinic from "../user/SelectUserClinic";
 import SelectTherapyPatient from "./SelectTherapyPatient";
-import { FiSearch } from "react-icons/fi";
 import SelectPatient from "../patient/SelectPatient";
 
 function ModalCalendarEdit({
@@ -19,6 +16,8 @@ function ModalCalendarEdit({
   clinic,
   event,
   setEvent,
+  events,
+  setEvents,
 }) {
   const [selectedValues, setSelectedValues] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +26,7 @@ function ModalCalendarEdit({
 
   useEffect(() => {
     setLoading(true);
-    if (event !== null) {
+    if (event.id) {
       getEvent();
     }
   }, [confirmModalEdit]);
@@ -42,7 +41,7 @@ function ModalCalendarEdit({
 
   const getEvent = async () => {
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "appointment/get-appointment/" + event,
+      Global.url + "appointment/get-appointment/" + event.id,
       "GET"
     );
 
@@ -61,13 +60,92 @@ function ModalCalendarEdit({
       time = auxDate.getHours() + ":" + auxDate.getMinutes();
       setTime(time);
       setLoading(false);
-      console.log(time);
     }
   };
 
+  const updateEvent = async (e) => {
+    e.preventDefault();
+
+    let indexTime;
+    let auxTime;
+    let dateDefault = new Date(event.startStr);
+    let time = e.target.time.value;
+    let id_user;
+    let id_therapy_has_patient;
+    let appointment;
+    let updateEvent;
+
+    if (selectedValues.length >= 1) {
+      id_therapy_has_patient = selectedValues;
+    } else {
+      id_therapy_has_patient = eventSelect.id_therapy_has_patient;
+    }
+
+    id_user = e.target.user.value;
+    auxTime = time.split(":");
+    dateDefault.setHours(auxTime[0]);
+    dateDefault.setMinutes(auxTime[1]);
+    dateDefault = dateDefault.toISOString();
+
+    appointment = {
+      id_patient: e.target.patient.value,
+      id_therapy_has_patient: id_therapy_has_patient,
+      id_user: id_user,
+      date: dateDefault,
+    };
+
+    updateEvent = {
+      id: event.id,
+      title: event.title,
+      date: dateDefault,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "appointment/update-appointment/" + event.id,
+      "PUT",
+      appointment
+    );
+
+    if (datos.state == "success" && !cargando) {
+      
+      indexTime = events.findIndex((event) => event.id === updateEvent.id);
+
+      auxTime = [...events];
+
+      auxTime[indexTime] = updateEvent;
+
+      setEvents(auxTime);
+
+      closeModal();
+
+    }
+  };
+
+  const deleteEvent = async (id) => {
+
+    let auxEvents;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "appointment/delete-appointment/" + id,
+      "DELETE",
+    );
+
+    if (datos.state == "success" && !cargando) {
+      
+      auxEvents = events.filter((event) => event.id !== id);
+
+      setEvents(auxEvents);
+
+      closeModal();
+
+    } else {
+      setError(datos.message);
+    }
+  }
+
   const closeModal = () => {
     setSelectedValues([]);
-    setEvent(null);
+    setEvent({});
     setLoading(true);
     setConfirmModalEdit(false);
   };
@@ -79,7 +157,7 @@ function ModalCalendarEdit({
           <div className="section-modal">
             <h2>Editar Cita</h2>
             <br />
-            <form className="formCreate" onSubmit={(e) => addTherapy(e)}>
+            <form className="formCreate" onSubmit={(e) => updateEvent(e)}>
               <div className="row">
                 <div className="col-lg-12 col-md-12 col-sm-12">
                   <InputLabel>Patient</InputLabel>
@@ -96,12 +174,14 @@ function ModalCalendarEdit({
                   <div className="separadorForm">
                     <InputLabel>Tratamientos</InputLabel>
 
-                    {/* <SelectTherapyPatient
-                  value={selectedValues}
-                  onChange={handleSelectChange}
-                  patient={patient}
-                  name="therapy_has_patient"
-                /> */}
+                    {!loading && (
+                      <SelectTherapyPatient
+                        onChange={handleSelectChange}
+                        patient={eventSelect.id_patient}
+                        name="therapy_has_patient"
+                        defaultValue={eventSelect.id_therapy_has_patient}
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="col-lg-8 col-md-12 col-sm-12">
@@ -127,21 +207,15 @@ function ModalCalendarEdit({
                         defaultValue={time}
                       ></InputText>
                     )}
-                    {/* <InputError
-                      message={errorTime !== "" ? errorTime : ""}
-                    ></InputError> */}
                   </div>
                 </div>
               </div>
 
-              {/* <InputText
-                type="hidden"
-                // defaultValue={patient}
-                name={"id_patient"}
-              ></InputText> */}
-
               <div className="btnModalAdd">
-                <BtnPrimary className="shadow">SAVE</BtnPrimary>
+                <button type="button" className="btnDelete shadow" onClick={()=>deleteEvent(event.id)}>
+                  DELETE
+                </button>
+                <BtnPrimary className="btnsEdit shadow">EDIT</BtnPrimary>
                 <BtnCancel type="button" onClick={() => closeModal()}>
                   Cancel
                 </BtnCancel>

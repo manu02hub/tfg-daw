@@ -20,6 +20,8 @@ function ModalCalendarCreate({
   date,
   events,
   setEvents,
+  blockedDays,
+  setBlockedDays,
 }) {
   const [errorPatient, setErrorPatient] = useState("");
   const [errorTime, setErrorTime] = useState("");
@@ -87,9 +89,7 @@ function ModalCalendarCreate({
       );
 
       if (datos.state == "success" && !cargando) {
-        therapy_has_patient(
-          datos.appointment,
-        );
+        therapy_has_patient(datos.appointment);
         // setAppointments([...appointments, datos.appointment]);
 
         closeModal();
@@ -106,7 +106,6 @@ function ModalCalendarCreate({
     let therapy;
 
     promises = appointments.id_therapy_has_patient.map(async (element) => {
-
       const { datos, cargando } = await PeticionAJAX(
         Global.url +
           "therapy_has_patient/get-therapy_has_patientById/" +
@@ -130,7 +129,6 @@ function ModalCalendarCreate({
   };
 
   const createEvent = async (thera, appointment) => {
-
     let newEvent = {
       id: appointment._id,
       title: patient.name + " " + patient.surnames,
@@ -139,6 +137,33 @@ function ModalCalendarCreate({
     };
 
     setEvents([...events, newEvent]);
+  };
+
+  const blockDay = async () => {
+    let found;
+    let blockDay;
+
+    found = events.find((element) => {
+      console.log(element.date.split("T")[0]);
+      element.date.split("T")[0] == date;
+    });
+
+    if (!found) {
+      blockDay = {
+        date: date,
+        id_clinic: clinic,
+      };
+
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url + "dayBlocked/create-dayBlocked",
+        "POST",
+        blockDay
+      );
+
+      if (datos.state == "success" && !cargando) {
+        setBlockedDays((prevBlockedDays) => [...prevBlockedDays, blockDay]);
+      }
+    }
   };
 
   const closeModal = () => {
@@ -195,7 +220,7 @@ function ModalCalendarCreate({
                 <SelectTherapyPatient
                   value={selectedValues}
                   onChange={handleSelectChange}
-                  patient={patient}
+                  patient={patient._id}
                   name="therapy_has_patient"
                 />
               </div>
@@ -221,14 +246,15 @@ function ModalCalendarCreate({
                 </div>
               </div>
 
-              {/* <InputText
-                type="hidden"
-                // defaultValue={patient}
-                name={"id_patient"}
-              ></InputText> */}
-
               <div className="btnModalAdd">
-                <BtnPrimary className="shadow">SAVE</BtnPrimary>
+                <BtnPrimary className="btnsPrimary shadow">SAVE</BtnPrimary>
+                <button
+                  type="button"
+                  className="btnBlock shadow"
+                  onClick={() => blockDay()}
+                >
+                  Block day
+                </button>
                 <BtnCancel type="button" onClick={() => closeModal()}>
                   Cancel
                 </BtnCancel>

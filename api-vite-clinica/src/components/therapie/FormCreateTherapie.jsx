@@ -80,7 +80,7 @@ function FormCreateTherapie({ therapies, setTherapies }) {
 
       <div className="separadorBtn btnCreate">
         <div className="separadorBtn btnCreate">
-          <BtnPrimary>Add Therapy</BtnPrimary>
+          <BtnPrimary className={"btnsPrimary"}>Add Therapy</BtnPrimary>
           <BtnReset>Reset</BtnReset>
         </div>
       </div>

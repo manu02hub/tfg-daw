@@ -238,7 +238,7 @@ function ModalTooth({
               ></InputText>
 
               <div className="btnModalAdd">
-                <BtnPrimary className="shadow">SAVE</BtnPrimary>
+                <BtnPrimary className="btnsPrimary shadow">SAVE</BtnPrimary>
                 <BtnCancel type="button" onClick={() => closeModal()}>
                   Cancel
                 </BtnCancel>

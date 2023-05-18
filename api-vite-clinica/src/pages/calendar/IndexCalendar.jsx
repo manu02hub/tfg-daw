@@ -18,7 +18,8 @@ function IndexCalendar() {
   const [date, setDate] = useState(dateDafault);
   const [appointments, setAppointments] = useState({});
   const [events, setEvents] = useState([]);
-  const [event, setEvent] = useState(null);
+  const [event, setEvent] = useState({});
+  const [blockedDays, setBlockedDays] = useState([]);
   const { auth } = useAuth();
 
   return (
@@ -41,6 +42,9 @@ function IndexCalendar() {
               events={events}
               setEvents={setEvents}
               setEvent={setEvent}
+              blockedDays={blockedDays}
+              setBlockedDays={setBlockedDays}
+              clinic={auth.id_clinic}
             />
           </CardBasic>
         </div>
@@ -53,6 +57,8 @@ function IndexCalendar() {
         date={date}
         events={events}
         setEvents={setEvents}
+        blockedDays={blockedDays}
+        setBlockedDays={setBlockedDays}
       />
 
       <ModalCalendarEdit
@@ -61,6 +67,7 @@ function IndexCalendar() {
         clinic={auth.id_clinic}
         event={event}
         setEvent={setEvent}
+        events={events}
         setEvents={setEvents}
       />
     </>

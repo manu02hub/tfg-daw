@@ -271,7 +271,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                   </div>
 
                   <div className="separadorBtn">
-                    <BtnPrimary>Save</BtnPrimary>
+                    <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
                   </div>
                 </form>
               </section>

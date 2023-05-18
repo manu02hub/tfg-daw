@@ -82,7 +82,7 @@ function FormCreateClinic({ clinics, setClinics }) {
       </div>
 
       <div className="separadorBtn btnCreate">
-        <BtnPrimary>Add Clinic</BtnPrimary>
+        <BtnPrimary className={"btnsPrimary"}>Add Clinic</BtnPrimary>
         <BtnReset>Reset</BtnReset>
       </div>
     </form>

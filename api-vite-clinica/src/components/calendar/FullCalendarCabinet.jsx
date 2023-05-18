@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import listPlugin from "@fullcalendar/list";
@@ -20,7 +20,19 @@ function FullCalendarCabinet({
   events,
   setEvents,
   setEvent,
+  blockedDays,
+  setBlockedDays,
+  clinic,
 }) {
+  const currentDate = new Date();
+  const calendarRef = useRef(null);
+
+  const [loadBlock, setLoadBlock] = useState(true);
+
+  const validRange = {
+    start: currentDate,
+  };
+
   useEffect(() => {
     setLoading(true);
     if (toggleTab !== 0) {
@@ -28,9 +40,80 @@ function FullCalendarCabinet({
     }
   }, [toggleTab]);
 
+  useEffect(() => {
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.render(); // Re-render the calendar after updating the blocked days
+    }
+  }, [blockedDays]);
+
+  // const getBlockedDays = async () => {
+  //   const { datos, cargando } = await PeticionAJAX(
+  //     Global.url + "dayBlocked/all-dayBlocked/" + clinic,
+  //     "GET"
+  //   );
+
+  //   if (datos.state == "success" && !cargando) {
+  //     setBlockedDays(datos.daysBlocked);
+  //     console.log(datos.daysBlocked);
+  //     setLoadBlock(false);
+  //   }
+  // };
+
   const dateClick = (info) => {
-    setConfirmModalCreate(true);
-    setDate(info.dateStr);
+    let index;
+
+    if (blockedDays.length >= 1) {
+      blockedDays.map((element) => {
+        index = element.date.indexOf(info.dateStr);
+      });
+
+    } else {
+      index = -1;
+    }
+
+    if (index === -1) {
+      setConfirmModalCreate(true);
+      setDate(info.dateStr);
+    }
+  };
+
+  const dayCellDidMount = async (arg) => {
+    let auxDate;
+    let dayCell;
+    let isBlocked;
+    const { date } = arg;
+
+    if (loadBlock) {
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url + "dayBlocked/all-dayBlocked/" + clinic,
+        "GET"
+      );
+
+      if (datos.state == "success" && !cargando) {
+        setBlockedDays(datos.daysBlocked);
+        console.log(datos.daysBlocked);
+
+        if (datos.daysBlocked.length >= 1) {
+          auxDate = new Date(date);
+          auxDate.setDate(auxDate.getDate() + 1);
+
+          datos.daysBlocked.map((element) => {
+            isBlocked = element.date.includes(
+              auxDate.toISOString().split("T")[0]
+            );
+          });
+
+          console.log(isBlocked);
+
+          if (isBlocked) {
+            dayCell = arg.el;
+            dayCell.style.pointerEvents = "none";
+            dayCell.classList.add("blocked-day");
+          }
+        }
+      }
+    }
   };
 
   const getAppointments = async () => {
@@ -87,8 +170,7 @@ function FullCalendarCabinet({
 
   const handleEventClick = (info) => {
     setConfirmModalEdit(true);
-    setEvent(info.event.id);
-    // Handle the event click logic here
+    setEvent(info.event);
   };
 
   return (
@@ -102,8 +184,10 @@ function FullCalendarCabinet({
           center: "title",
           end: "dayGridMonth,timeGridWeek,timeGridDay,listWeek", // will normally be on the right. if RTL, will be on the left
         }}
+        validRange={validRange}
         dayHeaderFormat={{ weekday: "long" }}
         hiddenDays={[0]}
+        dayCellDidMount={dayCellDidMount}
         dateClick={(info) => {
           dateClick(info);
         }}

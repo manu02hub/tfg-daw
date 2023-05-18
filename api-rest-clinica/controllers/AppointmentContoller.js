@@ -66,39 +66,49 @@ const deleteAppointment = async (req, res) => {
 
 }
 
-// const updateAppointment = async (req, res) => {
-//     let id = req.params.id;
-//     let parameters = req.body;
-//     var therapy;
+const updateAppointment = async (req, res) => {
+    let id = req.params.id;
+    let parameters = req.body;
+    var appointment;
 
-//     therapy = await Therapy.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { name: parameters.name }] });
+    if (id) {
 
-//     if (therapy) {
-//         respuesta = res.status(200).json({
-//             state: "error",
-//             message: "Ya existe el tratamiento"
-//         });
+        appointment = await Appointment.findOne({ _id: id });
 
-//     } else {
+        if (appointment) {
 
-//         therapy = await Therapy.findByIdAndUpdate(id, parameters, { new: true });
+            appointment = await Appointment.findByIdAndUpdate(id, parameters, { new: true });
 
-//         respuesta = res.status(200).json({
-//             state: "success",
-//             message: "Terapia editada correctamente",
-//             therapy: therapy
+            respuesta = res.status(200).json({
+                state: "success",
+                message: "Cita editada correctamente",
+                appointment: appointment
+            });
 
-//         });
-//     }
+        } else {
+            respuesta = res.status(200).json({
+                state: "success",
+                message: "No se ha encontrado la cita",
+            });
+        }
 
-//     return respuesta;
+    } else {
+        respuesta = res.status(400).json({
+            state: "error",
+            message: "Algo ha ido mal",
 
-// }
+        });
+    }
+
+    return respuesta;
+
+}
 
 module.exports = {
     createAppointment,
     getAppointmentsCabinet,
     deleteAppointment,
-    getAppointment
+    getAppointment,
+    updateAppointment,
     // getTherapy
 }

@@ -65,7 +65,7 @@ function FormCreateCabinet({clinic, cabinets, setCabinets}) {
       </div>
 
       <div className="separadorBtn btnCreate">
-        <BtnPrimary>Add Cabinet</BtnPrimary>
+        <BtnPrimary className={"btnsPrimary"}>Add Cabinet</BtnPrimary>
         <BtnReset>Reset</BtnReset>
       </div>
     </form>

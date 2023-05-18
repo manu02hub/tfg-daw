@@ -79,7 +79,7 @@ function FormEditCabinet({ id, loading, setLoading }) {
           ></InputError>
 
           <div className="separadorBtn">
-            <BtnPrimary>Save</BtnPrimary>
+            <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
           </div>
         </form>
       )}

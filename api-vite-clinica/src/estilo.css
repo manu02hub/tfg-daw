@@ -572,15 +572,24 @@ hr {
   cursor: pointer;
 }
 
-.btnsColor {
+.btnsPrimary {
   border: none;
   color: white;
   background: #0277b5;
   transition: all 300ms;
+  margin-left: 5px;
 }
 
-.btnsColor:hover {
+.btnsPrimary:hover {
   background: #023754;
+}
+
+.btnsEdit {
+  border: none;
+  color: #212121;
+  background: #f4d53d;
+  transition: all 300ms;
+  margin-left: 5px;
 }
 
 .btnDelete {
@@ -588,11 +597,20 @@ hr {
   color: white;
   background: #d32f2f;
   transition: all 300ms;
+  margin-left: 5px;
 }
 
 .btnCancel {
   border: 1px solid rgb(209 213 219);
   background: white;
+  transition: all 300ms;
+  color: #212121;
+  margin-left: 5px;
+}
+
+.btnBlock {
+  border: 1px solid rgb(209 213 219);
+  background: rgb(212, 212, 212);
   transition: all 300ms;
   color: #212121;
   margin-left: 5px;
@@ -1367,6 +1385,10 @@ table .pdf {
 
 select[multiple]:focus option:checked {
   background: #065a88 linear-gradient(0deg, #065a88 0%, #065a88 100%);
+}
+
+.blocked-day {
+  background-color: #40ade7;
 }
 
 /*-------------------------GRID SYSTEM------------------------------------------*/
