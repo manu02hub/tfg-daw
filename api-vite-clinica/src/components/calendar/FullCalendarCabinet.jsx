@@ -41,24 +41,29 @@ function FullCalendarCabinet({
   }, [toggleTab]);
 
   useEffect(() => {
+
+    console.log(blockedDays);
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
-      calendarApi.render(); // Re-render the calendar after updating the blocked days
+      console.log(calendarRef.current); // Verifica si calendarRef se establece correctamente
+      calendarApi.refetchEvents(); // Re-render the calendar after updating the blocked days
     }
   }, [blockedDays]);
 
-  // const getBlockedDays = async () => {
-  //   const { datos, cargando } = await PeticionAJAX(
-  //     Global.url + "dayBlocked/all-dayBlocked/" + clinic,
-  //     "GET"
-  //   );
+  const getBlockedDays = async () => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "dayBlocked/all-dayBlocked/" + clinic,
+      "GET"
+    );
 
-  //   if (datos.state == "success" && !cargando) {
-  //     setBlockedDays(datos.daysBlocked);
-  //     console.log(datos.daysBlocked);
-  //     setLoadBlock(false);
-  //   }
-  // };
+    if (datos.state == "success" && !cargando) {
+      setBlockedDays(datos.daysBlocked);
+
+      setLoadBlock(false);
+
+      return datos.daysBlocked;
+    }
+  };
 
   const dateClick = (info) => {
     let index;
@@ -67,7 +72,6 @@ function FullCalendarCabinet({
       blockedDays.map((element) => {
         index = element.date.indexOf(info.dateStr);
       });
-
     } else {
       index = -1;
     }
@@ -82,37 +86,31 @@ function FullCalendarCabinet({
     let auxDate;
     let dayCell;
     let isBlocked;
+    let auxBlocked;
+
     const { date } = arg;
 
+    console.log("aaa");
     if (loadBlock) {
-      const { datos, cargando } = await PeticionAJAX(
-        Global.url + "dayBlocked/all-dayBlocked/" + clinic,
-        "GET"
-      );
+      auxBlocked = await getBlockedDays();
+    } else {
+      auxBlocked = blockedDays;
+      console.log(auxBlocked);
+    }
 
-      if (datos.state == "success" && !cargando) {
-        setBlockedDays(datos.daysBlocked);
-        console.log(datos.daysBlocked);
+    if (auxBlocked.length >= 1) {
+      auxDate = new Date(date);
+      auxDate.setDate(auxDate.getDate() + 1);
 
-        if (datos.daysBlocked.length >= 1) {
-          auxDate = new Date(date);
-          auxDate.setDate(auxDate.getDate() + 1);
+      auxBlocked.map((element) => {
+        isBlocked = element.date.includes(auxDate.toISOString().split("T")[0]);
 
-          datos.daysBlocked.map((element) => {
-            isBlocked = element.date.includes(
-              auxDate.toISOString().split("T")[0]
-            );
-          });
-
-          console.log(isBlocked);
-
-          if (isBlocked) {
-            dayCell = arg.el;
-            dayCell.style.pointerEvents = "none";
-            dayCell.classList.add("blocked-day");
-          }
+        if (isBlocked) {
+          dayCell = arg.el;
+          dayCell.style.pointerEvents = "none";
+          dayCell.classList.add("blocked-day");
         }
-      }
+      });
     }
   };
 
@@ -184,6 +182,7 @@ function FullCalendarCabinet({
           center: "title",
           end: "dayGridMonth,timeGridWeek,timeGridDay,listWeek", // will normally be on the right. if RTL, will be on the left
         }}
+        ref={calendarRef}
         validRange={validRange}
         dayHeaderFormat={{ weekday: "long" }}
         hiddenDays={[0]}

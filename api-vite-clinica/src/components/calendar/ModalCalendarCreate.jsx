@@ -144,8 +144,7 @@ function ModalCalendarCreate({
     let blockDay;
 
     found = events.find((element) => {
-      console.log(element.date.split("T")[0]);
-      element.date.split("T")[0] == date;
+      return element.date.split("T")[0] == date;
     });
 
     if (!found) {
@@ -161,7 +160,8 @@ function ModalCalendarCreate({
       );
 
       if (datos.state == "success" && !cargando) {
-        setBlockedDays((prevBlockedDays) => [...prevBlockedDays, blockDay]);
+        setBlockedDays([...blockedDays, blockDay]);
+        closeModal();
       }
     }
   };
