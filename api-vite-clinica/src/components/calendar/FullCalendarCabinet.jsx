@@ -34,6 +34,7 @@ function FullCalendarCabinet({
   };
 
   useEffect(() => {
+    console.log("hahbs")
     setLoading(true);
     if (toggleTab !== 0) {
       getAppointments(toggleTab);
@@ -41,13 +42,10 @@ function FullCalendarCabinet({
   }, [toggleTab]);
 
   useEffect(() => {
-
-    console.log(blockedDays);
-    if (calendarRef.current) {
-      const calendarApi = calendarRef.current.getApi();
-      console.log(calendarRef.current); // Verifica si calendarRef se establece correctamente
-      calendarApi.refetchEvents(); // Re-render the calendar after updating the blocked days
-    }
+    // if (calendarRef.current) {
+    //   const calendarApi = calendarRef.current.getApi();
+    //   calendarApi.refetchEvents(); // Re-render the calendar after updating the blocked days
+    // }
   }, [blockedDays]);
 
   const getBlockedDays = async () => {
@@ -66,17 +64,13 @@ function FullCalendarCabinet({
   };
 
   const dateClick = (info) => {
-    let index;
+    let found;
 
-    if (blockedDays.length >= 1) {
-      blockedDays.map((element) => {
-        index = element.date.indexOf(info.dateStr);
-      });
-    } else {
-      index = -1;
-    }
+    found = blockedDays.find(
+      (element) => element.date.split("T")[0] == info.dateStr
+    );
 
-    if (index === -1) {
+    if (!found) {
       setConfirmModalCreate(true);
       setDate(info.dateStr);
     }
@@ -90,12 +84,10 @@ function FullCalendarCabinet({
 
     const { date } = arg;
 
-    console.log("aaa");
     if (loadBlock) {
       auxBlocked = await getBlockedDays();
     } else {
       auxBlocked = blockedDays;
-      console.log(auxBlocked);
     }
 
     if (auxBlocked.length >= 1) {
@@ -114,6 +106,16 @@ function FullCalendarCabinet({
     }
   };
 
+  const dayCellContent = (cellInfo) => {
+    const { date, dayEl } = cellInfo;
+    const dateString = date.toISOString().split("T")[0];
+    console.log(dateString);
+    // Verifica si hay un color personalizado para el día
+    // if (customDayColors[dateString]) {
+    //   dayEl.style.backgroundColor = customDayColors[dateString];
+    //   dayEl.style.color = "white"; // Cambia el color del texto a blanco
+    // }
+  };
   const getAppointments = async () => {
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "appointment/getAppointment-cabinet/" + toggleTab,
@@ -124,6 +126,36 @@ function FullCalendarCabinet({
       setAppointments(datos.appointments);
       therapy_has_patient(datos.appointments);
       // setLoading(false);
+    }
+  };
+
+  const handleEventDrop = async (arg) => {
+    // Maneja el evento de deslizamiento aquí
+    let appointment;
+    const newStartDay = arg.event.start; // Obtener el día del mes para la fecha de inicio
+
+    console.log("Día de inicio:", newStartDay.toISOString());
+    console.log(arg.event.id);
+
+    const isDayBlocked = blockedDays.find(
+      (element) =>
+        element.date.split("T")[0] == newStartDay.toISOString().split("T")[0]
+    );
+
+    if (isDayBlocked) {
+      // Cancelar el arrastre del evento
+      arg.revert();
+      console.log("No se puede deslizar el evento en un día bloqueado");
+    } else {
+      appointment = {
+        date: newStartDay,
+      };
+
+      await PeticionAJAX(
+        Global.url + "appointment/update-appointment/" + arg.event.id,
+        "PUT",
+        appointment
+      );
     }
   };
 
@@ -187,11 +219,12 @@ function FullCalendarCabinet({
         dayHeaderFormat={{ weekday: "long" }}
         hiddenDays={[0]}
         dayCellDidMount={dayCellDidMount}
-        dateClick={(info) => {
-          dateClick(info);
-        }}
+        dayCellContent={dayCellContent}
+        dateClick={dateClick}
         loading={!loading}
         // weekends={false}
+        editable={true}
+        eventDrop={handleEventDrop}
         events={events}
         eventClick={handleEventClick}
       />
