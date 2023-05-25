@@ -69,12 +69,12 @@ function FormEditPatient({ id, loading, setLoading }) {
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-12">
               <section className="section-card">
-                <h2>Create a new patient </h2>
-                <p>Complete profile information.</p>
+                <h2>Edita los datos del paciente </h2>
+                <p>Completa con la información necesaria</p>
                 <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
                   <div className="row">
                     <div className="col-lg-6 col-md-6 col-sm-12">
-                      <InputLabel>Name</InputLabel>
+                      <InputLabel>Nombre</InputLabel>
                       <InputText
                         type="text"
                         name="name"
@@ -85,7 +85,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     </div>
 
                     <div className="col-lg-6 col-md-6 col-sm-12">
-                      <InputLabel>Surnames</InputLabel>
+                      <InputLabel>Apellidos</InputLabel>
                       <InputText
                         type="text"
                         name="surnames"
@@ -115,7 +115,7 @@ function FormEditPatient({ id, loading, setLoading }) {
 
                     <div className="col-lg-2 col-md-6 col-sm-12">
                       <div className="separadorForm">
-                        <InputLabel>Date of Birthday</InputLabel>
+                        <InputLabel>Fecha de Nacimiento</InputLabel>
                         <InputText
                           type="date"
                           name="date_birth"
@@ -130,7 +130,7 @@ function FormEditPatient({ id, loading, setLoading }) {
 
                     <div className="col-lg-2 col-md-6 col-sm-6">
                       <div className="separadorForm">
-                        <InputLabel>Gender</InputLabel>
+                        <InputLabel>Género</InputLabel>
                         <select
                           {...register("gender")}
                           defaultValue={patient.gender}
@@ -143,7 +143,7 @@ function FormEditPatient({ id, loading, setLoading }) {
 
                     <div className="col-lg-2 col-md-6 col-sm-6">
                       <div className="separadorForm">
-                        <InputLabel>Odontogram</InputLabel>
+                        <InputLabel>Odontograma</InputLabel>
                         <SelectOdontogram {...register("odontogram")} name={"odontogram"} defaultValue={patient._id}/>
                       </div>
                     </div>
@@ -169,7 +169,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     </div>
 
                     <div className="col-lg-6 col-md-6 col-sm-12">
-                      <InputLabel>Mobile phone</InputLabel>
+                      <InputLabel>Número de Teléfono</InputLabel>
                       <InputText
                         type="phone"
                         name="mobile_phone"
@@ -189,12 +189,12 @@ function FormEditPatient({ id, loading, setLoading }) {
                   </div>
 
                   <div className="subtitleForm">
-                    <p>Direccion</p>
+                    <p>Dirección</p>
                   </div>
 
                   <div className="row">
                     <div className="col-lg-6 col-md-6 col-sm-12">
-                      <InputLabel>Street</InputLabel>
+                      <InputLabel>Calle</InputLabel>
                       <InputText
                         type="text"
                         name="street"
@@ -207,7 +207,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     </div>
 
                     <div className="col-lg-3 col-md-6 col-sm-12">
-                      <InputLabel>Number</InputLabel>
+                      <InputLabel>Número</InputLabel>
                       <InputText
                         type="number"
                         name="number"
@@ -220,7 +220,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     </div>
 
                     <div className="col-lg-2 col-md-6 col-sm-12">
-                      <InputLabel>Flat</InputLabel>
+                      <InputLabel>Piso</InputLabel>
                       <InputText
                         type="text"
                         name="flat"
@@ -233,7 +233,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     </div>
 
                     <div className="col-lg-4 col-md-6 col-sm-12">
-                      <InputLabel>Zip Code</InputLabel>
+                      <InputLabel>Código Postal</InputLabel>
                       <InputText
                         type="number"
                         name="z_postal"
@@ -246,7 +246,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     </div>
 
                     <div className="col-lg-4 col-md-6 col-sm-12">
-                      <InputLabel>City</InputLabel>
+                      <InputLabel>Ciudad</InputLabel>
                       <InputText
                         type="text"
                         name="city"
@@ -257,7 +257,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                     </div>
 
                     <div className="col-lg-4 col-md-6 col-sm-12">
-                      <InputLabel>Province</InputLabel>
+                      <InputLabel>Provincia</InputLabel>
                       <InputText
                         type="text"
                         name="province"
@@ -271,7 +271,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                   </div>
 
                   <div className="separadorBtn">
-                    <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
+                    <BtnPrimary className={"btnsPrimary"}>Guardar</BtnPrimary>
                   </div>
                 </form>
               </section>

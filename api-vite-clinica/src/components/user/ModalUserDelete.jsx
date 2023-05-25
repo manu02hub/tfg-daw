@@ -62,15 +62,15 @@ function ModalUserDelete({ confirm, setConfirm, user, auth, users, setUsers }) {
       {confirm && (
         <Modal show={confirm}>
           <div className="section-modal">
-            <h2>Are you sure you want to delete your account?</h2>
+            <h2>¿Seguro que quiere eliminar la cuenta?</h2>
             <p>
-              Once your account is deleted, all of its resources and data will
-              be permanently deleted. Please enter your password to confirm you
-              would like to permanently delete your account.
+            Una vez que se elimine su cuenta, todos sus recursos y datos
+              se eliminará permanentemente. Por favor, introduzca su contraseña para confirmar
+              le gustaría eliminar permanentemente su cuenta.
             </p>
 
             <form className="formDelete" onSubmit={handleSubmit(deleteUser)}>
-              <InputLabel>Password</InputLabel>
+              <InputLabel>Contraseña</InputLabel>
 
               <InputText
                 type="password"
@@ -91,9 +91,9 @@ function ModalUserDelete({ confirm, setConfirm, user, auth, users, setUsers }) {
               ></InputError>
 
               <div className="btnModal">
-                <BtnDelete>Delete Account</BtnDelete>
+                <BtnDelete>Eliminar cuenta</BtnDelete>
                 <BtnCancel type="button" onClick={() => closeModal()}>
-                  Cancel
+                  Cancelar
                 </BtnCancel>
               </div>
             </form>

@@ -8,6 +8,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import esLocale from "@fullcalendar/core/locales/es";
 
+
 function FullCalendarCabinet({
   setConfirmModalCreate,
   setConfirmModalEdit,
@@ -28,6 +29,7 @@ function FullCalendarCabinet({
   const calendarRef = useRef(null);
 
   const [loadBlock, setLoadBlock] = useState(true);
+  const [selectedDay, setSelectedDay] = useState(null);
 
   const validRange = {
     start: currentDate,
@@ -42,10 +44,10 @@ function FullCalendarCabinet({
   }, [toggleTab]);
 
   useEffect(() => {
-    // if (calendarRef.current) {
-    //   const calendarApi = calendarRef.current.getApi();
-    //   calendarApi.refetchEvents(); // Re-render the calendar after updating the blocked days
-    // }
+    const calendarApi = calendarRef.current.getApi();
+
+    // Establece un estilo personalizado para el día seleccionado
+    calendarApi.render();
   }, [blockedDays]);
 
   const getBlockedDays = async () => {
@@ -104,18 +106,9 @@ function FullCalendarCabinet({
         }
       });
     }
+    console.log("Voy antes");
   };
 
-  const dayCellContent = (cellInfo) => {
-    const { date, dayEl } = cellInfo;
-    const dateString = date.toISOString().split("T")[0];
-    console.log(dateString);
-    // Verifica si hay un color personalizado para el día
-    // if (customDayColors[dateString]) {
-    //   dayEl.style.backgroundColor = customDayColors[dateString];
-    //   dayEl.style.color = "white"; // Cambia el color del texto a blanco
-    // }
-  };
   const getAppointments = async () => {
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "appointment/getAppointment-cabinet/" + toggleTab,
@@ -207,7 +200,7 @@ function FullCalendarCabinet({
     <>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-        //  locale={esLocale}
+        locale={esLocale}
         // initialView={"timeGridDay"}
         headerToolbar={{
           start: "prev,next,today", // will normally be on the left. if RTL, will be on the right
@@ -219,13 +212,19 @@ function FullCalendarCabinet({
         dayHeaderFormat={{ weekday: "long" }}
         hiddenDays={[0]}
         dayCellDidMount={dayCellDidMount}
-        dayCellContent={dayCellContent}
         dateClick={dateClick}
         loading={!loading}
         // weekends={false}
         editable={true}
         eventDrop={handleEventDrop}
-        events={events}
+        // events={[{
+         
+        //   start: '2023-05-20',
+        //   // end: '2023-05-17',
+        //    backgroundColor:"blue",
+        //   display: 'background'
+        // }]}
+         events={events}
         eventClick={handleEventClick}
       />
     </>

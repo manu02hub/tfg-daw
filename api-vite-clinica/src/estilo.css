@@ -1391,6 +1391,16 @@ select[multiple]:focus option:checked {
   background-color: #40ade7;
 }
 
+.fc-day-number{
+  color: #212121;
+}
+
+.fc-bg-event {
+  background-color: #aaaa; /* Color de fondo para eventos de fondo */
+  border-color: #d0d0d0; /* Color del borde para eventos de fondo */
+  color: #333; /* Color del texto para eventos de fondo */
+}
+
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {
   display: grid; /* En la propiedad display agregamos grid para establecer una cuadricula */

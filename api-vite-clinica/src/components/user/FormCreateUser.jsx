@@ -50,7 +50,7 @@ function FormCreateUser({ auth }) {
     <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
       <div className="row">
         <div className="col-lg-6 col-md-6 col-sm-12">
-          <InputLabel>Name</InputLabel>
+          <InputLabel>Nombre</InputLabel>
           <InputText type="text" name="name" {...register("name")}></InputText>
           <InputError message={errors.name?.message}></InputError>
         </div>
@@ -71,7 +71,7 @@ function FormCreateUser({ auth }) {
       <div className="row">
         <div className="col-lg-8 col-md-10 col-sm-12">
           <div className="separadorForm">
-            <InputLabel>Password</InputLabel>
+            <InputLabel>Contraseña</InputLabel>
             <InputText
               type="password"
               name="password"
@@ -81,7 +81,7 @@ function FormCreateUser({ auth }) {
           </div>
 
           <div className="separadorForm">
-            <InputLabel>Confirm Password</InputLabel>
+            <InputLabel>Confirmar Contraseña</InputLabel>
             <InputText
               type="password"
               name="passwordConfirmation"
@@ -103,7 +103,7 @@ function FormCreateUser({ auth }) {
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12">
           <div className="separadorForm">
-            <InputLabel>Clinica</InputLabel>
+            <InputLabel>Clínica</InputLabel>
             <SelectClinic
               name="id_clinic"
               auth={auth}

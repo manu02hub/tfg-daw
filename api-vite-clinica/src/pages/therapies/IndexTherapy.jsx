@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import HeaderSection from "../../components/HeaderSection";
 import CardBasic from "../../components/CardBasic";
-import TableTherapie from "../../components/therapie/TableTherapie";
-import FormCreateTherapie from "../../components/therapie/FormCreateTherapie";
+import TableTherapy from "../../components/therapy/TableTherapy";
+import FormCreateTherapy from "../../components/therapy/FormCreateTherapy";
 import Spinner from "../../components/Spinner";
 
-function IndexTherapie() {
+function IndexTherapy() {
   const [loading, setLoading] = useState(true);
   const [therapies, setTherapies] = useState({});
 
@@ -22,12 +22,12 @@ function IndexTherapie() {
               </div>
               <div className="headerSearch">
                 <form>
-                  <label>Search: </label>
+                  <label>Buscar: </label>
                   <input className="inputSearch"></input>
                 </form>
               </div>
             </div>
-            <TableTherapie
+            <TableTherapy
               load={loading}
               setLoad={setLoading}
               therapies={therapies}
@@ -37,8 +37,8 @@ function IndexTherapie() {
         </div>
         <div className="col-lg-4 col-md-12 col-sm-12">
           <CardBasic>
-            <span>Añadir Clinica</span>
-            <FormCreateTherapie
+            <span>Añadir Tratamiento</span>
+            <FormCreateTherapy
               therapies={therapies}
               setTherapies={setTherapies}
             />
@@ -49,4 +49,4 @@ function IndexTherapie() {
   );
 }
 
-export default IndexTherapie;
+export default IndexTherapy;

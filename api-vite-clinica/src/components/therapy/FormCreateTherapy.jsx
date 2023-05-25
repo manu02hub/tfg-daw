@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../helpers/Validate";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
-import InputLabel from "../../components/InputLabel";
-import InputText from "../../components/InputText";
-import InputError from "../../components/InputError";
+import InputLabel from "../InputLabel";
+import InputText from "../InputText";
+import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
 import BtnReset from "../BtnReset";
 
-function FormCreateTherapie({ therapies, setTherapies }) {
+function FormCreateTherapy({ therapies, setTherapies }) {
   const [error, setError] = useState("");
 
   const {
@@ -46,7 +46,7 @@ function FormCreateTherapie({ therapies, setTherapies }) {
   return (
     <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
       <div className="separadorForm">
-        <InputLabel>Name</InputLabel>
+        <InputLabel>Nombre</InputLabel>
         <InputText
           type="text"
           name="name"
@@ -59,7 +59,7 @@ function FormCreateTherapie({ therapies, setTherapies }) {
       </div>
 
       <div className="separadorForm">
-        <InputLabel>Price</InputLabel>
+        <InputLabel>Precio</InputLabel>
         <InputText
           type="number"
           name="price"
@@ -69,7 +69,7 @@ function FormCreateTherapie({ therapies, setTherapies }) {
       </div>
 
       <div className="separadorForm">
-        <InputLabel>Discount</InputLabel>
+        <InputLabel>Descuento</InputLabel>
         <InputText
           type="number"
           name="discount"
@@ -80,12 +80,12 @@ function FormCreateTherapie({ therapies, setTherapies }) {
 
       <div className="separadorBtn btnCreate">
         <div className="separadorBtn btnCreate">
-          <BtnPrimary className={"btnsPrimary"}>Add Therapy</BtnPrimary>
-          <BtnReset>Reset</BtnReset>
+          <BtnPrimary className={"btnsPrimary"}>Añadir Tratamiento</BtnPrimary>
+          <BtnReset>Resetear</BtnReset>
         </div>
       </div>
     </form>
   );
 }
 
-export default FormCreateTherapie;
+export default FormCreateTherapy;

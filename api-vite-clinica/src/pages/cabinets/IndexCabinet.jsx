@@ -32,7 +32,7 @@ function IndexCabinet() {
 
         <div className="col-lg-4 col-md-12 col-sm-12">
           <CardBasic>
-            <span>Añadir Cabinet</span>
+            <span>Añadir Gabinete</span>
             <FormCreateCabinet
               clinic={auth.id_clinic}
               cabinets={cabinets}

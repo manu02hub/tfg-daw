@@ -46,13 +46,13 @@ function FormCreateClinic({ clinics, setClinics }) {
   return (
     <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
       <div className="separadorForm">
-        <InputLabel>Name</InputLabel>
+        <InputLabel>Nombre</InputLabel>
         <InputText type="text" name="name" {...register("name")}></InputText>
         <InputError message={errors.name?.message}></InputError>
       </div>
 
       <div className="separadorForm">
-        <InputLabel>Direction</InputLabel>
+        <InputLabel>Dirección</InputLabel>
         <InputText
           type="text"
           name="direction"
@@ -66,7 +66,7 @@ function FormCreateClinic({ clinics, setClinics }) {
       </div>
 
       <div className="separadorForm">
-        <InputLabel>City</InputLabel>
+        <InputLabel>Ciudad</InputLabel>
         <InputText type="text" name="city" {...register("city")}></InputText>
         <InputError message={errors.city?.message}></InputError>
       </div>
@@ -82,8 +82,8 @@ function FormCreateClinic({ clinics, setClinics }) {
       </div>
 
       <div className="separadorBtn btnCreate">
-        <BtnPrimary className={"btnsPrimary"}>Add Clinic</BtnPrimary>
-        <BtnReset>Reset</BtnReset>
+        <BtnPrimary className={"btnsPrimary"}>Añadir Clínica</BtnPrimary>
+        <BtnReset>Resetear</BtnReset>
       </div>
     </form>
   );

@@ -43,7 +43,7 @@ function TherapyPatient() {
     <>
       {!loading && (
         <>
-          <HeaderSection title={"Threapy Patient"} />
+          <HeaderSection title={"Tratamientos para Paciente"} />
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-12">
               <CardBasic>

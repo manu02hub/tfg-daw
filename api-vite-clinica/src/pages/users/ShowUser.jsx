@@ -7,7 +7,7 @@ import HeaderSection from "../../components/HeaderSection";
 function ShowUser() {
   return (
     <>
-      <HeaderSection title={"Info User"} />
+      <HeaderSection title={"Información del Usuario"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>

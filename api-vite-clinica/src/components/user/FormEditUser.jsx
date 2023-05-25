@@ -50,7 +50,7 @@ function FormEditUser({ user, auth }) {
     <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
       <div className="row">
         <div className="col-lg-6 col-md-6 col-sm-12">
-          <InputLabel>Name</InputLabel>
+          <InputLabel>Nombre</InputLabel>
           <InputText
             type="text"
             name="name"
@@ -80,7 +80,7 @@ function FormEditUser({ user, auth }) {
           />
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12">
-          <InputLabel>Clinica </InputLabel>
+          <InputLabel>Clínica </InputLabel>
           <SelectClinic
             name="id_clinic"
             defaultValue={user.id_clinic}
@@ -90,7 +90,7 @@ function FormEditUser({ user, auth }) {
         </div>
       </div>
       <div className="separadorBtn">
-        <BtnPrimary className={"btnsPrimary"} >Save</BtnPrimary>
+        <BtnPrimary className={"btnsPrimary"} >Guardar</BtnPrimary>
       </div>
     </form>
   );

@@ -45,7 +45,7 @@ function IndexUser() {
       <HeaderSection title={"Usuarios"}>
         <div className="headerSearch">
           <Search />
-          <BtnAdd to={"/panel/users/user-create"} add={"Add User"}>
+          <BtnAdd to={"/panel/users/user-create"} add={"Añadir Usuario"}>
             <BsPersonFillAdd></BsPersonFillAdd>
           </BtnAdd>
         </div>

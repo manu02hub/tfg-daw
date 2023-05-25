@@ -7,7 +7,7 @@ import FormCreateTutor from "../../components/patient/FormCreateTutor";
 function CreatePatient() {
   return (
     <>
-      <HeaderSection title={"Create Patient"} />
+      <HeaderSection title={"Crear un nuevo Paciente"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <FormCreatePatient/>

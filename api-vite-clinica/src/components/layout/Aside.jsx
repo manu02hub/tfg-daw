@@ -6,7 +6,7 @@ import {
   FaTooth,
   FaUserNurse,
   FaUsers,
-  FaCalendarDay
+  FaCalendarDay,
 } from "react-icons/fa";
 import { BsFillDoorOpenFill } from "react-icons/bs";
 import NavLink from "../NavLink";
@@ -19,6 +19,20 @@ function Aside({ permissionsAuth }) {
         <img src={logo}></img>
       </div>
       <div className="listadoRoutes">
+        <div className="cajaListado">
+          <NavLink className="cajaSelect" to={"/panel/calendar"}>
+            <FaCalendarDay className="iconoSide" />
+            <span className="spanSide">Citas</span>
+          </NavLink>
+        </div>
+
+        <div className="cajaListado">
+          <NavLink className="cajaSelect" to={"/panel/patients"}>
+            <FaUsers className="iconoSide" />
+            <span className="spanSide">Pacientes</span>
+          </NavLink>
+        </div>
+
         {permissionsAuth &&
           (checkPermission(permissionsAuth, "gestion-admin-user") ||
             checkPermission(permissionsAuth, "gestion-clinic-user")) && (
@@ -26,16 +40,6 @@ function Aside({ permissionsAuth }) {
               <NavLink className="cajaSelect" to={"/panel/users"}>
                 <FaUserNurse className="iconoSide" />
                 <span className="spanSide">Usuarios</span>
-              </NavLink>
-            </div>
-          )}
-
-        {permissionsAuth &&
-          checkPermission(permissionsAuth, "gestion-clinica") && (
-            <div className="cajaListado">
-              <NavLink className="cajaSelect" to={"/panel/clinics"}>
-                <FaClinicMedical className="iconoSide" />
-                <span className="spanSide">Clinicas</span>
               </NavLink>
             </div>
           )}
@@ -60,19 +64,15 @@ function Aside({ permissionsAuth }) {
             </div>
           )}
 
-        <div className="cajaListado">
-          <NavLink className="cajaSelect" to={"/panel/patients"}>
-            <FaUsers className="iconoSide" />
-            <span className="spanSide">Pacientes</span>
-          </NavLink>
-        </div>
-
-        <div className="cajaListado">
-          <NavLink className="cajaSelect" to={"/panel/calendar"}>
-            <FaCalendarDay className="iconoSide" />
-            <span className="spanSide">Calendar</span>
-          </NavLink>
-        </div>
+        {permissionsAuth &&
+          checkPermission(permissionsAuth, "gestion-clinica") && (
+            <div className="cajaListado">
+              <NavLink className="cajaSelect" to={"/panel/clinics"}>
+                <FaClinicMedical className="iconoSide" />
+                <span className="spanSide">Clínicas</span>
+              </NavLink>
+            </div>
+          )}
       </div>
     </aside>
   );

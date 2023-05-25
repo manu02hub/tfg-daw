@@ -11,12 +11,12 @@ import { Link } from "react-router-dom";
 import BtnsTable from "../BtnsTable";
 // import ModalClinicDelete from "./ModalClinicDelete";
 
-function TableTherapie({ load, setLoad, therapies, setTherapies }) {
+function TableTherapy({ load, setLoad, therapies, setTherapies }) {
   const [idClinic, setIdClinic] = useState(0);
   const [confirmingClinicDeletion, setConfirmingClinicDeletion] =
     useState(false);
 
-  const menuT = ["Therapie", "Precio", "Descuento", "Total", "Actions"];
+  const menuT = ["Tratamiento", "Precio", "Descuento", "Total", "Acciones"];
 
   useEffect(() => {
     getTherapies();
@@ -104,4 +104,4 @@ function TableTherapie({ load, setLoad, therapies, setTherapies }) {
   );
 }
 
-export default React.memo(TableTherapie);
+export default React.memo(TableTherapy);

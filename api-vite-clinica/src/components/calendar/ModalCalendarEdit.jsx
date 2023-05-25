@@ -160,7 +160,7 @@ function ModalCalendarEdit({
             <form className="formCreate" onSubmit={(e) => updateEvent(e)}>
               <div className="row">
                 <div className="col-lg-12 col-md-12 col-sm-12">
-                  <InputLabel>Patient</InputLabel>
+                  <InputLabel>Paciente</InputLabel>
 
                   {!loading && (
                     <SelectPatient
@@ -186,7 +186,7 @@ function ModalCalendarEdit({
                 </div>
                 <div className="col-lg-8 col-md-12 col-sm-12">
                   <div className="separadorForm">
-                    <InputLabel>User</InputLabel>
+                    <InputLabel>Profesional</InputLabel>
 
                     {!loading && (
                       <SelectUserClinic
@@ -199,7 +199,7 @@ function ModalCalendarEdit({
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12 timeMargin">
                   <div className="separadorForm">
-                    <InputLabel>Time</InputLabel>
+                    <InputLabel>Hora</InputLabel>
                     {!loading && (
                       <InputText
                         type="time"
@@ -213,11 +213,11 @@ function ModalCalendarEdit({
 
               <div className="btnModalAdd">
                 <button type="button" className="btnDelete shadow" onClick={()=>deleteEvent(event.id)}>
-                  DELETE
+                  ELIMINAR
                 </button>
-                <BtnPrimary className="btnsEdit shadow">EDIT</BtnPrimary>
+                <BtnPrimary className="btnsEdit shadow">EDITAR</BtnPrimary>
                 <BtnCancel type="button" onClick={() => closeModal()}>
-                  Cancel
+                  CANCELAR
                 </BtnCancel>
               </div>
             </form>

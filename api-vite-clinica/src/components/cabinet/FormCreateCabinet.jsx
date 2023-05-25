@@ -46,7 +46,7 @@ function FormCreateCabinet({clinic, cabinets, setCabinets}) {
     <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
      
       <div className="separadorForm">
-        <InputLabel>Reference</InputLabel>
+        <InputLabel>Referencia</InputLabel>
         <InputText
           type="text"
           name="reference"
@@ -65,8 +65,8 @@ function FormCreateCabinet({clinic, cabinets, setCabinets}) {
       </div>
 
       <div className="separadorBtn btnCreate">
-        <BtnPrimary className={"btnsPrimary"}>Add Cabinet</BtnPrimary>
-        <BtnReset>Reset</BtnReset>
+        <BtnPrimary className={"btnsPrimary"}>Añadir Gabinete</BtnPrimary>
+        <BtnReset>Resetear</BtnReset>
       </div>
     </form>
   );

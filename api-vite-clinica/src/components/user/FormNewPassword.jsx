@@ -46,7 +46,7 @@ function FormNewPassword({ user, auth }) {
     <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
       {auth._id == user._id && (
         <>
-          <InputLabel>Current Password</InputLabel>
+          <InputLabel>Contraseña Actual</InputLabel>
           <InputText
             type="password"
             name="current"
@@ -60,7 +60,7 @@ function FormNewPassword({ user, auth }) {
       )}
 
       <div className="separadorForm">
-        <InputLabel>New Password</InputLabel>
+        <InputLabel>New Contraseña</InputLabel>
         <InputText
           type="password"
           name="password"
@@ -70,7 +70,7 @@ function FormNewPassword({ user, auth }) {
       </div>
 
       <div className="separadorForm">
-        <InputLabel>Confirm Password</InputLabel>
+        <InputLabel>Confirmar Contraseña</InputLabel>
         <InputText
           type="password"
           name="passwordConfirmation"

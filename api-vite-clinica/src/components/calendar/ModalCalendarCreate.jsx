@@ -232,13 +232,13 @@ function ModalCalendarCreate({
               <div className="row">
                 <div className="col-lg-8 col-md-12 col-sm-12">
                   <div className="separadorForm">
-                    <InputLabel>User</InputLabel>
+                    <InputLabel>Profesional</InputLabel>
                     <SelectUserClinic clinic={clinic} name="user" />
                   </div>
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12 timeMargin">
                   <div className="separadorForm">
-                    <InputLabel>Time</InputLabel>
+                    <InputLabel>Hora</InputLabel>
                     <InputText
                       type="time"
                       name="time"
@@ -252,16 +252,16 @@ function ModalCalendarCreate({
               </div>
 
               <div className="btnModalAdd">
-                <BtnPrimary className="btnsPrimary shadow">SAVE</BtnPrimary>
+                <BtnPrimary className="btnsPrimary shadow">Guardar</BtnPrimary>
                 <button
                   type="button"
                   className="btnBlock shadow"
                   onClick={() => blockDay()}
                 >
-                  Block day
+                  Bloquear Día
                 </button>
                 <BtnCancel type="button" onClick={() => closeModal()}>
-                  Cancel
+                  Cancelar
                 </BtnCancel>
               </div>
             </form>

@@ -49,12 +49,12 @@ function FormCreateTutor() {
       <div className="row">
         <div className="col-sm-12 col-md-12 col-lg-12">
           <section className="section-card">
-            <h2>Create a new Tutor </h2>
-            <p>Require profile information.</p>
+            <h2>Crea un nuevo Tutor </h2>
+            <p>Rellena la información del Tutor</p>
             <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
               <div className="row">
                 <div className="col-lg-6 col-md-6 col-sm-12">
-                  <InputLabel>Name</InputLabel>
+                  <InputLabel>Nombre</InputLabel>
                   <InputText
                     type="text"
                     name="name"
@@ -64,7 +64,7 @@ function FormCreateTutor() {
                 </div>
 
                 <div className="col-lg-6 col-md-6 col-sm-12">
-                  <InputLabel>Surnames</InputLabel>
+                  <InputLabel>Apellidos</InputLabel>
                   <InputText
                     type="text"
                     name="surnames"
@@ -95,7 +95,7 @@ function FormCreateTutor() {
                 </div>
 
                 <div className="col-lg-6 col-md-6 col-sm-12">
-                  <InputLabel>Mobile phone</InputLabel>
+                  <InputLabel>Número de Teléfono</InputLabel>
                   <InputText
                     type="phone"
                     name="mobile_phone"
@@ -112,12 +112,12 @@ function FormCreateTutor() {
               </div>
 
               <div className="subtitleForm">
-                <p>Direction</p>
+                <p>Dirección</p>
               </div>
 
               <div className="row">
                 <div className="col-lg-6 col-md-6 col-sm-12">
-                  <InputLabel>Street</InputLabel>
+                  <InputLabel>Calle</InputLabel>
                   <InputText
                     type="text"
                     name="street"
@@ -131,7 +131,7 @@ function FormCreateTutor() {
                 </div>
 
                 <div className="col-lg-3 col-md-6 col-sm-12">
-                  <InputLabel>Number</InputLabel>
+                  <InputLabel>Número</InputLabel>
                   <InputText
                     type="number"
                     name="number"
@@ -144,7 +144,7 @@ function FormCreateTutor() {
                 </div>
 
                 <div className="col-lg-2 col-md-6 col-sm-12">
-                  <InputLabel>Flat</InputLabel>
+                  <InputLabel>Piso</InputLabel>
                   <InputText
                     type="text"
                     name="flat"
@@ -157,7 +157,7 @@ function FormCreateTutor() {
                 </div>
 
                 <div className="col-lg-4 col-md-6 col-sm-12">
-                  <InputLabel>Zip Code</InputLabel>
+                  <InputLabel>Código Postal</InputLabel>
                   <InputText
                     type="number"
                     name="z_postal"
@@ -168,7 +168,7 @@ function FormCreateTutor() {
                 </div>
 
                 <div className="col-lg-4 col-md-6 col-sm-12">
-                  <InputLabel>City</InputLabel>
+                  <InputLabel>Ciudad</InputLabel>
                   <InputText
                     type="text"
                     name="city"
@@ -179,7 +179,7 @@ function FormCreateTutor() {
                 </div>
 
                 <div className="col-lg-4 col-md-6 col-sm-12">
-                  <InputLabel>Province</InputLabel>
+                  <InputLabel>Provincia</InputLabel>
                   <InputText
                     type="text"
                     name="province"

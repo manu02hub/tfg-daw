@@ -72,7 +72,7 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
 
                   <TdTable>{patient.nif}</TdTable>
 
-                  <TdTable>{patient.odontogram}</TdTable>
+                  <TdTable>{"Adulto"}</TdTable>
 
                   <TdTable>{patient.mobile_phone}</TdTable>
 

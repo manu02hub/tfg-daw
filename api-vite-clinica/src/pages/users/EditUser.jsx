@@ -12,7 +12,6 @@ import Modal from "../../components/Modal";
 import DeleteAccount from "../../components/user/DeleteAccount";
 
 function EditUser() {
-
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -48,10 +47,10 @@ function EditUser() {
                 <div className="row">
                   <div className="col-sm-12 col-md-12 col-lg-12">
                     <section className="section-card">
-                      <h2>Profile information</h2>
+                      <h2>Información del perfil</h2>
                       <p>
-                        Update your account's profile information and email
-                        address.
+                        Actualizar la información del perfil y el correo
+                        electrónico de tu cuenta dirección.
                       </p>
                       <FormEditUser user={user} auth={auth} />
                     </section>
@@ -66,10 +65,10 @@ function EditUser() {
                 <div className="row">
                   <div className="col-sm-12 col-md-10 col-lg-8">
                     <section className="section-card">
-                      <h2>Update password</h2>
+                      <h2>Actualiza la contraseña</h2>
                       <p>
-                        Ensure your account is using a long, random password to
-                        stay secure.
+                        Asegúrese de que su cuenta esté usando una contraseña
+                        larga y aleatoria para mantenerse seguro.
                       </p>
                       <FormNewPassword user={user} auth={auth} />
                     </section>
@@ -83,7 +82,7 @@ function EditUser() {
               <CardBasic>
                 <div className="row">
                   <div className="col-sm-12 col-md-10 col-lg-8">
-                    <DeleteAccount user={user} auth={auth}/>
+                    <DeleteAccount user={user} auth={auth} />
                   </div>
                 </div>
               </CardBasic>

@@ -38,7 +38,7 @@ function Login() {
       localStorage.setItem("token", datos.token);
       localStorage.setItem("user", JSON.stringify(datos.user));
       setAuth(datos.user);
-      navigate("/panel/users");
+      navigate("/panel/calendar");
     } else {
       setError(datos.message);
     }
@@ -49,7 +49,7 @@ function Login() {
   };
 
   if (auth._id) {
-    return <Navigate to={"/panel/users"} replace={true} />;
+    return <Navigate to={"/panel/calendar"} replace={true} />;
   } else {
     return (
       <div className="login">
@@ -72,7 +72,7 @@ function Login() {
                 message={errors.email ? errors.email?.message : error}
               ></InputError>
               
-                <InputLabel>New Password</InputLabel>
+                <InputLabel>Contraseña</InputLabel>
                 <InputText
                   type="password"
                   name="password"

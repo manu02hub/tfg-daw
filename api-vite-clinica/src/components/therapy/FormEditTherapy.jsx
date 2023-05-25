@@ -64,7 +64,7 @@ function FormEditTherapy({ id, loading, setLoading }) {
     <>
       {!loading && (
         <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
-          <InputLabel>Name</InputLabel>
+          <InputLabel>Nombre</InputLabel>
           <InputText
             type="text"
             name="name"
@@ -77,7 +77,7 @@ function FormEditTherapy({ id, loading, setLoading }) {
           ></InputError>
 
           <div className="separadorForm">
-            <InputLabel>Price</InputLabel>
+            <InputLabel>Precio</InputLabel>
             <InputText
               type="number"
               name="price"
@@ -88,7 +88,7 @@ function FormEditTherapy({ id, loading, setLoading }) {
           </div>
 
           <div className="separadorForm">
-            <InputLabel>Discount</InputLabel>
+            <InputLabel>Descuento</InputLabel>
             <InputText
               type="number"
               name="discount"
@@ -98,7 +98,7 @@ function FormEditTherapy({ id, loading, setLoading }) {
             <InputError message={errors.discount?.message}></InputError>
           </div>
           <div className="separadorBtn">
-            <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
+            <BtnPrimary className={"btnsPrimary"}>Guardar</BtnPrimary>
           </div>
         </form>
       )}

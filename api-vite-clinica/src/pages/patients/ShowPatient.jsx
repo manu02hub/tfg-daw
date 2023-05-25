@@ -9,7 +9,7 @@ import CardBasic from "../../components/CardBasic";
 function ShowPatient() {
   return (
     <>
-      <HeaderSection title={"Show Patient"} />
+      <HeaderSection title={"Paciente"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
@@ -19,7 +19,7 @@ function ShowPatient() {
                 <div className="row patientData">
                   <div className="col-sm-12 col-md-4 col-lg-4">
                     <div className="patientPersonal">
-                      <span>Personal Data</span>
+                      <span>Datos Peronales</span>
                       <hr />
                       <p>
                         <span> Numero de Historial: </span> 000001
@@ -43,7 +43,7 @@ function ShowPatient() {
                   </div>
                   <div className="col-sm-12 col-md-4 col-lg-4">
                     <div className="patientContact">
-                      <span>Contact details</span>
+                      <span>Detalles de contacto</span>
                       <hr />
                       <div className="dataContact">
                         <MdMail />
@@ -57,7 +57,7 @@ function ShowPatient() {
                   </div>
                   <div className="col-sm-12 col-md-4 col-lg-4">
                     <div className="patientDirection">
-                      <span>Direction</span>
+                      <span>Dirección</span>
                       <hr />
                       <div className="dataContact">
                         <FaMapMarkerAlt />
@@ -89,7 +89,7 @@ function ShowPatient() {
                       <span>30 de Mayo de 2023</span>
                       <div className="therapiesDate">
                         <p>
-                          <span className="therapyName"> Therapy: </span>{" "}
+                          <span className="therapyName"> Tratamiento: </span>{" "}
                           Empaste, <span> Pieza: </span> 18a
                         </p>
                         <p>
@@ -98,7 +98,7 @@ function ShowPatient() {
                       </div>
                       <div className="therapiesDate">
                         <p>
-                          <span className="therapyName"> Therapy: </span>{" "}
+                          <span className="therapyName"> Tratamiento: </span>{" "}
                           Empaste, <span> Pieza: </span> 18a
                         </p>
                         <p>
@@ -114,7 +114,7 @@ function ShowPatient() {
                       <span>30 de Mayo de 2023</span>
                       <div className="therapiesDate">
                         <p>
-                          <span className="therapyName"> Therapy: </span>{" "}
+                          <span className="therapyName"> Tratamiento: </span>{" "}
                           Empaste, <span> Pieza: </span> 18a
                         </p>
                         <p>

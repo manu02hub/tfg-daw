@@ -59,15 +59,15 @@ function ModalClinicDelete({confirm, setConfirm, clinicId, clinics, setClinics})
       {confirm && (
         <Modal show={confirm}>
           <div className="section-modal">
-            <h2>Are you sure you want to delete clinic?</h2>
+            <h2>¿Está seguro de que quiere eliminar la clínica?</h2>
             <p>
-              Once your clinic is deleted, all of its resources and data will
-              be permanently deleted. Please enter your password to confirm you
-              would like to permanently delete your clnic.
+            Una vez que se elimine su clínica, todos sus recursos y datos
+              se eliminará permanentemente. Por favor, introduzca su contraseña para confirmar que
+              le gustaría eliminar permanentemente su clínica.
             </p>
 
             <form className="formDelete" onSubmit={handleSubmit(deleteClinic)}>
-              <InputLabel>Password</InputLabel>
+              <InputLabel>Contraseña</InputLabel>
 
               <InputText
                 type="password"
@@ -88,9 +88,9 @@ function ModalClinicDelete({confirm, setConfirm, clinicId, clinics, setClinics})
               ></InputError>
 
               <div className="btnModal">
-                <BtnDelete>Delete Clinic</BtnDelete>
+                <BtnDelete>Eliminar Clínica</BtnDelete>
                 <BtnCancel type="button" onClick={() => closeModal()}>
-                  Cancel
+                  Cancelar
                 </BtnCancel>
               </div>
             </form>

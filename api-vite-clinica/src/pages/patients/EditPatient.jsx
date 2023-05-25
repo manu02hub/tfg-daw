@@ -8,7 +8,7 @@ function EditPatient() {
   const { id } = useParams();
   return (
     <>
-      <HeaderSection title={"Edit Patient"} />
+      <HeaderSection title={"Editar Paciente"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <FormEditPatient id={id} loading={loading} setLoading={setLoading} />

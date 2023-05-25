@@ -21,14 +21,14 @@ function IndexPatient() {
           <CardBasic>
             <div className="headerSection">
               <div className="headerName">
-                <h4>Todas mis pacientes</h4>
+                <h4>Todos los pacientes</h4>
               </div>
               <div className="headerSearch">
                 <form>
-                  <label>Search: </label>
+                  <label>Buscar: </label>
                   <input className="inputSearch"></input>
                 </form>
-                <BtnAdd to={"patient-create"} add={"Add Patient"}>
+                <BtnAdd to={"patient-create"} add={"Añadir Paciente"}>
                   <BsPersonFillAdd></BsPersonFillAdd>
                 </BtnAdd>
               </div>

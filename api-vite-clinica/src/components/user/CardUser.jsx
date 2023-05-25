@@ -75,7 +75,7 @@ function CardUser({ userInfo, showCard, setId, users, setUsers }) {
             <div className="cardOperations">
               <Link className="cardShow" onClick={() => show(userInfo._id)}>
                 <BiShowAlt className="icon"></BiShowAlt>
-                <span>Show</span>
+                <span>Mostrar</span>
               </Link>
               <hr />
               <Link
@@ -83,12 +83,12 @@ function CardUser({ userInfo, showCard, setId, users, setUsers }) {
                 className="cardEdit"
               >
                 <FiEdit className="icon"></FiEdit>
-                <span>Edit</span>
+                <span>Editar</span>
               </Link>
               <hr />
               <div className="cardDelete" onClick={() => confirmUserDeletion()}>
                 <MdDelete className="icon"></MdDelete>
-                <span>Delete</span>
+                <span>Eliminar</span>
               </div>
             </div>
           </div>

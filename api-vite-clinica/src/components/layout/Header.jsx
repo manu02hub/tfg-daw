@@ -34,11 +34,11 @@ function Header() {
           <div className="sub-menu">
             <NavLink to={"/panel/users/user-edit/"+auth._id} className="sub-menu-link">
               <AiFillSetting className="sub-menu-icon"></AiFillSetting>
-              <p>Settings</p>
+              <p>Perfil</p>
             </NavLink>
             <NavLink className="sub-menu-link" to={"/logout"}>
               <BiLogOut className="sub-menu-icon"></BiLogOut>
-              <p>Log Out</p>
+              <p>Cerrar Sesión</p>
             </NavLink>
           </div>
         </div>

@@ -22,7 +22,7 @@ function IndexClinic() {
               </div>
               <div className="headerSearch">
                 <form>
-                  <label>Search: </label>
+                  <label>Buscar: </label>
                   <input className="inputSearch"></input>
                 </form>
               </div>

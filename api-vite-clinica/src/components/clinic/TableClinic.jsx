@@ -18,7 +18,7 @@ function TableClinic({ load, setLoad, clinics, setClinics }) {
   const [confirmingClinicDeletion, setConfirmingClinicDeletion] =
     useState(false);
 
-  const menuT = ["Clinic", "Direction", "City", "C Postal", "Actions"];
+  const menuT = ["Clínica", "Dirección", "Ciudad", "C Postal", "Acciones"];
 
   useEffect(() => {
     getClinics();

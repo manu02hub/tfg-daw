@@ -5,7 +5,7 @@ function Search() {
     <form>
       <input
         type="search"
-        placeholder="Search... "
+        placeholder="Buscar... "
         className="inputSearch"
       ></input>
     </form>

@@ -16,8 +16,8 @@ function EditCabinet() {
             <div className="row">
               <div className="col-sm-12 col-md-10 col-lg-8">
                 <section className="section-card">
-                  <h2>Edit Gabinet</h2>
-                  <p>Change your name in your cabinet</p>
+                  <h2>Editar Gabinete</h2>
+                  <p>Cambia el nombre de tu gabinete</p>
                   <FormEditCabinet
                     id={id}
                     loading={loading}

@@ -6,7 +6,7 @@ import InputText from "../../components/InputText";
 import Modal from "../Modal";
 import BtnPrimary from "../BtnPrimary";
 import BtnCancel from "../BtnCancel";
-import SelectTherapy from "../therapie/SelectTherapy";
+import SelectTherapy from "../therapy/SelectTherapy";
 import SelectUserClinic from "../user/SelectUserClinic";
 
 function ModalTooth({
@@ -227,7 +227,7 @@ function ModalTooth({
               </select>
 
               <div className="separadorForm">
-                <InputLabel>Terapia</InputLabel>
+                <InputLabel>Tratamiento</InputLabel>
                 <SelectTherapy name="id_therapy" />
               </div>
 
@@ -238,9 +238,9 @@ function ModalTooth({
               ></InputText>
 
               <div className="btnModalAdd">
-                <BtnPrimary className="btnsPrimary shadow">SAVE</BtnPrimary>
+                <BtnPrimary className="btnsPrimary shadow">GUARDAR</BtnPrimary>
                 <BtnCancel type="button" onClick={() => closeModal()}>
-                  Cancel
+                  Cancelar
                 </BtnCancel>
               </div>
             </form>

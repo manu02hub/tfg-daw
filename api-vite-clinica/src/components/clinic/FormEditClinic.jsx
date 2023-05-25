@@ -74,7 +74,7 @@ function FormEditClinic({ id, loading, setLoading }) {
             <div className="col-lg-9 col-md-12 col-sm-12">
               <div className="row">
                 <div className="col-lg-10 col-md-12 col-sm-12">
-                  <InputLabel>Name</InputLabel>
+                  <InputLabel>Nombre</InputLabel>
                   <InputText
                     type="text"
                     name="name"
@@ -84,7 +84,7 @@ function FormEditClinic({ id, loading, setLoading }) {
                   <InputError message={errors.name?.message}></InputError>
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12">
-                  <InputLabel>Direction</InputLabel>
+                  <InputLabel>Dirección</InputLabel>
                   <InputText
                     type="text"
                     name="direction"
@@ -100,7 +100,7 @@ function FormEditClinic({ id, loading, setLoading }) {
                   ></InputError>
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12">
-                  <InputLabel>City</InputLabel>
+                  <InputLabel>Ciudad</InputLabel>
                   <InputText
                     type="text"
                     name="city"
@@ -110,7 +110,7 @@ function FormEditClinic({ id, loading, setLoading }) {
                   <InputError message={errors.city?.message}></InputError>
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12">
-                  <InputLabel>Codigo Postal</InputLabel>
+                  <InputLabel>Código Postal</InputLabel>
                   <InputText
                     type="number"
                     name="c_postal"
@@ -121,7 +121,7 @@ function FormEditClinic({ id, loading, setLoading }) {
                 </div>
 
                 <div className="separadorBtn btnEditClinic">
-                  <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
+                  <BtnPrimary className={"btnsPrimary"}>Guardar</BtnPrimary>
                 </div>
               </div>
             </div>

@@ -63,7 +63,7 @@ function CardShowUser({ id_user }) {
                     <div className="boxInfoclinic">
                       <div className="columnClinic">
                         <span>
-                          Direccion
+                          Dirección
                           {/* font-size: 0.8rem; font-weight: 500; */}
                         </span>
                         <p>{clinic.direction}</p>
@@ -77,7 +77,7 @@ function CardShowUser({ id_user }) {
                       </div>
                       <div className="columnClinic">
                         <span>
-                          Codigo Postal
+                          Código Postal
                           {/* font-size: 0.8rem; font-weight: 500; */}
                         </span>
                         <p>{clinic.c_postal}</p>

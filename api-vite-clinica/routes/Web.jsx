@@ -13,10 +13,10 @@ import CreateUser from "../src/pages/users/CreateUser";
 import IndexUser from "../src/pages/users/IndexUser";
 import IndexClinic from "../src/pages/clinics/IndexClinic";
 import EditClinic from "../src/pages/clinics/EditClinic";
-import IndexTherapie from "../src/pages/therapies/IndexTherapie";
+import IndexTherapy from "../src/pages/therapies/IndexTherapy";
 import Cabinets from "../src/pages/cabinets/Cabinets";
 import IndexCabinet from "../src/pages/cabinets/IndexCabinet";
-import EditTherapie from "../src/pages/therapies/EditTherapie";
+import EditTherapy from "../src/pages/therapies/EditTherapy";
 import EditCabinet from "../src/pages/cabinets/EditCabinet";
 import Patients from "../src/pages/patients/Patients";
 import IndexPatient from "../src/pages/patients/IndexPatient";
@@ -46,10 +46,10 @@ function Web() {
               <Route path="clinic-edit/:id" element={<EditClinic />}></Route>
             </Route>
             <Route path="therapies" element={<Therapies />}>
-              <Route index="therapie-index" element={<IndexTherapie />}></Route>
+              <Route index="therapie-index" element={<IndexTherapy />}></Route>
               <Route
                 path="therapie-edit/:id"
-                element={<EditTherapie />}
+                element={<EditTherapy />}
               ></Route>
             </Route>
             <Route path="cabinets" element={<Cabinets />}>

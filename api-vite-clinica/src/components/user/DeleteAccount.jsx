@@ -13,15 +13,15 @@ function DeleteAccount({user, auth}) {
   return (
     <>
       <section className="section-card">
-        <h2>Delete Account</h2>
+        <h2>Eliminar cuenta</h2>
         <p>
-          Once your account is deleted, all of its resources and data will be
-          permanently deleted. Before deleting your account, please download any
-          data or information that you wish to retain.
+        Una vez que se elimine su cuenta, todos sus recursos y datos serán
+          Eliminado permanentemente. Antes de eliminar su cuenta, descargue cualquier
+          datos o información que desea conservar.
         </p>
         <div className="separadorBtn">
           <button onClick={() => confirmUserDeletion()} className="btnDelete">
-            Delete Account
+            Eliminar cuenta
           </button>
         </div>
       </section>

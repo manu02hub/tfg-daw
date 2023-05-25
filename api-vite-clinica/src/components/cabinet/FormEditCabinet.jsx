@@ -66,7 +66,7 @@ function FormEditCabinet({ id, loading, setLoading }) {
     <>
       {!loading && (
         <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
-          <InputLabel>Cabinet</InputLabel>
+          <InputLabel>Gabinete</InputLabel>
           <InputText
             type="text"
             name="reference"
@@ -79,7 +79,7 @@ function FormEditCabinet({ id, loading, setLoading }) {
           ></InputError>
 
           <div className="separadorBtn">
-            <BtnPrimary className={"btnsPrimary"}>Save</BtnPrimary>
+            <BtnPrimary className={"btnsPrimary"}>Guardar</BtnPrimary>
           </div>
         </form>
       )}

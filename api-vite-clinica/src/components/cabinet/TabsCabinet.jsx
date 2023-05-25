@@ -46,7 +46,7 @@ function TabsCabinet({ toglleTab, setToggleTab }) {
   return (
     <>
       <div className="section-calendar-tabs">
-        <span>Cabinets Clinic</span>
+        <span>Gabinetes de la clínica</span>
         <br />
       </div>
       <div className="tabs-calendar">

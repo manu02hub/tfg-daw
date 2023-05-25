@@ -12,15 +12,15 @@ function EditClinic() {
   return (
     <>
       {loading && <Spinner />}
-      <HeaderSection title={"Edit clinic"} />
+      <HeaderSection title={"Editar clínica"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12">
                 <section className="section-card">
-                  <h2>Edit your clinic </h2>
-                  <p>You can change the data of clinics</p>
+                  <h2>Edita tu clínica </h2>
+                  <p>Cambia los datos de tu clínica</p>
                    <FormEditClinic id={id} loading={loading} setLoading={setLoading} />
                 </section>
               </div>
