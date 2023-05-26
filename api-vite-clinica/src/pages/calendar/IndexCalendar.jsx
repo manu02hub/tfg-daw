@@ -79,6 +79,7 @@ function IndexCalendar() {
         setConfirmModalUnlock={setConfirmModalUnlock}
         events={events}
         setEvents={setEvents}
+        event={event}
         blockedDays={blockedDays}
         setBlockedDays={setBlockedDays}
       />

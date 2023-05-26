@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import Modal from "../Modal";
@@ -29,7 +29,10 @@ function ModalUnlockDay({
 
     if (datos.state == "success" && !cargando) {
       auxBlock = blockedDays.filter((day) => day._id !==  event.id);
-      auxEvent = events.filter((event) => event.id !==  event.id);
+      console.log(auxBlock);
+      console.log(events);
+      auxEvent = events.filter((e) => e.id !==  event.id);
+      console.log(auxEvent);
 
       setBlockedDays(auxBlock);
       setEvents(auxEvent);

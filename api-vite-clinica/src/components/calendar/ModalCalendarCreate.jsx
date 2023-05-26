@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import InputLabel from "../../components/InputLabel";
@@ -27,6 +27,11 @@ function ModalCalendarCreate({
 
   const [patient, setPatient] = useState({});
   const [selectedValues, setSelectedValues] = useState([]);
+  const [findEvent, setFindEvent] = useState(false);
+
+  useEffect(() => {
+    checkEvent();
+  }, [date]);
 
   const handleSelectChange = (event) => {
     const selectedOptions = Array.from(
@@ -148,7 +153,6 @@ function ModalCalendarCreate({
     });
 
     if (!found) {
-
       blockDay = {
         date: date,
         id_clinic: clinic,
@@ -165,15 +169,30 @@ function ModalCalendarCreate({
 
         eventBlock = {
           id: datos.dayBlocked._id,
-          date : date,
+          date: date,
           backgroundColor: "blue",
           display: "background",
-        }
+        };
 
         setEvents([...events, eventBlock]);
-        
+
         closeModal();
       }
+    }
+  };
+
+  const checkEvent = () => {
+    let find;
+    let newDate = new Date(date);
+
+    newDate = newDate.toISOString();
+
+    find = events.find((e) => {
+      return e.date.split("T")[0] === newDate.split("T")[0];
+    });
+
+    if (find) {
+      setFindEvent(true);
     }
   };
 
@@ -182,6 +201,7 @@ function ModalCalendarCreate({
     setErrorTime("");
     setSelectedValues([]);
     setPatient("");
+    setFindEvent(false);
     setConfirmModalCreate(false);
   };
 
@@ -259,13 +279,17 @@ function ModalCalendarCreate({
 
               <div className="btnModalAdd">
                 <BtnPrimary className="btnsPrimary shadow">Guardar</BtnPrimary>
-                <button
-                  type="button"
-                  className="btnBlock shadow"
-                  onClick={() => blockDay()}
-                >
-                  Bloquear Día
-                </button>
+
+                {!findEvent && (
+                  <button
+                    type="button"
+                    className="btnBlock shadow"
+                    onClick={() => blockDay()}
+                  >
+                    Bloquear Día
+                  </button>
+                )}
+
                 <BtnCancel type="button" onClick={() => closeModal()}>
                   Cancelar
                 </BtnCancel>

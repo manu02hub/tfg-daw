@@ -53,11 +53,19 @@ function ModalCalendarEdit({
 
   const changeTime = (date) => {
     let time;
+    let hora;
     let auxDate = new Date();
 
     if (date) {
       auxDate = new Date(date);
-      time = auxDate.getHours() + ":" + auxDate.getMinutes();
+
+      if (auxDate.getHours() < 10) {
+        hora = "0" + auxDate.getHours();
+      }else{
+        hora = auxDate.getHours();
+      }
+      time = hora + ":" + auxDate.getMinutes();
+      console.log(time);
       setTime(time);
       setLoading(false);
     }
@@ -107,7 +115,6 @@ function ModalCalendarEdit({
     );
 
     if (datos.state == "success" && !cargando) {
-      
       indexTime = events.findIndex((event) => event.id === updateEvent.id);
 
       auxTime = [...events];
@@ -117,31 +124,27 @@ function ModalCalendarEdit({
       setEvents(auxTime);
 
       closeModal();
-
     }
   };
 
   const deleteEvent = async (id) => {
-
     let auxEvents;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "appointment/delete-appointment/" + id,
-      "DELETE",
+      "DELETE"
     );
 
     if (datos.state == "success" && !cargando) {
-      
       auxEvents = events.filter((event) => event.id !== id);
 
       setEvents(auxEvents);
 
       closeModal();
-
     } else {
       setError(datos.message);
     }
-  }
+  };
 
   const closeModal = () => {
     setSelectedValues([]);
@@ -179,7 +182,7 @@ function ModalCalendarEdit({
                         onChange={handleSelectChange}
                         patient={eventSelect.id_patient}
                         name="therapy_has_patient"
-                        defaultValue={eventSelect.id_therapy_has_patient}
+                        value={eventSelect.id_therapy_has_patient}
                       />
                     )}
                   </div>
@@ -212,7 +215,11 @@ function ModalCalendarEdit({
               </div>
 
               <div className="btnModalAdd">
-                <button type="button" className="btnDelete shadow" onClick={()=>deleteEvent(event.id)}>
+                <button
+                  type="button"
+                  className="btnDelete shadow"
+                  onClick={() => deleteEvent(event.id)}
+                >
                   ELIMINAR
                 </button>
                 <BtnPrimary className="btnsEdit shadow">EDITAR</BtnPrimary>

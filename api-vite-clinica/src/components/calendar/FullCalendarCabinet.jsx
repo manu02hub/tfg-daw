@@ -187,6 +187,9 @@ function FullCalendarCabinet({
   const handleEventDrop = async (arg) => {
     // Maneja el evento de deslizamiento aquí
     let appointment;
+    let auxEvents;
+    let position;
+    let updateEvent;
     const newStartDay = arg.event.start; // Obtener el día del mes para la fecha de inicio
 
     console.log("Día de inicio:", newStartDay.toISOString());
@@ -202,6 +205,19 @@ function FullCalendarCabinet({
       arg.revert();
       console.log("No se puede deslizar el evento en un día bloqueado");
     } else {
+
+      position = events.findIndex((e) => e.id === arg.event.id);
+      console.log(position)
+      auxEvents = [...events];
+
+      updateEvent = {
+        id: arg.event.id,
+        title: arg.event.title,
+        date: newStartDay
+      }
+
+      auxEvents[position] = updateEvent;
+
       appointment = {
         date: newStartDay,
       };
@@ -211,6 +227,8 @@ function FullCalendarCabinet({
         "PUT",
         appointment
       );
+
+      setEvents(auxEvents);
     }
   };
 
@@ -218,13 +236,15 @@ function FullCalendarCabinet({
     let found;
     let dateSelect = new Date(info.event.start);
 
-    console.log(dateSelect.toISOString());
+    if(!info.event.title){
 
-    dateSelect.setDate(info.event.start.getDate() + 1);
-
-    dateSelect = dateSelect.toISOString();
-
-    console.log(dateSelect);
+      dateSelect.setDate(info.event.start.getDate() + 1);
+  
+      dateSelect = dateSelect.toISOString();
+  
+    }else{
+      dateSelect = dateSelect.toISOString();
+    }
 
     found = blockedDays.find((element) => {
      return element.date.split("T")[0] == dateSelect.split("T")[0]
@@ -234,6 +254,7 @@ function FullCalendarCabinet({
       setEvent(info.event);
       setConfirmModalEdit(true);
     }else{
+      console.log(info.event.id);
       setEvent(info.event);
       setConfirmModalUnlock(true);
     }
