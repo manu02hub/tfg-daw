@@ -7,7 +7,6 @@ import Modal from "../Modal";
 import BtnPrimary from "../BtnPrimary";
 import BtnCancel from "../BtnCancel";
 import InputError from "../InputError";
-import { useNavigate } from "react-router-dom";
 import SelectUserClinic from "../user/SelectUserClinic";
 import SelectTherapyPatient from "./SelectTherapyPatient";
 import { FiSearch } from "react-icons/fi";
@@ -28,8 +27,6 @@ function ModalCalendarCreate({
 
   const [patient, setPatient] = useState({});
   const [selectedValues, setSelectedValues] = useState([]);
-
-  const navigate = useNavigate();
 
   const handleSelectChange = (event) => {
     const selectedOptions = Array.from(
@@ -144,12 +141,14 @@ function ModalCalendarCreate({
   const blockDay = async () => {
     let found;
     let blockDay;
+    let eventBlock;
 
     found = events.find((element) => {
-      return element.date.split("T")[0] == date;
+      return element.start == date;
     });
 
     if (!found) {
+
       blockDay = {
         date: date,
         id_clinic: clinic,
@@ -163,8 +162,15 @@ function ModalCalendarCreate({
 
       if (datos.state == "success" && !cargando) {
         setBlockedDays([...blockedDays, blockDay]);
-        
-          // window.location.reload();
+
+        eventBlock = {
+          id: datos.dayBlocked._id,
+          date : date,
+          backgroundColor: "blue",
+          display: "background",
+        }
+
+        setEvents([...events, eventBlock]);
         
         closeModal();
       }

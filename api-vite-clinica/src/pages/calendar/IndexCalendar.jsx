@@ -7,6 +7,7 @@ import FullCalendarCabinet from "../../components/calendar/FullCalendarCabinet";
 import TabsCabinet from "../../components/cabinet/TabsCabinet";
 import Spinner from "../../components/Spinner";
 import ModalCalendarEdit from "../../components/calendar/ModalCalendarEdit";
+import ModalUnlockDay from "../../components/calendar/ModalUnlockDay";
 
 function IndexCalendar() {
   const dateDafault = new Date();
@@ -14,6 +15,7 @@ function IndexCalendar() {
   const [loading, setLoading] = useState(true);
   const [confirmModalCreate, setConfirmModalCreate] = useState(false);
   const [confirmModalEdit, setConfirmModalEdit] = useState(false);
+  const [confirmModalUnlock, setConfirmModalUnlock] = useState(false);
   const [toglleTab, setToggleTab] = useState(0);
   const [date, setDate] = useState(dateDafault);
   const [appointments, setAppointments] = useState({});
@@ -45,6 +47,7 @@ function IndexCalendar() {
               blockedDays={blockedDays}
               setBlockedDays={setBlockedDays}
               clinic={auth.id_clinic}
+              setConfirmModalUnlock={setConfirmModalUnlock}
             />
           </CardBasic>
         </div>
@@ -69,6 +72,15 @@ function IndexCalendar() {
         setEvent={setEvent}
         events={events}
         setEvents={setEvents}
+      />
+
+      <ModalUnlockDay
+        confirmModalUnlock={confirmModalUnlock}
+        setConfirmModalUnlock={setConfirmModalUnlock}
+        events={events}
+        setEvents={setEvents}
+        blockedDays={blockedDays}
+        setBlockedDays={setBlockedDays}
       />
     </>
   );
