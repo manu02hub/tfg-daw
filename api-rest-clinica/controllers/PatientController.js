@@ -1,7 +1,6 @@
 const Patient = require("../models/Patient");
-const User = require("../models/User");
-const bycrypt = require("bcrypt");
-
+const Contact = require("../models/Contact");
+const Direction = require("../models/Direction");
 
 // const getUser = async (req, res) => {
 //     const id = req.params.id;
@@ -34,21 +33,16 @@ const createPatient = async (req, res) => {
 
     const patientCreate = new Patient(parameters);
 
-    const patientFind = await Patient.find({ mobile_phone: patientCreate.mobile_phone }).exec();
+    // const patientFind = await Patient.find({ mobile_phone: patientCreate.mobile_phone }).exec();
 
-    if (patientFind.length < 1) {
-        await patientCreate.save();
-        respuesta = res.status(200).json({
-            state: "success",
-            patient: patientCreate
-        });
+    await patientCreate.save();
+    respuesta = res.status(200).json({
+        state: "success",
+        patient: patientCreate
+    });
 
-    } else {
-        respuesta = res.status(200).json({
-            state: "error",
-            message: "El paciente ya existe"
-        });
-    }
+
+
 
     return respuesta;
 
@@ -56,8 +50,10 @@ const createPatient = async (req, res) => {
 
 const getAllPatients = async (req, res) => {
 
+    const id = req.params.id;
+
     //  const allPatients = await Patient.find({}).sort({ date: -1 }).populate('id_rol').exec();
-    const patients = await Patient.find({}).sort({ date: -1 });
+    const patients = await Patient.find({id_clinic: id}).sort({ date: -1 }).populate('id_contact');
 
     return res.status(200).json({
         state: "success",
@@ -83,7 +79,7 @@ const getPatient = async (req, res) => {
 
     const id = req.params.id;
 
-    const patient = await Patient.findOne({ _id: id });
+    const patient = await Patient.findOne({ _id: id }).populate('id_direction');
 
     return res.status(200).json({
         state: "success",

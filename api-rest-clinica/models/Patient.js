@@ -38,11 +38,6 @@ const PatientSchema = Schema({
         ref: "Odontogram",
     },
 
-    mobile_phone: {
-        type: Number,
-        required: true
-    },
-
     date: {
         type: Date,
         default: Date.now()
@@ -56,20 +51,27 @@ const PatientSchema = Schema({
     id_direction: {
         type: Schema.ObjectId,
         ref: "Direction",
-        default:null
     },
 
     id_contact: {
         type: Schema.ObjectId,
         ref: "Contact",
-        default:null
+    },
+
+    id_other: {
+        type: Schema.ObjectId,
+        ref: "Contact",
     },
 
     tutors: [{
         type: Schema.ObjectId,
         ref: "Tutor",
-        default:null
     }],
+
+    id_clinic: {
+        type: Schema.ObjectId,
+        ref: "Clinic",
+    },
 
 });
 

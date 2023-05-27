@@ -17,6 +17,11 @@ const TutorSchema = Schema({
         ref: "Contact"
     },
 
+    id_direction: {
+        type: Schema.ObjectId,
+        ref: "Direction"
+    },
+
 });
 
 

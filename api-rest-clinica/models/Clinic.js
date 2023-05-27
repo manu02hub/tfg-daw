@@ -16,7 +16,7 @@ const ClinicSchema = Schema({
         required: true
     },
 
-    c_postal: {
+    z_code: {
         type: Number,
         required: true
     },

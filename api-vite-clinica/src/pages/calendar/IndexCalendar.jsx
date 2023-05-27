@@ -26,63 +26,74 @@ function IndexCalendar() {
 
   return (
     <>
-      {loading && <Spinner />}
+      {toglleTab !== 0 && loading && <Spinner />}
       <HeaderSection title={"Appointment"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
             <TabsCabinet toglleTab={toglleTab} setToggleTab={setToggleTab} />
-            <FullCalendarCabinet
-              setConfirmModalCreate={setConfirmModalCreate}
-              setConfirmModalEdit={setConfirmModalEdit}
-              setDate={setDate}
-              toggleTab={toglleTab}
-              loading={loading}
-              setLoading={setLoading}
-              appointments={appointments}
-              setAppointments={setAppointments}
-              events={events}
-              setEvents={setEvents}
-              setEvent={setEvent}
-              blockedDays={blockedDays}
-              setBlockedDays={setBlockedDays}
-              clinic={auth.id_clinic}
-              setConfirmModalUnlock={setConfirmModalUnlock}
-            />
+            {toglleTab !== 0 ? (
+              <FullCalendarCabinet
+                setConfirmModalCreate={setConfirmModalCreate}
+                setConfirmModalEdit={setConfirmModalEdit}
+                setDate={setDate}
+                toggleTab={toglleTab}
+                loading={loading}
+                setLoading={setLoading}
+                appointments={appointments}
+                setAppointments={setAppointments}
+                events={events}
+                setEvents={setEvents}
+                setEvent={setEvent}
+                blockedDays={blockedDays}
+                setBlockedDays={setBlockedDays}
+                clinic={auth.id_clinic}
+                setConfirmModalUnlock={setConfirmModalUnlock}
+              />
+            ) : (
+              <p>
+                Primero necesitas tener gabinetes en tu clínica para poder crear
+                citas
+              </p>
+            )}
           </CardBasic>
         </div>
       </div>
-      <ModalCalendarCreate
-        confirmModalCreate={confirmModalCreate}
-        setConfirmModalCreate={setConfirmModalCreate}
-        clinic={auth.id_clinic}
-        toglleTab={toglleTab}
-        date={date}
-        events={events}
-        setEvents={setEvents}
-        blockedDays={blockedDays}
-        setBlockedDays={setBlockedDays}
-      />
+      {toglleTab !== 0 && (
+        <>
+          <ModalCalendarCreate
+            confirmModalCreate={confirmModalCreate}
+            setConfirmModalCreate={setConfirmModalCreate}
+            clinic={auth.id_clinic}
+            toglleTab={toglleTab}
+            date={date}
+            events={events}
+            setEvents={setEvents}
+            blockedDays={blockedDays}
+            setBlockedDays={setBlockedDays}
+          />
 
-      <ModalCalendarEdit
-        confirmModalEdit={confirmModalEdit}
-        setConfirmModalEdit={setConfirmModalEdit}
-        clinic={auth.id_clinic}
-        event={event}
-        setEvent={setEvent}
-        events={events}
-        setEvents={setEvents}
-      />
+          <ModalCalendarEdit
+            confirmModalEdit={confirmModalEdit}
+            setConfirmModalEdit={setConfirmModalEdit}
+            clinic={auth.id_clinic}
+            event={event}
+            setEvent={setEvent}
+            events={events}
+            setEvents={setEvents}
+          />
 
-      <ModalUnlockDay
-        confirmModalUnlock={confirmModalUnlock}
-        setConfirmModalUnlock={setConfirmModalUnlock}
-        events={events}
-        setEvents={setEvents}
-        event={event}
-        blockedDays={blockedDays}
-        setBlockedDays={setBlockedDays}
-      />
+          <ModalUnlockDay
+            confirmModalUnlock={confirmModalUnlock}
+            setConfirmModalUnlock={setConfirmModalUnlock}
+            events={events}
+            setEvents={setEvents}
+            event={event}
+            blockedDays={blockedDays}
+            setBlockedDays={setBlockedDays}
+          />
+        </>
+      )}
     </>
   );
 }

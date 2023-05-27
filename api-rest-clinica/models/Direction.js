@@ -16,7 +16,7 @@ const DirectionSchema = Schema({
         required: true
     },
 
-    z_postal: {
+    z_code: {
         type: Number,
         required: true
     },
@@ -30,11 +30,6 @@ const DirectionSchema = Schema({
         type: String,
         required: true
     },
-
-    date: {
-        type: Date,
-        default: Date.now()
-    }
 
 });
 

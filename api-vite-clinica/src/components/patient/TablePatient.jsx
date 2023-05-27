@@ -13,8 +13,10 @@ import { IoDocumentText } from "react-icons/io5";
 import BtnsTable from "../BtnsTable";
 import ModalPatientDelete from "./ModalPatientDelete";
 
-function TablePatient({ load, setLoad, patients, setPatients }) {
+function TablePatient({ load, setLoad, patients, setPatients, clinic }) {
+
   const [idPatient, setIdPatient] = useState(0);
+  const [odontogram, setOdontogram] = useState({})
   const [confirmingPatientDeletion, setConfirmingPatientDeletion] =
     useState(false);
 
@@ -31,21 +33,41 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
   ];
 
   useEffect(() => {
+    getOdontograms();
     getPatients();
   }, []);
 
   const getPatients = async () => {
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "patient/all-patients",
+      Global.url + "patient/all-patients/" + clinic,
       "GET"
     );
 
     if (datos.state == "success" && !cargando) {
       setPatients(datos.patients);
-
       setLoad(false);
     }
   };
+
+
+  const getOdontograms =  async () => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "odontogram/all-odontograms",
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setOdontogram(datos.odontograms);
+    }
+  };
+
+  const checkOdontogram = (id) =>{
+
+    let find = odontogram.find(o => o._id == id);
+
+    return find.name;
+    
+  }
 
   const confirmPatientDeletion = (id) => {
     setIdPatient(id);
@@ -57,7 +79,7 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
     <>
       <Table>
         <Thead menu={menuT} />
-        {!load && (
+        {!load  ? (
           <Tbody>
             {patients.map((patient) => {
               return (
@@ -68,13 +90,13 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
 
                   <TdTable>{patient.surnames}</TdTable>
 
-                  <TdTable>{"manuel@gmail.com"}</TdTable>
+                  <TdTable>{patient.id_contact.email}</TdTable>
 
                   <TdTable>{patient.nif}</TdTable>
 
-                  <TdTable>{"Adulto"}</TdTable>
+                  <TdTable>{checkOdontogram(patient.odontogram)}</TdTable>
 
-                  <TdTable>{patient.mobile_phone}</TdTable>
+                  <TdTable>{patient.id_contact.mobile_phone}</TdTable>
 
                   <TdTable>{patient.active ? "Activo" : "No activo"}</TdTable>
 
@@ -100,13 +122,19 @@ function TablePatient({ load, setLoad, patients, setPatients }) {
 
                     <BtnsTable className={"therapyTable"}>
                       <Link to={"patient-therapy/" + patient._id}>
-                        <FaTooth/>
+                        <FaTooth />
                       </Link>
                     </BtnsTable>
                   </TdTable>
                 </tr>
               );
             })}
+          </Tbody>
+        ) : (
+          <Tbody>
+            <tr>
+              <TdTable>{"No existen pacientes aún en la clínica"}</TdTable>
+            </tr>
           </Tbody>
         )}
       </Table>

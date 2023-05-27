@@ -92,6 +92,7 @@ input[type="date"],
 input[type="time"],
 input[type="number"],
 input[type="phone"],
+textarea,
 select {
   width: 93%;
   margin-bottom: 10px;
@@ -104,12 +105,21 @@ select {
   font-family: "Roboto";
   font-weight: 500;
 }
+
+textarea{
+  border: 1px solid #bdbdbd;
+}
+
+textarea:focus {
+  border: 2px solid #0277b5;
+}
+
 input[type="date"],
 input[type="phone"],
 input[type="email"]:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
-input[type="number"]:focus {
+input[type="number"]:focus{
   border: 2px solid #0277b5;
 }
 
@@ -1110,6 +1120,10 @@ table .pdf {
   margin-top: 15px;
 }
 
+.errorTutor{
+  margin-left: 5px;
+}
+
 .patientPersonal,
 .patientContact,
 .patientDirection {
@@ -1357,7 +1371,6 @@ table .pdf {
 .boxSearchPatient {
   display: flex;
   flex-direction: row;
-  justify-content: center;
 }
 
 .boxSearchPatient button {

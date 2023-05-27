@@ -75,8 +75,8 @@ function FormCreateClinic({ clinics, setClinics }) {
         <InputLabel>Codigo Postal</InputLabel>
         <InputText
           type="number"
-          name="c_postal"
-          {...register("c_postal")}
+          name="z_code"
+          {...register("z_code")}
         ></InputText>
         <InputError message={errors.c_postal?.message}></InputError>
       </div>

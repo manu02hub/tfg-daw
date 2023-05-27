@@ -41,6 +41,38 @@ function FormEditPatient({ id, loading, setLoading }) {
     }
   };
 
+  const getContact = async () => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "contact/get-contact/" + id,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setPatient(datos.patient);
+      setLoading(false);
+    }
+  };
+
+
+  const getOdontograms =  async () => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "odontogram/all-odontograms",
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setOdontogram(datos.odontograms);
+    }
+  };
+
+  const checkOdontogram = (id) =>{
+
+    let find = odontogram.find(o => o._id == id);
+
+    return find.name;
+    
+  }
+
   const onSubmit = async (data) => {
     setError("");
     let newPatient = data;

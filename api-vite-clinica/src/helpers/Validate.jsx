@@ -35,13 +35,32 @@ export const schema = yup
     city: yup
       .string()
       .trim()
-      .min(5, "Campo requerido, debe contener mínimo 5 caracteres")
+      .min(3, "Campo requerido, debe contener mínimo 3 caracteres")
       .max(30, "Máximo 30 caracteres"),
-    c_postal: yup
+    street: yup
+      .string()
+      .trim()
+      .min(3, "Campo requerido, debe contener mínimo 3 caracteres")
+      .max(30, "Máximo 30 caracteres"),
+    province: yup
+      .string()
+      .trim()
+      .min(3, "Campo requerido, debe contener mínimo 3 caracteres")
+      .max(30, "Máximo 30 caracteres"),
+    flat: yup
+      .string()
+      .trim()
+      .min(2, "Campo requerido, debe contener mínimo 2 caracteres")
+      .max(20, "Máximo 20 caracteres"),
+    z_code: yup
       .string()
       .trim()
       .min(5, "Máximo 5 carácteres")
       .max(5, "Máximo 5 carácteres"),
+    number: yup
+      .number()
+      .typeError("Campo Requerido")
+      .min(1, "Número de portal necesario"),
     price: yup
       .number()
       .typeError("Campo Requerido")
@@ -64,7 +83,10 @@ export const schema = yup
     nif: yup
       .string()
       .trim()
-      .length(9, "Necesario 9 caracteres").matches(/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i,"Necsarios 8 numeros 1 letra")
-      
+      .length(9, "Necesario 9 caracteres")
+      .matches(
+        /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i,
+        "Necsarios 8 numeros 1 letra"
+      ),
   })
   .required();

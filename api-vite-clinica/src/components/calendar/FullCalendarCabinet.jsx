@@ -23,12 +23,10 @@ function FullCalendarCabinet({
   blockedDays,
   setBlockedDays,
   clinic,
-  setConfirmModalUnlock
+  setConfirmModalUnlock,
 }) {
   const currentDate = new Date();
   const calendarRef = useRef(null);
-
-  const [selectedDay, setSelectedDay] = useState(null);
 
   const validRange = {
     start: currentDate,
@@ -37,47 +35,8 @@ function FullCalendarCabinet({
   useEffect(() => {
     if (toggleTab !== 0) {
       showAllEvents();
-      setLoading(false);
     }
   }, [toggleTab]);
-
-  // useEffect(() => {
-  //   const calendarApi = calendarRef.current.getApi();
-
-  //   // Establece un estilo personalizado para el día seleccionado
-  //   calendarApi.render();
-  // }, [blockedDays]);
-
-  // const dayCellDidMount = async (arg) => {
-  //   let auxDate;
-  //   let dayCell;
-  //   let isBlocked;
-  //   let auxBlocked;
-
-  //   const { date } = arg;
-
-  //   if (loadBlock) {
-  //     auxBlocked = await getBlockedDays();
-  //   } else {
-  //     auxBlocked = blockedDays;
-  //   }
-
-  //   if (auxBlocked.length >= 1) {
-  //     auxDate = new Date(date);
-  //     auxDate.setDate(auxDate.getDate() + 1);
-
-  //     auxBlocked.map((element) => {
-  //       isBlocked = element.date.includes(auxDate.toISOString().split("T")[0]);
-
-  //       if (isBlocked) {
-  //         dayCell = arg.el;
-  //         dayCell.style.pointerEvents = "none";
-  //         dayCell.classList.add("blocked-day");
-  //       }
-  //     });
-  //   }
-  //   console.log("Voy antes");
-  // };
 
   const getAppointments = async () => {
     const { datos, cargando } = await PeticionAJAX(
@@ -126,8 +85,6 @@ function FullCalendarCabinet({
   };
 
   const getBlockedDays = async () => {
-    let appointment;
-
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "dayBlocked/all-dayBlocked/" + clinic,
       "GET"
@@ -152,7 +109,7 @@ function FullCalendarCabinet({
       eventCalendar = {
         id: id,
         date: date,
-        backgroundColor: "blue",
+        backgroundColor: "#0277b5",
         display: "background",
       };
 
@@ -182,6 +139,7 @@ function FullCalendarCabinet({
     });
 
     setEvents(arrayAux);
+    setLoading(false);
   };
 
   const handleEventDrop = async (arg) => {
@@ -205,16 +163,15 @@ function FullCalendarCabinet({
       arg.revert();
       console.log("No se puede deslizar el evento en un día bloqueado");
     } else {
-
       position = events.findIndex((e) => e.id === arg.event.id);
-      console.log(position)
+      console.log(position);
       auxEvents = [...events];
 
       updateEvent = {
         id: arg.event.id,
         title: arg.event.title,
-        date: newStartDay
-      }
+        date: newStartDay,
+      };
 
       auxEvents[position] = updateEvent;
 
@@ -236,24 +193,22 @@ function FullCalendarCabinet({
     let found;
     let dateSelect = new Date(info.event.start);
 
-    if(!info.event.title){
-
+    if (!info.event.title) {
       dateSelect.setDate(info.event.start.getDate() + 1);
-  
+
       dateSelect = dateSelect.toISOString();
-  
-    }else{
+    } else {
       dateSelect = dateSelect.toISOString();
     }
 
     found = blockedDays.find((element) => {
-     return element.date.split("T")[0] == dateSelect.split("T")[0]
+      return element.date.split("T")[0] == dateSelect.split("T")[0];
     });
 
     if (!found) {
       setEvent(info.event);
       setConfirmModalEdit(true);
-    }else{
+    } else {
       console.log(info.event.id);
       setEvent(info.event);
       setConfirmModalUnlock(true);
@@ -280,9 +235,9 @@ function FullCalendarCabinet({
         locale={esLocale}
         // initialView={"timeGridDay"}
         headerToolbar={{
-          start: "prev,next,today", // will normally be on the left. if RTL, will be on the right
+          start: "prev,next,today",
           center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay,listWeek", // will normally be on the right. if RTL, will be on the left
+          end: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
         }}
         ref={calendarRef}
         validRange={validRange}

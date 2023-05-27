@@ -12,11 +12,13 @@ import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
 import SelectOdontogram from "../odontogram/SelectOdontogram";
 
-function FormCreatePatient() {
-  const [error, setError] = useState("");
+function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, clinic }) {
+  const dateNow = new Date();
+  const [errorNif, setErrorNif] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorMobilePhone, seterrorMobilePhone] = useState("");
   const navigate = useNavigate();
-  // const { form, changed } = useForm();
-
+ 
   const {
     register,
     handleSubmit,
@@ -25,25 +27,172 @@ function FormCreatePatient() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => {
-    setError("");
-    let newPatient = data;
 
-    const { datos, cargando } = await PeticionAJAX(
-      Global.url + "patient/create-patient",
-      "POST",
-      newPatient
-    );
+  const handleDateChange = (event) => {
+    let data;
+    let dayData;
+    let monthData;
+    let yearData;
 
-    if (datos.state == "success" && !cargando) {
-      navigate("/panel/patients");
+    let dayNow;
+    let monthNow;
+    let yearNow;
+
+    let age;
+
+    let date = event.target.value;
+
+    data = date.split("-");
+    dayData = data[2];
+    monthData = data[1];
+    yearData = data[0];
+
+    dayNow = dateNow.getDate();
+    monthNow = dateNow.getMonth() + 1;
+    yearNow = dateNow.getFullYear();
+
+    age = (yearNow - yearData) * 12 - (monthNow - monthData);
+
+    if (age < 18 * 12) {
+      setIsMinor(true);
     } else {
-      setError(datos.message);
+      setIsMinor(false);
     }
   };
 
-  const setErrorPhone = () => {
-    setError("");
+  const onSubmit = async (data) => {
+    let newPatient;
+    let direction;
+    let contact;
+    let other;
+    let id_direction;
+    let id_contact;
+    let id_other;
+    let tutors = [];
+
+    direction = {
+      street: data.street,
+      number: data.number,
+      flat: data.flat,
+      z_code: data.z_code,
+      city: data.city,
+      province: data.province,
+    };
+
+    contact = {
+      email: data.email,
+      mobile_phone: data.mobile_phone,
+    };
+
+    other = {
+      diseases: data.diseases,
+      allergies: data.allergies
+    }
+
+    id_direction = await createDirection(direction);
+    id_contact = await createContact(contact);
+    id_other = await createOther(other)
+
+    if (idTutor !== 0) {
+      tutors.push(idTutor);
+    }
+
+    newPatient = {
+      name: data.name,
+      surnames: data.surnames,
+      nif: data.nif,
+      gender: data.gender,
+      date_birth: data.date_birth,
+      odontogram: data.odontogram,
+      id_direction: id_direction,
+      id_contact: id_contact,
+      id_other: id_other,
+      tutors: tutors,
+      id_clinic: clinic
+    };
+
+    await createPatient(newPatient);
+  };
+
+  const createContact = async (con) => {
+    let contact;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "contact/create-contact",
+      "POST",
+      con
+    );
+
+    if (datos.state == "success" && !cargando) {
+      contact = datos.contact._id;
+    } else {
+      // setError(datos.message);
+    }
+
+    return contact;
+  };
+
+  const createDirection = async (dir) => {
+    let direction;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "direction/create-direction",
+      "POST",
+      dir
+    );
+
+    if (datos.state == "success" && !cargando) {
+      direction = datos.direction._id;
+    } else {
+      // setError(datos.message);
+    }
+    return direction;
+  };
+
+  const createOther = async (othe) => {
+    let other;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "other/create-other",
+      "POST",
+      othe
+    );
+
+    if (datos.state == "success" && !cargando) {
+      other = datos.other._id;
+    } else {
+      // setError(datos.message);
+    }
+    return other;
+  };
+
+  const createPatient = async (pat) => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "patient/create-patient",
+      "POST",
+      pat
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setErrorEmail("");
+      setErrorNif("");
+      seterrorMobilePhone("");
+      navigate("/panel/patients");
+    } else {
+      // setError(datos.message);
+    }
+  };
+
+  const clearErrorEmail = () => {
+    setErrorEmail("");
+  };
+
+  const clearErrorPhone = () => {
+    seterrorMobilePhone("");
+  };
+
+  const clearErrorNif = () => {
+    setErrorNif("");
   };
 
   return (
@@ -85,8 +234,11 @@ function FormCreatePatient() {
                       type="text"
                       name="nif"
                       {...register("nif")}
+                      onFocus={() => clearErrorNif()}
                     ></InputText>
-                    <InputError message={errors.nif?.message}></InputError>
+                    <InputError
+                      message={errors.nif ? errors.nif?.message : errorNif}
+                    ></InputError>
                   </div>
                 </div>
 
@@ -97,6 +249,7 @@ function FormCreatePatient() {
                       type="date"
                       name="date_birth"
                       {...register("date_birth")}
+                      onChange={handleDateChange}
                     ></InputText>
                     <InputError
                       message={errors.date_birth?.message}
@@ -108,8 +261,8 @@ function FormCreatePatient() {
                   <div className="separadorForm">
                     <InputLabel>Género</InputLabel>
                     <select {...register("gender")}>
-                      <option value={"M"}>M</option>
-                      <option value={"W"}>W</option>
+                      <option value={"Hombre"}>Hombre</option>
+                      <option value={"Mujer"}>Mujer</option>
                     </select>
                   </div>
                 </div>
@@ -126,6 +279,22 @@ function FormCreatePatient() {
               </div>
 
               <div className="subtitleForm">
+                <p>Otros Datos</p>
+              </div>
+
+              <div className="row">
+                <div className="col-lg-6 col-md-6 col-sm-12">
+                  <InputLabel>Enfermedades</InputLabel>
+                  <textarea {...register("diseases")}></textarea>
+                </div>
+
+                <div className="col-lg-6 col-md-6 col-sm-12">
+                  <InputLabel>Alergías</InputLabel>
+                  <textarea {...register("allergies")}></textarea>
+                </div>
+              </div>
+
+              <div className="subtitleForm">
                 <p>Datos de Contacto</p>
               </div>
 
@@ -136,11 +305,11 @@ function FormCreatePatient() {
                     type="email"
                     name="email"
                     {...register("email")}
-                    onFocus={() => setErrorEmail()}
+                    onFocus={() => clearErrorEmail()}
                   ></InputText>
 
                   <InputError
-                    message={errors.email ? errors.email?.message : error}
+                    message={errors.email ? errors.email?.message : errorEmail}
                   ></InputError>
                 </div>
 
@@ -150,12 +319,14 @@ function FormCreatePatient() {
                     type="phone"
                     name="mobile_phone"
                     {...register("mobile_phone")}
-                    onFocus={() => setErrorPhone()}
+                    onFocus={() => clearErrorPhone()}
                   ></InputText>
 
                   <InputError
                     message={
-                      errors.mobile_phone ? errors.mobile_phone?.message : error
+                      errors.mobile_phone
+                        ? errors.mobile_phone?.message
+                        : errorMobilePhone
                     }
                   ></InputError>
                 </div>
@@ -174,9 +345,7 @@ function FormCreatePatient() {
                     {...register("street")}
                   ></InputText>
 
-                  <InputError
-                    message={errors.street ? errors.street?.message : error}
-                  ></InputError>
+                  <InputError message={errors.street?.message}></InputError>
                 </div>
 
                 <div className="col-lg-3 col-md-6 col-sm-12">
@@ -187,9 +356,7 @@ function FormCreatePatient() {
                     {...register("number")}
                   ></InputText>
 
-                  <InputError
-                    message={errors.number ? errors.number?.message : error}
-                  ></InputError>
+                  <InputError message={errors.number?.message}></InputError>
                 </div>
 
                 <div className="col-lg-2 col-md-6 col-sm-12">
@@ -200,20 +367,18 @@ function FormCreatePatient() {
                     {...register("flat")}
                   ></InputText>
 
-                  <InputError
-                    message={errors.flat ? errors.flat?.message : error}
-                  ></InputError>
+                  <InputError message={errors.flat?.message}></InputError>
                 </div>
 
                 <div className="col-lg-4 col-md-6 col-sm-12">
                   <InputLabel>Código Postal</InputLabel>
                   <InputText
                     type="number"
-                    name="z_postal"
-                    {...register("z_postal")}
+                    name="z_code"
+                    {...register("z_code")}
                   ></InputText>
 
-                  <InputError message={errors.z_postal?.message}></InputError>
+                  <InputError message={errors.z_code?.message}></InputError>
                 </div>
 
                 <div className="col-lg-4 col-md-6 col-sm-12">
@@ -240,7 +405,20 @@ function FormCreatePatient() {
               </div>
 
               <div className="separadorBtn">
-                <BtnPrimary className={"btnsPrimary"}>Crear</BtnPrimary>
+
+                
+                <BtnPrimary
+                  className={"btnsPrimary"}
+                  disabled={(isMinor && !isSavedTutor) ? true : false}
+                >
+                  Crear {isMinor && !isSavedTutor ? "Diables" : "no disable"}
+                </BtnPrimary>
+                {isMinor && !isSavedTutor && (
+                  <InputError
+                    message={"Tiene que rellenar antes los campos del Tutor"}
+                    className="errorTutor"
+                  ></InputError>
+                )}
               </div>
             </form>
           </section>

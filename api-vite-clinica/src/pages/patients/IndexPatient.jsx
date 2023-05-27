@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 import HeaderSection from "../../components/HeaderSection";
 import { BsPersonFillAdd } from "react-icons/bs";
 import Search from "../../components/Search";
@@ -10,6 +11,8 @@ import Spinner from "../../components/Spinner";
 function IndexPatient() {
   const [loading, setLoading] = useState(true);
   const [patients, setPatients] = useState({});
+
+  const { auth } = useAuth();
 
   return (
     <>
@@ -38,6 +41,7 @@ function IndexPatient() {
               setLoad={setLoading}
               patients={patients}
               setPatients={setPatients}
+              clinic={auth.id_clinic}
             />
           </CardBasic>
         </div>

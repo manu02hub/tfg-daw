@@ -10,7 +10,6 @@ function TabsCabinet({ toglleTab, setToggleTab }) {
   const change = (index, val) => {
     if (index !== val) {
       setToggleTab(index);
-      //   loading(true);
     }
   };
 
@@ -25,21 +24,11 @@ function TabsCabinet({ toglleTab, setToggleTab }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      setCabinets(datos.cabinets);
-      setToggleTab(datos.cabinets[0]._id);
+      if (datos.cabinets.length >= 1) {
+        setCabinets(datos.cabinets);
+        setToggleTab(datos.cabinets[0]._id);
+      }
       setLoading(false);
-    }
-  };
-
-  const getCalendarCabinet = async () => {
-    const { datos, cargando } = await PeticionAJAX(
-      Global.url + "user/getAll-user/" + auth._id,
-      "GET"
-    );
-
-    if (datos.state == "success" && !cargando) {
-      usuarios(datos.allUsers);
-      loading(false);
     }
   };
 
@@ -50,11 +39,12 @@ function TabsCabinet({ toglleTab, setToggleTab }) {
         <br />
       </div>
       <div className="tabs-calendar">
-        {!loading && (
+        {!loading && cabinets.length >= 1 && (
           <>
             {cabinets.map((cabinet, index) => {
               return (
-                <Tab key={index}
+                <Tab
+                  key={index}
                   isActive={toglleTab}
                   val={cabinet._id}
                   text={cabinet.reference}

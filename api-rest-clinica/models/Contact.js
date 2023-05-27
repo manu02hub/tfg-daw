@@ -10,12 +10,7 @@ const ContactSchema = Schema({
         type: Number,
         required: true
     },
-
-    landline_phone: {
-        type: String,
-        required: true
-    },
-
+    
 });
 
 const modelContact = model("Contact", ContactSchema, "contacts");
