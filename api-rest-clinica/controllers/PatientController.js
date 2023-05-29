@@ -1,7 +1,8 @@
 const Patient = require("../models/Patient");
 const Contact = require("../models/Contact");
 const Direction = require("../models/Direction");
-
+const User = require("../models/User");
+const bycrypt = require("bcrypt");
 // const getUser = async (req, res) => {
 //     const id = req.params.id;
 
@@ -53,7 +54,7 @@ const getAllPatients = async (req, res) => {
     const id = req.params.id;
 
     //  const allPatients = await Patient.find({}).sort({ date: -1 }).populate('id_rol').exec();
-    const patients = await Patient.find({id_clinic: id}).sort({ date: -1 }).populate('id_contact');
+    const patients = await Patient.find({ id_clinic: id }).sort({ date: -1 }).populate('id_contact');
 
     return res.status(200).json({
         state: "success",
@@ -94,23 +95,23 @@ const updatePatient = async (req, res) => {
     let respuesta;
     var patient;
 
-    patient = await Patient.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { mobile_phone: parameters.mobile_phone }] });
+    // patient = await Patient.findOne({ $and: [{ _id: { $not: { $eq: id } } }, { mobile_phone: parameters.mobile_phone }] });
 
-    if (patient) {
-        respuesta = res.status(200).json({
-            state: "error",
-            message: "Ya existe un paciente con ese número de teléfono",
-        });
-    } else {
+    // if (patient) {
+    //     respuesta = res.status(200).json({
+    //         state: "error",
+    //         message: "Ya existe un paciente con ese número de teléfono",
+    //     });
+    // } else {
 
-        patient = await Patient.findByIdAndUpdate(id, parameters, { new: true });
+    patient = await Patient.findByIdAndUpdate(id, parameters, { new: true });
 
-        respuesta = res.status(200).json({
-            state: "success",
-            message: "Clinica editada correctamente",
-            patient: patient
-        });
-    }
+    respuesta = res.status(200).json({
+        state: "success",
+        message: "Clinica editada correctamente",
+        patient: patient
+    });
+    // }
 
     return respuesta;
 
@@ -132,7 +133,7 @@ const deletePatient = async (req, res) => {
 
         if (equal) {
 
-            await Patient.findByIdAndDelete(id);
+            await Patient.findByIdAndUpdate(id, { active: false }, { new: true });
 
             respuesta = res.status(200).json({
                 state: "success",

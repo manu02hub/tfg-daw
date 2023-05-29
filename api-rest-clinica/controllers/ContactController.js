@@ -35,12 +35,6 @@ const getContact = async (req, res) => {
 
     let id = req.params.id;
 
-    let email = await by.hash(parameters.email, 10);
-    parameters.email = email;
-
-    let mobile_phone = await bycrypt.hash(parameters.mobile_phone, 10);
-    parameters.mobile_phone = mobile_phone;
-
     const contactGet = await Contact.findById(id);
 
     return res.status(200).json({

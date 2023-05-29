@@ -411,7 +411,7 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, clinic 
                   className={"btnsPrimary"}
                   disabled={(isMinor && !isSavedTutor) ? true : false}
                 >
-                  Crear {isMinor && !isSavedTutor ? "Diables" : "no disable"}
+                  Crear 
                 </BtnPrimary>
                 {isMinor && !isSavedTutor && (
                   <InputError

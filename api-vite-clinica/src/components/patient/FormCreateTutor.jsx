@@ -60,11 +60,9 @@ function FormCreateTutor({ setIsSavedTutor, setIdTutor }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      console.log(datos.tutor);
       setTutor(datos.tutor);
       setContact(contact);
       setIdTutor(datos.tutor._id);
-      console.log({ errors });
     } else {
       setErrorTutor(datos.message);
       setTutor({});

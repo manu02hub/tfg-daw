@@ -11,15 +11,34 @@ import InputText from "../InputText";
 import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
 import SelectOdontogram from "../odontogram/SelectOdontogram";
+import toast, { Toaster } from "react-hot-toast";
 
-function FormEditPatient({ id, loading, setLoading }) {
+function FormEditPatient({
+  id,
+  Idtutors,
+  setIdTutors,
+  isSavedTutor,
+  idTutor,
+  isMinor,
+  setIsMinor,
+}) {
+  const dateNow = new Date();
+  const [loading, setLoading] = useState(true);
+  const [odontogram, setOdontogram] = useState({});
   const [patient, setPatient] = useState({});
+  const [contact, setContact] = useState({});
+  const [other, setOther] = useState({});
   const [error, setError] = useState("");
+  const [errorDate, setErrorDate] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    getPatient();
+    getDataPatient();
   }, []);
+
+  useEffect(() => {
+    asignTutor();
+  }, [isSavedTutor]);
 
   const {
     register,
@@ -29,7 +48,22 @@ function FormEditPatient({ id, loading, setLoading }) {
     resolver: yupResolver(schema),
   });
 
+  const getDataPatient = async () => {
+    let patient = await getPatient();
+    await getContact(patient.id_contact);
+    await getOther(patient.id_other);
+    await getOdontograms();
+
+    if (patient.tutors.length > 0) {
+      setIdTutors(patient.tutors);
+    }
+
+    setLoading(false);
+  };
+
   const getPatient = async () => {
+    let patient;
+
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "patient/get-patient/" + id,
       "GET"
@@ -37,24 +71,24 @@ function FormEditPatient({ id, loading, setLoading }) {
 
     if (datos.state == "success" && !cargando) {
       setPatient(datos.patient);
-      setLoading(false);
+      patient = datos.patient;
     }
+
+    return patient;
   };
 
-  const getContact = async () => {
+  const getContact = async (id) => {
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "contact/get-contact/" + id,
       "GET"
     );
 
     if (datos.state == "success" && !cargando) {
-      setPatient(datos.patient);
-      setLoading(false);
+      setContact(datos.contact);
     }
   };
 
-
-  const getOdontograms =  async () => {
+  const getOdontograms = async () => {
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "odontogram/all-odontograms",
       "GET"
@@ -65,28 +99,179 @@ function FormEditPatient({ id, loading, setLoading }) {
     }
   };
 
-  const checkOdontogram = (id) =>{
-
-    let find = odontogram.find(o => o._id == id);
-
-    return find.name;
-    
-  }
-
-  const onSubmit = async (data) => {
-    setError("");
-    let newPatient = data;
-
+  const getOther = async (id) => {
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "patient/update-patient/" + id,
-      "PUT",
-      newPatient
+      Global.url + "other/get-other/" + id,
+      "GET"
     );
 
     if (datos.state == "success" && !cargando) {
-      navigate("/panel/patients");
+      setOther(datos.other);
+    }
+  };
+
+  const checkOdontogram = (id) => {
+    let find = odontogram.find((o) => o._id == id);
+
+    return find._id;
+  };
+
+  const datePatient = () => {
+    return patient.date_birth.split("T")[0];
+  };
+
+  const onSubmit = async (data) => {
+    let editPatient;
+    let direction;
+    let contact;
+    let saveDirection;
+    let saveContact;
+    let savePatient;
+
+    direction = {
+      street: data.street,
+      number: data.number,
+      flat: data.flat,
+      z_code: data.z_code,
+      city: data.city,
+      province: data.province,
+    };
+
+    contact = {
+      email: data.email,
+      mobile_phone: data.mobile_phone,
+    };
+
+    editPatient = {
+      name: data.name,
+      surnames: data.surnames,
+      nif: data.nif,
+      gender: data.gender,
+      date_birth: data.date_birth,
+      odontogram: data.odontogram,
+    };
+
+    saveDirection = await updateDirection(direction);
+    saveContact = await updateContact(contact);
+    savePatient = await updatePatient(editPatient);
+
+    if (saveDirection && saveContact && savePatient) {
+      toast.success("Se han editado los datos correctamente");
     } else {
-      setError(datos.message);
+      toast.error("Algo ha ido mal");
+    }
+  };
+
+  const updatePatient = async (pat) => {
+    let save;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "patient/update-patient/" + patient._id,
+      "PUT",
+      pat
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    } else {
+      // setError(datos.message);
+      save = false;
+    }
+
+    return save;
+  };
+
+  const updateContact = async (con) => {
+    let save;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "contact/update-contact/" + contact._id,
+      "PUT",
+      con
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    } else {
+      save = false;
+    }
+
+    return save;
+  };
+
+  const updateDirection = async (dir) => {
+    let save;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "direction/update-direction/" + patient.id_direction._id,
+      "PUT",
+      dir
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    } else {
+      save = false;
+    }
+    return save;
+  };
+
+  const asignTutor = async () => {
+    let tutors;
+    let patientTutor;
+    let save;
+
+    if (isSavedTutor && idTutor !== 0) {
+      tutors = Idtutors;
+      tutors.push(idTutor);
+
+      patientTutor = {
+        tutors: tutors,
+      };
+
+      console.log(patientTutor);
+
+      save = await updatePatient(patientTutor);
+
+      if (save) {
+        console.log("Añade tutor");
+        // setIdTutors([...Idtutors, idTutor]);
+        // setConfirmNewTutor(false);
+        navigate("/panel/patients");
+      }
+    }
+  };
+
+  const handleDateChange = (event) => {
+    let data;
+    let dayData;
+    let monthData;
+    let yearData;
+
+    let dayNow;
+    let monthNow;
+    let yearNow;
+
+    let age;
+
+    let date = event.target.value;
+
+    data = date.split("-");
+    dayData = data[2];
+    monthData = data[1];
+    yearData = data[0];
+
+    dayNow = dateNow.getDate();
+    monthNow = dateNow.getMonth() + 1;
+    yearNow = dateNow.getFullYear();
+
+    age = (yearNow - yearData) * 12 - (monthNow - monthData);
+
+    if (age < 18 * 12) {
+      setIsMinor(true);
+      setErrorDate("Tienes que asignarle un tutor");
+    } else {
+      setIsMinor(false);
     }
   };
 
@@ -152,10 +337,15 @@ function FormEditPatient({ id, loading, setLoading }) {
                           type="date"
                           name="date_birth"
                           {...register("date_birth")}
-                          defaultValue={patient.date_birth}
+                          defaultValue={datePatient()}
+                          onChange={handleDateChange}
                         ></InputText>
                         <InputError
-                          message={errors.date_birth?.message}
+                          message={
+                            errors.date_birth
+                              ? errors.date_birth?.message
+                              : errorDate
+                          }
                         ></InputError>
                       </div>
                     </div>
@@ -167,8 +357,8 @@ function FormEditPatient({ id, loading, setLoading }) {
                           {...register("gender")}
                           defaultValue={patient.gender}
                         >
-                          <option value={"M"}>M</option>
-                          <option value={"W"}>W</option>
+                          <option value={"Hombre"}>M</option>
+                          <option value={"Mujer"}>W</option>
                         </select>
                       </div>
                     </div>
@@ -176,8 +366,28 @@ function FormEditPatient({ id, loading, setLoading }) {
                     <div className="col-lg-2 col-md-6 col-sm-6">
                       <div className="separadorForm">
                         <InputLabel>Odontograma</InputLabel>
-                        <SelectOdontogram {...register("odontogram")} name={"odontogram"} defaultValue={patient._id}/>
+                        <SelectOdontogram
+                          {...register("odontogram")}
+                          name={"odontogram"}
+                          defaultValue={checkOdontogram(patient.odontogram)}
+                        />
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="subtitleForm">
+                    <p>Otros Datos</p>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-lg-6 col-md-6 col-sm-12">
+                      <InputLabel>Enfermedades</InputLabel>
+                      <textarea {...register("diseases")}></textarea>
+                    </div>
+
+                    <div className="col-lg-6 col-md-6 col-sm-12">
+                      <InputLabel>Alergías</InputLabel>
+                      <textarea {...register("allergies")}></textarea>
                     </div>
                   </div>
 
@@ -192,6 +402,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                         type="email"
                         name="email"
                         {...register("email")}
+                        defaultValue={contact.email}
                         onFocus={() => setErrorEmail()}
                       ></InputText>
 
@@ -206,7 +417,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                         type="phone"
                         name="mobile_phone"
                         {...register("mobile_phone")}
-                        defaultValue={patient.mobile_phone}
+                        defaultValue={contact.mobile_phone}
                         onFocus={() => setErrorPhone()}
                       ></InputText>
 
@@ -231,11 +442,10 @@ function FormEditPatient({ id, loading, setLoading }) {
                         type="text"
                         name="street"
                         {...register("street")}
+                        defaultValue={patient.id_direction.street}
                       ></InputText>
 
-                      <InputError
-                        message={errors.street ? errors.street?.message : error}
-                      ></InputError>
+                      <InputError message={errors.street?.message}></InputError>
                     </div>
 
                     <div className="col-lg-3 col-md-6 col-sm-12">
@@ -244,10 +454,11 @@ function FormEditPatient({ id, loading, setLoading }) {
                         type="number"
                         name="number"
                         {...register("number")}
+                        defaultValue={patient.id_direction.number}
                       ></InputText>
 
                       <InputError
-                        message={errors.number ? errors.number?.message : error}
+                        message={errors.province?.number}
                       ></InputError>
                     </div>
 
@@ -257,19 +468,19 @@ function FormEditPatient({ id, loading, setLoading }) {
                         type="text"
                         name="flat"
                         {...register("flat")}
+                        defaultValue={patient.id_direction.flat}
                       ></InputText>
 
-                      <InputError
-                        message={errors.flat ? errors.flat?.message : error}
-                      ></InputError>
+                      <InputError message={errors.flat?.message}></InputError>
                     </div>
 
                     <div className="col-lg-4 col-md-6 col-sm-12">
                       <InputLabel>Código Postal</InputLabel>
                       <InputText
                         type="number"
-                        name="z_postal"
-                        {...register("z_postal")}
+                        name="z_code"
+                        {...register("z_code")}
+                        defaultValue={patient.id_direction.z_code}
                       ></InputText>
 
                       <InputError
@@ -283,6 +494,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                         type="text"
                         name="city"
                         {...register("city")}
+                        defaultValue={patient.id_direction.city}
                       ></InputText>
 
                       <InputError message={errors.city?.message}></InputError>
@@ -294,6 +506,7 @@ function FormEditPatient({ id, loading, setLoading }) {
                         type="text"
                         name="province"
                         {...register("province")}
+                        defaultValue={patient.id_direction.province}
                       ></InputText>
 
                       <InputError
@@ -303,7 +516,12 @@ function FormEditPatient({ id, loading, setLoading }) {
                   </div>
 
                   <div className="separadorBtn">
-                    <BtnPrimary className={"btnsPrimary"}>Guardar</BtnPrimary>
+                    <BtnPrimary
+                      className={"btnsPrimary"}
+                      disabled={isMinor && Idtutors.length < 1 ? true : false}
+                    >
+                      Guardar
+                    </BtnPrimary>
                   </div>
                 </form>
               </section>
@@ -311,6 +529,8 @@ function FormEditPatient({ id, loading, setLoading }) {
           </div>
         </CardBasic>
       )}
+
+      <Toaster position="bottom-center" reverseOrder={false} />
     </>
   );
 }

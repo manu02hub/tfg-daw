@@ -77,29 +77,29 @@ function ModalTooth({
     }
   };
 
-  const findTooth = async (toothArr, id) => {
-    let teethGet;
-    let i = 0;
-    let find = false;
+  // const findTooth = async (toothArr, id) => {
+  //   let teethGet;
+  //   let i = 0;
+  //   let find = false;
 
-    if (toothArr.length < 1) {
-      teethGet = await getTeeth(id);
-      setTooth([...toothArr, teethGet]);
-    } else {
-      do {
-        if (toothArr[i]._id == id) {
-          find = true;
-        } else {
-          i++;
-        }
-      } while (!find && i < toothArr.length);
+  //   if (toothArr.length < 1) {
+  //     teethGet = await getTeeth(id);
+  //     setTooth([...toothArr, teethGet]);
+  //   } else {
+  //     do {
+  //       if (toothArr[i]._id == id) {
+  //         find = true;
+  //       } else {
+  //         i++;
+  //       }
+  //     } while (!find && i < toothArr.length);
 
-      if (!find) {
-        teethGet = await getTeeth(id);
-        setTooth([...toothArr, teethGet]);
-      }
-    }
-  };
+  //     if (!find) {
+  //       teethGet = await getTeeth(id);
+  //       setTooth([...toothArr, teethGet]);
+  //     }
+  //   }
+  // };
 
   const addTherapy = async (e) => {
     e.preventDefault();

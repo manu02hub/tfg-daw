@@ -24,7 +24,7 @@ const getTutor = async (req, res) => {
 
     let id = req.params.id;
 
-    const tutorGet = await Tutor.findById(id);
+    const tutorGet = await Tutor.findById(id).populate('id_direction');
 
     return res.status(200).json({
         state: "success",

@@ -164,7 +164,6 @@ function FullCalendarCabinet({
       console.log("No se puede deslizar el evento en un día bloqueado");
     } else {
       position = events.findIndex((e) => e.id === arg.event.id);
-      console.log(position);
       auxEvents = [...events];
 
       updateEvent = {
