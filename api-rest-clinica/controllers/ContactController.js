@@ -94,7 +94,10 @@ const searchContact = async (req, res) => {
     let id = req.params.id;
 
     if (id) {
-        contact = await Contact.findOne({ $or: [{ email: id }, { mobile_phone: id }] });
+        console.log(id)
+        // contact = await Contact.findOne({ $or: [{ email: id }, { mobile_phone: id }] });
+        contact = await Contact.findOne({ $or: [{ nif: id }, { mobile_phone: id }] });
+        console.log(contact);
 
         if (contact) {
             

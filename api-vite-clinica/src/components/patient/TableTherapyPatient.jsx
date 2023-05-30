@@ -19,8 +19,9 @@ function TableTherapyPatient({
   setListTable,
   price,
   setPrice,
+  idPatient,
+  idClinic,
 }) {
-
   const navigate = useNavigate();
 
   const menuT = [
@@ -61,7 +62,6 @@ function TableTherapyPatient({
 
     if (index === 0) {
       auxPrice = price.shift();
-
     } else {
       auxPrice = price.slice(index - 1, index);
       setPrice(auxPrice);
@@ -72,6 +72,8 @@ function TableTherapyPatient({
   };
 
   const saveTherapiesPatient = async () => {
+    let patient = await getPatient();
+    let billRef = await createBillReference();
 
     patientTherapies.forEach(async (element, index) => {
       const { datos, cargando } = await PeticionAJAX(
@@ -84,9 +86,113 @@ function TableTherapyPatient({
         !cargando &&
         index == patientTherapies.length - 1
       ) {
+        createBill(datos.therapy_has_patient, billRef, patient);
         navigate("/panel/patients");
+      } else if (
+        datos.state == "success" &&
+        !cargando &&
+        index !== patientTherapies.length - 1
+      ) {
+        createBill(datos.therapy_has_patient, billRef, patient);
       }
     });
+  };
+
+  const createBillReference = async () => {
+    let save = false;
+
+    let billreference = {
+      reference: 1,
+      total: calcTotal(),
+      id_patient: idPatient,
+      id_clinic: idClinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "billreference/create-billreference",
+      "POST",
+      billreference
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+      billreference = datos.billreference;
+    }
+
+    if (save) {
+      return billreference;
+    }
+  };
+
+  const createBill = async (data, ref, pa) => {
+    let diente;
+    let precio;
+    let descuento;
+    let tratamiento;
+    let bill;
+
+    let i = 0;
+    let j = 0;
+    let findT = false;
+    let findTe = false;
+
+    do {
+      if (listTable[i].therapiesTable._id == data.id_therapy) {
+        tratamiento = listTable[i].therapiesTable.name;
+        precio = listTable[i].therapiesTable.price;
+        descuento = listTable[i].therapiesTable.discount;
+        findT = true;
+      } else {
+        i++;
+      }
+    } while (i < listTable.length && !findT);
+
+    do {
+      if (listTable[i].toothTable[j]._id == data.id_tooth) {
+        diente =
+          listTable[i].toothTable[j].number +
+          "" +
+          listTable[i].toothTable[j].letter;
+
+        findTe = true;
+      } else {
+        j++;
+      }
+    } while (j < listTable.length && !findTe);
+
+    bill = {
+      patient: pa.name + " " + pa.surnames,
+      nif_patient: pa.nif,
+      tooth: diente,
+      therapy: tratamiento,
+      price: precio,
+      discount: descuento,
+      number_bill: ref.reference,
+      id_therapy_has_patient: data._id,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "bill/create-bill",
+      "POST",
+      bill
+    );
+    if (datos.state == "success" && !cargando) {
+    }
+  };
+
+  const getPatient = async () => {
+    let patient;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "patient/get-patient/" + idPatient,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      patient = datos.patient;
+    }
+
+    return patient;
   };
 
   return (

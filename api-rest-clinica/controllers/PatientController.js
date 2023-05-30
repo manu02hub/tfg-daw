@@ -185,7 +185,7 @@ const searchNIFphone = async (req, res) => {
     let data = req.params.data;
 
     if (data) {
-        patient = await Patient.findOne({ $or: [{ nif: data }, { mobile_phone: data }] });
+        patient = await Patient.findOne({id_contact: data});
 
         if (patient) {
             respuesta = res.status(200).json({

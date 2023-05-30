@@ -124,9 +124,11 @@ function FormEditPatient({
     let editPatient;
     let direction;
     let contact;
+    let other;
     let saveDirection;
     let saveContact;
     let savePatient;
+    let saveOther;
 
     direction = {
       street: data.street,
@@ -151,9 +153,15 @@ function FormEditPatient({
       odontogram: data.odontogram,
     };
 
+    other = {
+      diseases: data.diseases,
+      allergies: data.allergies
+    }
+
     saveDirection = await updateDirection(direction);
     saveContact = await updateContact(contact);
     savePatient = await updatePatient(editPatient);
+    saveOther = await updateOther(other);
 
     if (saveDirection && saveContact && savePatient) {
       toast.success("Se han editado los datos correctamente");
@@ -206,6 +214,23 @@ function FormEditPatient({
       Global.url + "direction/update-direction/" + patient.id_direction._id,
       "PUT",
       dir
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    } else {
+      save = false;
+    }
+    return save;
+  };
+
+  const updateOther = async (oth) => {
+    let save;
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "other/update-other/" + patient.id_other,
+      "PUT",
+      oth
     );
 
     if (datos.state == "success" && !cargando) {
@@ -382,12 +407,12 @@ function FormEditPatient({
                   <div className="row">
                     <div className="col-lg-6 col-md-6 col-sm-12">
                       <InputLabel>Enfermedades</InputLabel>
-                      <textarea {...register("diseases")}></textarea>
+                      <textarea {...register("diseases")}  defaultValue={other.diseases}></textarea>
                     </div>
 
                     <div className="col-lg-6 col-md-6 col-sm-12">
                       <InputLabel>Alergías</InputLabel>
-                      <textarea {...register("allergies")}></textarea>
+                      <textarea {...register("allergies")} defaultValue={other.allergies}></textarea>
                     </div>
                   </div>
 

@@ -190,7 +190,7 @@ function FormCreateTutor({ setIsSavedTutor, setIdTutor }) {
                   checkTutor(e);
                 }}
               >
-                <InputLabel>Numero de Telefono o Correo del Tutor</InputLabel>
+                <InputLabel>Numero de Telefono</InputLabel>
 
                 <div className="boxSearchPatient">
                   <InputText

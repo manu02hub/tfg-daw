@@ -81,7 +81,7 @@ const getTutorContact = async (req, res) => {
     } else {
         return res.status(200).json({
             state: "error",
-            message: "No se ha encontrado ningún Tutor con esos datos",
+            message: "No se ha encontrado ningún tutor con esos datos",
         });
     }
 

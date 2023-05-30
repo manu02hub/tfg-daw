@@ -9,8 +9,6 @@ import { mayorMenor } from "../../helpers/MayorMenor";
 import TeethCard from "../tooth/TeethCard";
 
 function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
-  
-  const [odontogram, setOdontogram] = useState({});
 
   const [loading, setLoading] = useState(true);
 
@@ -18,8 +16,7 @@ function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
   const [arrayTeethDown, setArrayTeethDown] = useState([]);
   const [indexUp, setIndexUp] = useState();
   const [indexDown, setIndexDown] = useState();
-
-  const url = "http://localhost/img/tfg-clinic/adulto/";
+  const [url,setUrl] = useState("");
 
   useEffect(() => {
     getOdontogram();
@@ -34,9 +31,7 @@ function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
     let response = false;
 
     patientTherapies.forEach((element) => {
-
       find = element.id_tooth.indexOf(id);
-
 
       if (find != -1) {
         response = true;
@@ -51,6 +46,7 @@ function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
     setConfirm(true);
   };
 
+
   const getOdontogram = async () => {
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "odontogram/get-odontogram/" + idOdontogram,
@@ -58,19 +54,22 @@ function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      setOdontogram(datos.odontogram);
-      getTeeth();
+      
+      getTeeth(datos.odontogram.name);
     }
   };
 
-  const getTeeth = async () => {
+  const getTeeth = async (name) => {
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "tooth/get-teethOdontogram/" + idOdontogram,
       "GET"
     );
 
     if (datos.state == "success" && !cargando) {
-      if ((odontogram.name = "Adulto")) {
+      if (name == "Adulto") {
+
+        setUrl("http://localhost/img/tfg-clinic/adulto/");
+
         setArrayTeethUp({
           filas: [
             {
@@ -124,6 +123,7 @@ function TeethTable({ idOdontogram, setTeeth, setConfirm, patientTherapies }) {
           ],
         });
       } else {
+        setUrl("http://localhost/img/tfg-clinic/infantil/");
         setArrayTeethUp({
           filas: [
             {

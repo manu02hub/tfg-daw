@@ -7,7 +7,10 @@ import {
   FaUserNurse,
   FaUsers,
   FaCalendarDay,
+  FaMoneyBill,
+  FaStream
 } from "react-icons/fa";
+import {RxActivityLog} from "react-icons/rx";
 import { BsFillDoorOpenFill } from "react-icons/bs";
 import NavLink from "../NavLink";
 import { checkPermission } from "../../helpers/CheckPermissions";
@@ -73,6 +76,20 @@ function Aside({ permissionsAuth }) {
               </NavLink>
             </div>
           )}
+
+        <div className="cajaListado">
+          <NavLink className="cajaSelect" to={"/panel/bills"}>
+            <FaMoneyBill className="iconoSide" />
+            <span className="spanSide">Facturas</span>
+          </NavLink>
+        </div>
+
+        <div className="cajaListado">
+          <NavLink className="cajaSelect" to={"/panel/patients"}>
+            <FaStream className="iconoSide" />
+            <span className="spanSide">Actividad</span>
+          </NavLink>
+        </div>
       </div>
     </aside>
   );

@@ -24,8 +24,10 @@ function ModalCalendarCreate({
 }) {
   const [errorPatient, setErrorPatient] = useState("");
   const [errorTime, setErrorTime] = useState("");
+  const [errorTherapy, setErrorTherapy] = useState("");
 
   const [patient, setPatient] = useState({});
+
   const [selectedValues, setSelectedValues] = useState([]);
   const [findEvent, setFindEvent] = useState(false);
 
@@ -49,15 +51,28 @@ function ModalCalendarCreate({
       setErrorPatient("El campo no puede estar vacío");
     } else {
       const { datos, cargando } = await PeticionAJAX(
-        Global.url + "patient/searchNIF/" + patientValue,
+        Global.url + "contact/searchContact/" + patientValue,
         "GET"
       );
 
       if (datos.state == "success" && !cargando) {
-        setPatient(datos.patient);
+        getPatient(datos.contact._id);
       } else {
         setErrorPatient(datos.message);
       }
+    }
+  };
+
+  const getPatient = async (data) => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "patient/searchNIF/" + data,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setPatient(datos.patient);
+    } else {
+      setErrorPatient(datos.message);
     }
   };
 
@@ -71,37 +86,41 @@ function ModalCalendarCreate({
     let id_cabinet;
     let appointment;
 
-    if (time !== "") {
-      id_user = e.target.user.value;
-      id_therapy_has_patient = selectedValues;
-      id_cabinet = toglleTab;
-      dateDefault = date;
-      dateDefault = dateDefault + "T" + time;
+    if (selectedValues.length !== 0 || setErrorTherapy === "") {
+      if (time !== "") {
+        id_user = e.target.user.value;
+        id_therapy_has_patient = selectedValues;
+        id_cabinet = toglleTab;
+        dateDefault = date;
+        dateDefault = dateDefault + "T" + time;
 
-      appointment = {
-        id_patient: patient,
-        id_therapy_has_patient: id_therapy_has_patient,
-        id_user: id_user,
-        id_cabinet: id_cabinet,
-        date: dateDefault,
-      };
+        appointment = {
+          id_patient: patient,
+          id_therapy_has_patient: id_therapy_has_patient,
+          id_user: id_user,
+          id_cabinet: id_cabinet,
+          date: dateDefault,
+        };
 
-      const { datos, cargando } = await PeticionAJAX(
-        Global.url + "appointment/create-appointment",
-        "POST",
-        appointment
-      );
+        const { datos, cargando } = await PeticionAJAX(
+          Global.url + "appointment/create-appointment",
+          "POST",
+          appointment
+        );
 
-      if (datos.state == "success" && !cargando) {
-        therapy_has_patient(datos.appointment);
-        // setAppointments([...appointments, datos.appointment]);
+        if (datos.state == "success" && !cargando) {
+          therapy_has_patient(datos.appointment);
+          // setAppointments([...appointments, datos.appointment]);
 
-        closeModal();
+          closeModal();
+        } else {
+          setError(datos.message);
+        }
       } else {
-        setError(datos.message);
+        setErrorTime("Seleccione la hora de la cita");
       }
     } else {
-      setErrorTime("Seleccione la hora de la cita");
+      setErrorTherapy("No has seleccionado ningún tratamiento");
     }
   };
 
@@ -124,7 +143,6 @@ function ModalCalendarCreate({
 
     const resolvedPromises = await Promise.all(promises);
     const therapies = resolvedPromises.filter((the) => the); // Filter out undefined values
-
     // setEvents(event);
 
     // setLoading(false);
@@ -201,12 +219,16 @@ function ModalCalendarCreate({
     setErrorTime("");
     setSelectedValues([]);
     setPatient("");
+    setErrorTherapy("");
     setFindEvent(false);
     setConfirmModalCreate(false);
   };
 
   const clearError = () => {
     setErrorTime("");
+    setErrorPatient("");
+    setErrorTherapy("");
+    setSelectedValues([]);
   };
 
   return (
@@ -220,7 +242,7 @@ function ModalCalendarCreate({
               <div className="col-lg-12 col-md-12 col-sm-12">
                 <form className="formCreate" onSubmit={(e) => checkPatient(e)}>
                   <InputLabel>
-                    Numero de Telefono o Correo del Paciente
+                    Numero de Telefono o Nif del paciente
                   </InputLabel>
 
                   <div className="boxSearchPatient">
@@ -230,7 +252,7 @@ function ModalCalendarCreate({
                       // onBlur={(e) => {
                       // checkPatient(e);
                       // }}
-                      // onFocus={() => clearError()}
+                      onFocus={() => clearError()}
                     ></InputText>
                     <BtnPrimary>
                       <FiSearch size={17} />
@@ -253,7 +275,12 @@ function ModalCalendarCreate({
                   onChange={handleSelectChange}
                   patient={patient._id}
                   name="therapy_has_patient"
+                  setErrorTherapy={setErrorTherapy}
                 />
+
+                <InputError
+                  message={errorTherapy !== "" ? errorTherapy : ""}
+                ></InputError>
               </div>
               <div className="row">
                 <div className="col-lg-8 col-md-12 col-sm-12">

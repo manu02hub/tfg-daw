@@ -66,6 +66,8 @@ function TherapyPatient() {
                   setListTable={setListTable}
                   price={price}
                   setPrice={setPrice}
+                  idClinic={auth.id_clinic}
+                  idPatient={id}
                 />
               </CardBasic>
             </div>

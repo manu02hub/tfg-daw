@@ -26,6 +26,10 @@ import ShowPatient from "../src/pages/patients/ShowPatient";
 import TherapyPatient from "../src/pages/patients/TherapyPatient";
 import Calendar from "../src/pages/calendar/Calendar";
 import IndexCalendar from "../src/pages/calendar/IndexCalendar";
+import Bills from "../src/pages/bills/Bills";
+import IndexBill from "../src/pages/bills/IndexBill";
+import EditBill from "../src/pages/bills/EditBill";
+import ShowBill from "../src/pages/bills/ShowBill";
 
 function Web() {
   return (
@@ -47,10 +51,7 @@ function Web() {
             </Route>
             <Route path="therapies" element={<Therapies />}>
               <Route index="therapie-index" element={<IndexTherapy />}></Route>
-              <Route
-                path="therapie-edit/:id"
-                element={<EditTherapy />}
-              ></Route>
+              <Route path="therapie-edit/:id" element={<EditTherapy />}></Route>
             </Route>
             <Route path="cabinets" element={<Cabinets />}>
               <Route index="cabinet-index" element={<IndexCabinet />}></Route>
@@ -61,10 +62,18 @@ function Web() {
               <Route path="patient-create" element={<CreatePatient />}></Route>
               <Route path="patient-edit/:id" element={<EditPatient />}></Route>
               <Route path="patient-show/:id" element={<ShowPatient />}></Route>
-              <Route path="patient-therapy/:id" element={<TherapyPatient />}></Route>
+              <Route
+                path="patient-therapy/:id"
+                element={<TherapyPatient />}
+              ></Route>
             </Route>
             <Route path="calendar" element={<Calendar />}>
               <Route index="calendar-index" element={<IndexCalendar />}></Route>
+            </Route>
+            <Route path="bills" element={<Bills />}>
+              <Route index="bill-index" element={<IndexBill />}></Route>
+              <Route path="bill-edit/:id" element={<EditBill />}></Route>
+              <Route path="bill-show/:id" element={<ShowBill />}></Route>
             </Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>

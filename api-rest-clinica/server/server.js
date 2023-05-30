@@ -15,6 +15,8 @@ const directionRoutes = require("../routes/direction");
 const contactRoutes = require("../routes/contact");
 const otherRoutes = require("../routes/other");
 const tutorRoutes = require("../routes/tutor");
+const billreferenceRoutes = require("../routes/billreference");
+const billRoutes = require("../routes/bill");
 
 const lanzarServidor = () => {
     //Crear servidor node
@@ -44,6 +46,9 @@ const lanzarServidor = () => {
     app.use('/api/contact', contactRoutes);
     app.use('/api/other', otherRoutes);
     app.use('/api/tutor', tutorRoutes);
+    app.use('/api/billreference', billreferenceRoutes);
+    app.use('/api/bill', billRoutes);
+
 
     //Poner servidor a escuchar peticiones http
     app.listen(puerto, () => {
