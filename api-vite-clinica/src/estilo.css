@@ -1520,6 +1520,14 @@ select[multiple]:focus option:checked {
   width: 35%;
 }
 
+.appointmentsTable{
+  background-color: #009ef7
+}
+
+.checkTable{
+  background-color: #59e27e;
+}
+
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {
   display: grid; /* En la propiedad display agregamos grid para establecer una cuadricula */

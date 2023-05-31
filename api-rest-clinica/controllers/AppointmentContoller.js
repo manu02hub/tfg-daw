@@ -41,6 +41,19 @@ const getAppointmentsCabinet = async (req, res) => {
     });
 }
 
+const getAppointmentsPatient = async (req, res) => {
+    let id = req.params.id;
+
+    const appointments = await Appointment.find({ id_patient: id }).exec();
+
+    return res.status(200).json({
+        state: "success",
+        appointments
+    });
+}
+
+
+
 const getAppointment = async (req, res) => {
 
     let id = req.params.id;
@@ -109,6 +122,6 @@ module.exports = {
     getAppointmentsCabinet,
     deleteAppointment,
     getAppointment,
+    getAppointmentsPatient,
     updateAppointment,
-    // getTherapy
 }

@@ -87,6 +87,12 @@ function CardCabinet({ cabinet, cabinets, setCabinets, auth }) {
               >
                 <MdDelete />
               </BtnsTable>
+
+              <BtnsTable className={"appointmentsTable"}>
+                <Link to={"cabinet-appointments/" + cabinet._id}>
+                  <FaCalendarDay />
+                </Link>
+              </BtnsTable>
             </div>
           </div>
         </CardBasic>

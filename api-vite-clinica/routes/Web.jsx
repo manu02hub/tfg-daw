@@ -31,6 +31,7 @@ import IndexBill from "../src/pages/bills/IndexBill";
 import ShowBill from "../src/pages/bills/ShowBill";
 import Activities from "../src/pages/activities/Activities";
 import IndexActivity from "../src/pages/activities/IndexActivity";
+import AppointmentsCabinets from "../src/pages/cabinets/AppointmentsCabinets";
 
 function Web() {
   return (
@@ -57,6 +58,7 @@ function Web() {
             <Route path="cabinets" element={<Cabinets />}>
               <Route index="cabinet-index" element={<IndexCabinet />}></Route>
               <Route path="cabinet-edit/:id" element={<EditCabinet />}></Route>
+              <Route path="cabinet-appointments/:id" element={<AppointmentsCabinets />}></Route>
             </Route>
             <Route path="patients" element={<Patients />}>
               <Route index="patient-index" element={<IndexPatient />}></Route>

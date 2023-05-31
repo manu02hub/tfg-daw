@@ -7,7 +7,7 @@ import { HiPhone } from "react-icons/hi";
 import { BiCheck } from "react-icons/bi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
-function PersonalData({ patientId }) {
+function PersonalData({ patientId, setTutors }) {
   const [loading, setLoading] = useState(true);
   const [odontogram, setOdontogram] = useState({});
   const [patient, setPatient] = useState({});
@@ -41,6 +41,7 @@ function PersonalData({ patientId }) {
 
     if (datos.state == "success" && !cargando) {
       setPatient(datos.patient);
+      setTutors(datos.patient.tutors);
       patient = datos.patient;
     }
 

@@ -1,54 +1,153 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Global } from "../../helpers/Global";
+import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import CardBasic from "../../components/CardBasic";
-import { BiCheck } from "react-icons/bi";
 
-function Timeline() {
+function Timeline({ patientId }) {
+  const [load, setLoad] = useState(true);
+  const [appointments, setAppointments] = useState({});
+  const [tooth, setTooth] = useState({});
+  const [therapies_has_patient, setTherapies_has_patient] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    let tp;
+    tp = await getTherapiesPatient();
+    await getTeeth(tp);
+
+    setLoad(false);
+  };
+
+  const getAppointmentsPatient = async () => {
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "appointment/get-appointment-patient/" + patientId,
+      "GET"
+    );
+
+    if (datos.state == "success" && !cargando) {
+      setAppointments(datos.appointments);
+    }
+    return datos.appointments;
+  };
+
+  const searchTherapiesPatient = async () => {
+    let appointments = await getAppointmentsPatient();
+    let idsTP = [];
+
+    appointments.forEach((element) => {
+      element.id_therapy_has_patient.map((tp) => {
+        idsTP.push(tp);
+      });
+    });
+
+    return idsTP;
+  };
+
+  const getTherapiesPatient = async () => {
+    const tp = await searchTherapiesPatient();
+
+    const promises = tp.map(async (element) => {
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url +
+          "therapy_has_patient/get-therapy_has_patientComplete/" +
+          element,
+        "GET"
+      );
+
+      if (datos.state === "success" && !cargando) {
+        return datos.therapy_has_patient;
+      } else {
+        setErrorBd("Algo ha ido mal");
+      }
+    });
+
+    const resolvedPromises = await Promise.all(promises);
+    const tpFind = resolvedPromises.filter(
+      (therapy_has_patien) => therapy_has_patien
+    ); // Filtrar los valores undefined
+    setTherapies_has_patient(tpFind);
+    return tpFind;
+  };
+
+  const getTeeth = async (tp) => {
+    const promises = tp.map(async (element) => {
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url + "tooth/get-teeth/" + element.id_tooth,
+        "GET"
+      );
+
+      if (datos.state == "success" && !cargando) {
+        return datos.teeth;
+      }
+    });
+
+    const resolvedPromises = await Promise.all(promises);
+    const tooth = resolvedPromises.filter((tooth) => tooth); // Filtrar los valores undefined
+    setTooth(tooth);
+  };
+
+  const changeDateFormat = (date) => {
+    let dateFormat = new Date(date);
+
+    let hour = dateFormat.getHours();
+    let minutes = dateFormat.getMinutes();
+
+    if (hour < 10) {
+      hour = "0" + hour;
+    }
+
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+
+    dateFormat =
+      dateFormat.getDate() +
+      "-" +
+      Number.parseInt(dateFormat.getMonth() + 1) +
+      "-" +
+      dateFormat.getFullYear() +
+      " " +
+      hour +
+      ":" +
+      minutes;
+
+    return dateFormat;
+  };
+
   return (
     <>
       <div className="row">
         <div className="col-sm-8 col-md-8 col-lg-8">
           <div className="timeline">
-            <div className="container right">
-              <CardBasic>
-                <div className="infoTimeline">
-                  <span>30 de Mayo de 2023</span>
-                  <div className="therapiesDate">
-                    <p>
-                      <span className="therapyName"> Tratamiento: </span>{" "}
-                      Empaste, <span> Pieza: </span> 18a
-                    </p>
-                    <p>
-                      <span> Enfermero: </span> Sergio Hervás Aragón
-                    </p>
+            {!load &&
+              therapies_has_patient.length > 0 &&
+              appointments.map((appointment) => {
+                return (
+                  <div className="container right" key={appointment._id}>
+                    <CardBasic>
+                      <div className="infoTimeline">
+                        <span>{changeDateFormat(appointment.date)}</span>
+                        {therapies_has_patient.map((th, index) => {
+                          return (
+                            <div className="therapiesDate" key={th._id}>
+                              <p>
+                                <span className="therapyName">
+                                  Tratamiento:
+                                </span>
+                                {th.id_therapy.name}, <span> Pieza: </span>{" "}
+                                {tooth[index].number + "" + tooth[index].letter}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </CardBasic>
                   </div>
-                  <div className="therapiesDate">
-                    <p>
-                      <span className="therapyName"> Tratamiento: </span>{" "}
-                      Empaste, <span> Pieza: </span> 18a
-                    </p>
-                    <p>
-                      <span> Enfermero: </span> Sergio Hervás Aragón
-                    </p>
-                  </div>
-                </div>
-              </CardBasic>
-            </div>
-            <div className="container right">
-              <CardBasic>
-                <div className="infoTimeline">
-                  <span>30 de Mayo de 2023</span>
-                  <div className="therapiesDate">
-                    <p>
-                      <span className="therapyName"> Tratamiento: </span>{" "}
-                      Empaste, <span> Pieza: </span> 18a
-                    </p>
-                    <p>
-                      <span> Enfermero: </span> Sergio Hervás Aragón
-                    </p>
-                  </div>
-                </div>
-              </CardBasic>
-            </div>
+                );
+              })}
           </div>
         </div>
       </div>

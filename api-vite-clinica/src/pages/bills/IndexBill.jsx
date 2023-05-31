@@ -16,7 +16,7 @@ function IndexBill() {
       {loading && <Spinner />}
       <HeaderSection title={"Facturas"} />
       <div className="row">
-        <div className="col-lg-10 col-md-12 col-sm-12">
+        <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
             {/* <div className="headerSection">
               <div className="headerName">
