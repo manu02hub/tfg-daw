@@ -11,6 +11,7 @@ import TabsUser from "../../components/user/TabsUser";
 import Search from "../../components/Search";
 import BtnAdd from "../../components/BtnAdd";
 import { checkPermission } from "../../helpers/CheckPermissions";
+import SearchUser from "../../components/user/SearchUser";
 
 function IndexUser() {
   const [users, setUsers] = useState({});
@@ -20,7 +21,7 @@ function IndexUser() {
   const [idUser, setIdUser] = useState(0);
 
   useEffect(() => {
-    if(auth && checkPermission(auth.permissions, "gestion-clinic-user")){
+    if (auth && checkPermission(auth.permissions, "gestion-clinic-user")) {
       getUsersClinic();
     }
   }, []);
@@ -30,7 +31,6 @@ function IndexUser() {
       Global.url + "user/getUsers-clinic/" + auth._id + "/" + auth.id_clinic,
       "GET"
     );
-
 
     if (datos.state == "success" && !cargando) {
       setUsers(datos.allUsers);
@@ -44,7 +44,7 @@ function IndexUser() {
 
       <HeaderSection title={"Usuarios"}>
         <div className="headerSearch">
-          <Search />
+          <SearchUser setUsers={setUsers} auth={auth} />
           <BtnAdd to={"/panel/users/user-create"} add={"Añadir Usuario"}>
             <BsPersonFillAdd></BsPersonFillAdd>
           </BtnAdd>

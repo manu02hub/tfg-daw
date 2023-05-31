@@ -7,6 +7,7 @@ import BtnAdd from "../../components/BtnAdd";
 import CardBasic from "../../components/CardBasic";
 import TablePatient from "../../components/patient/TablePatient";
 import Spinner from "../../components/Spinner";
+import SearchPatient from "../../components/patient/SearchPatient";
 
 function IndexPatient() {
   const [loading, setLoading] = useState(true);
@@ -16,8 +17,8 @@ function IndexPatient() {
 
   return (
     <>
-     {loading && <Spinner />}
-      <HeaderSection title={"Pacientes"}/>
+      {loading && <Spinner />}
+      <HeaderSection title={"Pacientes"} />
 
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
@@ -27,10 +28,7 @@ function IndexPatient() {
                 <h4>Todos los pacientes</h4>
               </div>
               <div className="headerSearch">
-                <form>
-                  <label>Buscar: </label>
-                  <input className="inputSearch"></input>
-                </form>
+                <SearchPatient setPatients={setPatients} idClinic={auth.id_clinic} />
                 <BtnAdd to={"patient-create"} add={"Añadir Paciente"}>
                   <BsPersonFillAdd></BsPersonFillAdd>
                 </BtnAdd>

@@ -275,6 +275,23 @@ const deleteUser = async (req, res) => {
     return respuesta;
 }
 
+
+const searchUser = async (req, res) => {
+
+    let email = req.params.email;
+    let id = req.params.id;
+    let users;
+
+    if (email !== "") {
+        users = await User.find({ $and: [{ email: { $regex: email, $options: 'i' } }, { email: { $not: { $eq: id } } }] }).populate('id_rol').exec();
+    }
+
+    return res.status(200).json({
+        state: "success",
+        users,
+    });
+}
+
 module.exports = {
     getUser,
     createUser,
@@ -283,5 +300,6 @@ module.exports = {
     getUsersClinic,
     editUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    searchUser
 }

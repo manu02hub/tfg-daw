@@ -5,12 +5,13 @@ import CardBasic from "../../components/CardBasic";
 import TableTherapy from "../../components/therapy/TableTherapy";
 import FormCreateTherapy from "../../components/therapy/FormCreateTherapy";
 import Spinner from "../../components/Spinner";
+import SearchTherapy from "../../components/therapy/SearchTherapy";
 
 function IndexTherapy() {
   const [loading, setLoading] = useState(true);
   const [therapies, setTherapies] = useState({});
 
-  const {auth} = useAuth();
+  const { auth } = useAuth();
 
   return (
     <>
@@ -23,12 +24,7 @@ function IndexTherapy() {
               <div className="headerName">
                 <h4>Todos mis Tratamientos</h4>
               </div>
-              <div className="headerSearch">
-                <form>
-                  <label>Buscar: </label>
-                  <input className="inputSearch"></input>
-                </form>
-              </div>
+              <SearchTherapy setTherapies={setTherapies} />
             </div>
             <TableTherapy
               load={loading}

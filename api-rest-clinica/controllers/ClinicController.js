@@ -53,6 +53,21 @@ const getClinic = async (req, res) => {
     });
 }
 
+const searchClinic = async (req, res) => {
+
+    let direction = req.params.direction;
+    let clinics;
+
+    if (direction !== "") {
+        clinics = await Clinic.find({ direction: { $regex: direction, $options: 'i' } });
+    }
+
+    return res.status(200).json({
+        state: "success",
+        clinics,
+    });
+}
+
 const deleteClinic = async (req, res) => {
 
     var usuariosClinicas;
@@ -142,5 +157,6 @@ module.exports = {
     getAllClinics,
     deleteClinic,
     updateClinic,
-    getClinic
+    getClinic,
+    searchClinic
 }

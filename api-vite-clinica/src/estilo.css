@@ -379,8 +379,9 @@ input[type="number"]:focus{
 .headerSection .headerSearch {
   width: auto;
   display: flex;
-  flex-flow: row wrap;
+  align-items: baseline;
   height: 100%;
+  justify-content: center;
 }
 
 .headerSearch .inputSearch {
@@ -1289,6 +1290,10 @@ table .pdf {
   filter: drop-shadow(0 0 0.75rem #0277b5);
 }
 
+.searchUser{
+  margin-right: 12px;
+}
+
 /**----------------------CALENDAR-----------------------------------*/
 
 :root {
@@ -1501,6 +1506,19 @@ select[multiple]:focus option:checked {
   background: #a4ffeb;
 }
 
+.boxSearch{
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.headerSearch label{
+  margin-right: 5px;
+}
+
+.headerSearch .searchPatient{
+  width: 35%;
+}
 
 /*-------------------------GRID SYSTEM------------------------------------------*/
 .row {

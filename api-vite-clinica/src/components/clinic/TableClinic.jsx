@@ -61,7 +61,7 @@ function TableClinic({ load, setLoad, clinics, setClinics }) {
 
                   <TdTable>{clinic.city}</TdTable>
 
-                  <TdTable>{clinic.c_postal}</TdTable>
+                  <TdTable>{clinic.z_code}</TdTable>
 
                   <TdTable>
                     <BtnsTable className={"editTable"}>

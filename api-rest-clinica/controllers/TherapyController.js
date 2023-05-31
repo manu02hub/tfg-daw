@@ -53,6 +53,21 @@ const getTherapy = async (req, res) => {
     });
 }
 
+const searchTherapy = async (req, res) => {
+
+    let name = req.params.name;
+    let therapies;
+
+    if (name !== "") {
+        therapies = await Therapy.find({ name: { $regex: name, $options: 'i' } });
+    }
+
+    return res.status(200).json({
+        state: "success",
+        therapies,
+    });
+}
+
 const deleteTherapy = async (req, res) => {
 
     let id = req.params.id;
@@ -101,5 +116,6 @@ module.exports = {
     getAllTherapies,
     deleteTherapy,
     updateTherapy,
-    getTherapy
+    getTherapy,
+    searchTherapy
 }

@@ -54,7 +54,7 @@ const getAllPatients = async (req, res) => {
     const id = req.params.id;
 
     //  const allPatients = await Patient.find({}).sort({ date: -1 }).populate('id_rol').exec();
-    const patients = await Patient.find({ id_clinic: id }).sort({ date: -1 }).populate('id_contact');
+    const patients = await Patient.find({ $and: [{ id_clinic: id }, { active: true }] }).sort({ date: -1 }).populate('id_contact');
 
     return res.status(200).json({
         state: "success",
@@ -187,7 +187,7 @@ const searchNIFphone = async (req, res) => {
     let data = req.params.data;
 
     if (data) {
-        patient = await Patient.findOne({ id_contact: data });
+        patient = await Patient.findOne({ $and: [{ id_contact: data }, { active: true }] });
 
         if (patient) {
             respuesta = res.status(200).json({
@@ -213,8 +213,22 @@ const searchNIFphone = async (req, res) => {
             message: "El campo no puede estar vacio",
         });
     }
+}
 
 
+const searchPatient = async (req, res) => {
+
+    let data = req.params.data;
+    let patients;
+
+    if (data !== "") {
+        patients = await Patient.find({ $and: [{ nif: { $regex: data, $options: 'i' } }, { active: true }] }).sort({ date: -1 }).populate('id_contact').exec();
+    }
+
+    return res.status(200).json({
+        state: "success",
+        patients,
+    });
 }
 
 module.exports = {
@@ -223,5 +237,6 @@ module.exports = {
     getPatient,
     updatePatient,
     deletePatient,
-    searchNIFphone
+    searchNIFphone,
+    searchPatient
 }
