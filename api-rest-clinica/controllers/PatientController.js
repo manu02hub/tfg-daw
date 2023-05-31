@@ -125,6 +125,7 @@ const deletePatient = async (req, res) => {
     let parameters = req.body;
     let equal;
     let respuesta;
+    let patientDelete;
 
     const user = await User.findOne({ _id: parameters.id });
 
@@ -133,11 +134,12 @@ const deletePatient = async (req, res) => {
 
         if (equal) {
 
-            await Patient.findByIdAndUpdate(id, { active: false }, { new: true });
+            patientDelete = await Patient.findByIdAndUpdate(id, { active: false }, { new: true });
 
             respuesta = res.status(200).json({
                 state: "success",
                 message: "Paciente eliminado correctamente",
+                patient: patientDelete
             });
 
 
@@ -185,7 +187,7 @@ const searchNIFphone = async (req, res) => {
     let data = req.params.data;
 
     if (data) {
-        patient = await Patient.findOne({id_contact: data});
+        patient = await Patient.findOne({ id_contact: data });
 
         if (patient) {
             respuesta = res.status(200).json({

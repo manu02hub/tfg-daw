@@ -26,6 +26,7 @@ function ModalPatientDelete({confirm, setConfirm, patientId, patients, setPatien
   });
 
   const deletePatient = async (data) => {
+    let save;
     let patient = data;
 
     const { datos, cargando } = await PeticionAJAX(
@@ -37,13 +38,45 @@ function ModalPatientDelete({confirm, setConfirm, patientId, patients, setPatien
     if (datos.state == "success" && !cargando) {
       patient = patients.filter((u) => u._id !== patientId);
       setPatients(patient);
+      save = await activity(datos.patient);
+      if(save){
+        toast.success("Se ha eliminado el paciente correctamente");
+      }
       closeModal();
-      toast.success("Se ha eliminado el paciente correctamente");
 
     } else {
       setError(datos.message);
     }
   };
+
+  const activity = async (use) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha eliminado al usuario con nif " +
+        use.nif,
+      action: "Eliminar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
+  };
+
 
   const closeModal = () => {
     setConfirm(false);

@@ -28,8 +28,9 @@ import Calendar from "../src/pages/calendar/Calendar";
 import IndexCalendar from "../src/pages/calendar/IndexCalendar";
 import Bills from "../src/pages/bills/Bills";
 import IndexBill from "../src/pages/bills/IndexBill";
-import EditBill from "../src/pages/bills/EditBill";
 import ShowBill from "../src/pages/bills/ShowBill";
+import Activities from "../src/pages/activities/Activities";
+import IndexActivity from "../src/pages/activities/IndexActivity";
 
 function Web() {
   return (
@@ -72,8 +73,10 @@ function Web() {
             </Route>
             <Route path="bills" element={<Bills />}>
               <Route index="bill-index" element={<IndexBill />}></Route>
-              <Route path="bill-edit/:id" element={<EditBill />}></Route>
               <Route path="bill-show/:id" element={<ShowBill />}></Route>
+            </Route>
+            <Route path="activities" element={<Activities />}>
+              <Route index="activity-index" element={<IndexActivity />}></Route>
             </Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>

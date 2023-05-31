@@ -27,6 +27,7 @@ function Login() {
 
   const login = async (data) => {
     let user = data;
+    let save;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "user/login",
@@ -38,10 +39,38 @@ function Login() {
       localStorage.setItem("token", datos.token);
       localStorage.setItem("user", JSON.stringify(datos.user));
       setAuth(datos.user);
-      navigate("/panel/calendar");
+
+      save = await activity(datos.user);
+
+      if (save) {
+        navigate("/panel/calendar");
+      }
     } else {
       setError(datos.message);
     }
+  };
+
+  const activity = async (us) => {
+    let save = false;
+
+    let activity = {
+      message: "El usuario con correo " + us.email + " se ha logueado ",
+      action: "Login",
+      id_user: us._id,
+      id_clinic: us.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const setErrorEmail = () => {
@@ -64,23 +93,20 @@ function Login() {
               <InputText
                 type="email"
                 name="email"
-              
                 {...register("email")}
                 onFocus={() => setErrorEmail()}
               ></InputText>
               <InputError
                 message={errors.email ? errors.email?.message : error}
               ></InputError>
-              
-                <InputLabel>Contraseña</InputLabel>
-                <InputText
-                  type="password"
-                  name="password"
-                 
-                  {...register("password")}
-                ></InputText>
-                <InputError message={errors.password?.message}></InputError>
-             
+
+              <InputLabel>Contraseña</InputLabel>
+              <InputText
+                type="password"
+                name="password"
+                {...register("password")}
+              ></InputText>
+              <InputError message={errors.password?.message}></InputError>
 
               <div className="contenedorLink">
                 {/* <Link>Forgot your password?</Link> */}

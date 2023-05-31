@@ -21,7 +21,7 @@ function IndexCabinet() {
           <div className="row">
 
             <ListCabinet
-              clinic={auth.id_clinic}
+              auth={auth}
               load={loading}
               setLoad={setLoading}
               cabinets={cabinets}
@@ -34,7 +34,7 @@ function IndexCabinet() {
           <CardBasic>
             <span>Añadir Gabinete</span>
             <FormCreateCabinet
-              clinic={auth.id_clinic}
+              auth={auth}
               cabinets={cabinets}
               setCabinets={setCabinets}
             />

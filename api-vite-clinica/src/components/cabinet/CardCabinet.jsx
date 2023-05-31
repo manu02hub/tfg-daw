@@ -8,9 +8,10 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { FaCalendarDay } from "react-icons/fa";
 
-function CardCabinet({ cabinet, cabinets, setCabinets }) {
+function CardCabinet({ cabinet, cabinets, setCabinets, auth }) {
   const deleteCabinet = async (id) => {
     let auxCabinet;
+    let save;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "cabinet/delete-cabinet/" + id,
@@ -18,10 +19,43 @@ function CardCabinet({ cabinet, cabinets, setCabinets }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      auxCabinet = cabinets.filter((cabi) => cabi._id !== id);
 
-      setCabinets(auxCabinet);
+      save = await activity(datos.cabinet);
+
+      if(save){
+        auxCabinet = cabinets.filter((cabi) => cabi._id !== id);
+
+        setCabinets(auxCabinet);
+      }
     }
+  };
+
+  const activity = async (cab) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha eliminado el gabinete " +
+        cab.reference,
+      action: "Eliminar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   return (

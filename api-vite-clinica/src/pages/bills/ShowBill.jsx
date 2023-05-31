@@ -4,11 +4,15 @@ import CardBasic from "../../components/CardBasic";
 import Spinner from "../../components/Spinner";
 import TableBill from "../../components/bill/TableBill";
 import { useParams } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 function ShowBill() {
   const [loading, setLoading] = useState(true);
 
   const {id} = useParams();
+
+  const {auth} = useAuth();
+
   return (
     <>
       {loading && <Spinner />}
@@ -31,6 +35,7 @@ function ShowBill() {
               load={loading}
               setLoad={setLoading}
               reference={id}
+              auth={auth}
             />
           </CardBasic>
         </div>

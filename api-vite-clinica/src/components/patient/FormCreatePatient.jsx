@@ -12,7 +12,7 @@ import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
 import SelectOdontogram from "../odontogram/SelectOdontogram";
 
-function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, clinic }) {
+function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth }) {
   const dateNow = new Date();
   const [errorNif, setErrorNif] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
@@ -108,7 +108,7 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, clinic 
       id_contact: id_contact,
       id_other: id_other,
       tutors: tutors,
-      id_clinic: clinic
+      id_clinic: auth.id_clinic
     };
 
     await createPatient(newPatient);
@@ -167,6 +167,9 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, clinic 
   };
 
   const createPatient = async (pat) => {
+
+    let save;
+
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "patient/create-patient",
       "POST",
@@ -177,10 +180,41 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, clinic 
       setErrorEmail("");
       setErrorNif("");
       seterrorMobilePhone("");
-      navigate("/panel/patients");
+      save = await activity(datos.patient);
+      if(save){
+        navigate("/panel/patients");
+      }
     } else {
       // setError(datos.message);
     }
+  };
+
+  const activity = async (pat) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha creado al paciente con nif " +
+        pat.nif,
+      action: "Crear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const clearErrorEmail = () => {

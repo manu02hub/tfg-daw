@@ -21,6 +21,7 @@ function FormEditPatient({
   idTutor,
   isMinor,
   setIsMinor,
+  auth
 }) {
   const dateNow = new Date();
   const [loading, setLoading] = useState(true);
@@ -163,6 +164,8 @@ function FormEditPatient({
     savePatient = await updatePatient(editPatient);
     saveOther = await updateOther(other);
 
+    await activity(editPatient);
+
     if (saveDirection && saveContact && savePatient) {
       toast.success("Se han editado los datos correctamente");
     } else {
@@ -238,6 +241,34 @@ function FormEditPatient({
     } else {
       save = false;
     }
+    return save;
+  };
+
+  const activity = async (use) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha editado al usuario con nif " +
+        use.nif,
+      action: "Editar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
     return save;
   };
 
@@ -428,7 +459,7 @@ function FormEditPatient({
                         name="email"
                         {...register("email")}
                         defaultValue={contact.email}
-                        onFocus={() => setErrorEmail()}
+                        // onFocus={() => setErrorEmail()}
                       ></InputText>
 
                       <InputError
@@ -443,7 +474,7 @@ function FormEditPatient({
                         name="mobile_phone"
                         {...register("mobile_phone")}
                         defaultValue={contact.mobile_phone}
-                        onFocus={() => setErrorPhone()}
+                        // onFocus={() => setErrorPhone()}
                       ></InputText>
 
                       <InputError

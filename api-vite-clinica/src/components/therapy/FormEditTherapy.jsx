@@ -10,7 +10,7 @@ import InputText from "../../components/InputText";
 import InputError from "../../components/InputError";
 import BtnPrimary from "../BtnPrimary";
 
-function FormEditTherapy({ id, loading, setLoading }) {
+function FormEditTherapy({ id, loading, setLoading, auth }) {
   const [error, setError] = useState("");
   const [therapy, setTherapy] = useState(id);
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ function FormEditTherapy({ id, loading, setLoading }) {
 
   const onSubmit = async (data) => {
     setError("");
+    let save;
     let newTherapy = data;
 
     const { datos, cargando } = await PeticionAJAX(
@@ -50,10 +51,42 @@ function FormEditTherapy({ id, loading, setLoading }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      navigate("/panel/therapies");
+      save = await activity();
+
+      if (save) {
+        navigate("/panel/therapies");
+      }
     } else {
       setError(datos.message);
     }
+  };
+
+  const activity = async () => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha editado al tratamiento con nombre " +
+        therapy.name,
+      action: "Editar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const setErrorName = () => {

@@ -13,7 +13,7 @@ import { IoDocumentText } from "react-icons/io5";
 import BtnsTable from "../BtnsTable";
 import ModalPatientDelete from "./ModalPatientDelete";
 
-function TablePatient({ load, setLoad, patients, setPatients, clinic }) {
+function TablePatient({ load, setLoad, patients, setPatients, auth }) {
 
   const [idPatient, setIdPatient] = useState(0);
   const [odontogram, setOdontogram] = useState({})
@@ -39,7 +39,7 @@ function TablePatient({ load, setLoad, patients, setPatients, clinic }) {
 
   const getPatients = async () => {
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "patient/all-patients/" + clinic,
+      Global.url + "patient/all-patients/" + auth.id_clinic,
       "GET"
     );
 

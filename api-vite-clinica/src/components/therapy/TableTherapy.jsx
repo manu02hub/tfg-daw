@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import BtnsTable from "../BtnsTable";
 // import ModalClinicDelete from "./ModalClinicDelete";
 
-function TableTherapy({ load, setLoad, therapies, setTherapies }) {
+function TableTherapy({ load, setLoad, therapies, setTherapies, auth }) {
   const [idClinic, setIdClinic] = useState(0);
   const [confirmingClinicDeletion, setConfirmingClinicDeletion] =
     useState(false);
@@ -46,6 +46,7 @@ function TableTherapy({ load, setLoad, therapies, setTherapies }) {
   const deleteTherapy = async(id)  =>{
 
     let auxTherapies;
+    let save;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "therapy/delete-therapy/"+id,
@@ -54,11 +55,43 @@ function TableTherapy({ load, setLoad, therapies, setTherapies }) {
 
     if (datos.state == "success" && !cargando) {
 
-      auxTherapies = therapies.filter(thera => thera._id !== id);
+      save = await activity(datos.therapy);
 
-      setTherapies(auxTherapies);
+      if(save){
+        auxTherapies = therapies.filter(thera => thera._id !== id);
+
+        setTherapies(auxTherapies);
+      }
 
     }
+  };
+
+  const activity = async (therapy) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha eliminado el tratamiento con nombre " +
+        therapy.name,
+      action: "Eliminar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const confirmClinicDeletion = (id) => {

@@ -64,7 +64,7 @@ function IndexCalendar() {
           <ModalCalendarCreate
             confirmModalCreate={confirmModalCreate}
             setConfirmModalCreate={setConfirmModalCreate}
-            clinic={auth.id_clinic}
+            auth={auth}
             toglleTab={toglleTab}
             date={date}
             events={events}
@@ -76,7 +76,7 @@ function IndexCalendar() {
           <ModalCalendarEdit
             confirmModalEdit={confirmModalEdit}
             setConfirmModalEdit={setConfirmModalEdit}
-            clinic={auth.id_clinic}
+            auth={auth}
             event={event}
             setEvent={setEvent}
             events={events}
@@ -91,6 +91,7 @@ function IndexCalendar() {
             event={event}
             blockedDays={blockedDays}
             setBlockedDays={setBlockedDays}
+            auth={auth}
           />
         </>
       )}

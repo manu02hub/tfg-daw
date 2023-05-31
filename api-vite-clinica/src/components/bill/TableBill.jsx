@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import BtnsTable from "../BtnsTable";
 import SelectPay from "./SelectPay";
 
-function TableBill({ load, setLoad, reference }) {
+function TableBill({ load, setLoad, reference, auth }) {
   const [bills, setBills] = useState({});
 
   const menuT = [
@@ -92,6 +92,7 @@ function TableBill({ load, setLoad, reference }) {
 
   const updateBill = async (idBill, bill) => {
     let save = false;
+    let complete;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "bill/update-bill/" + idBill,
@@ -100,7 +101,11 @@ function TableBill({ load, setLoad, reference }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      save = true;
+      complete = await activityUpdate(datos.bill);
+
+      if (complete) {
+        save = true;
+      }
     }
 
     return save;
@@ -125,11 +130,12 @@ function TableBill({ load, setLoad, reference }) {
     let complete = await deleteBill(id);
 
     auxBill = bills.filter((bill) => bill._id !== id);
-  
+
     setBills(auxBill);
-    total =  getTotal(auxBill);
+    total = getTotal(auxBill);
 
     if (complete) {
+      await activityDelete(reference);
 
       updateReference = {
         total: total,
@@ -155,13 +161,67 @@ function TableBill({ load, setLoad, reference }) {
   };
 
   const updateBillReference = async (ref, obj) => {
-
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "billreference/update-billreference/" + ref,
       "PUT",
       obj
     );
-   
+  };
+
+  const activityDelete = async (ref) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha eliminado la factura " +
+        ref,
+      action: "Eliminar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
+  };
+
+  const activityUpdate = async (bill) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha editado la factura " +
+        bill.number_bill,
+      action: "Editar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const getTotal = (bill) => {

@@ -57,11 +57,12 @@ const deleteBillReference = async (req, res) => {
 
     let id = req.params.id;
 
-    await BillReference.findByIdAndUpdate(id, { active: false });
+    const billreference = await BillReference.findByIdAndUpdate(id, { active: false });
 
     return res.status(200).json({
         state: "success",
-        message: "Factura eliminada correctamente"
+        message: "Factura eliminada correctamente",
+        billreference: billreference,
     });
 
 }

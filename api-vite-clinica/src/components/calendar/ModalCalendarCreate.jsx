@@ -14,7 +14,7 @@ import { FiSearch } from "react-icons/fi";
 function ModalCalendarCreate({
   confirmModalCreate,
   setConfirmModalCreate,
-  clinic,
+  auth,
   toglleTab,
   date,
   events,
@@ -158,6 +158,8 @@ function ModalCalendarCreate({
       date: appointment.date,
     };
 
+    await activity(newEvent)
+
     setEvents([...events, newEvent]);
   };
 
@@ -173,7 +175,7 @@ function ModalCalendarCreate({
     if (!found) {
       blockDay = {
         date: date,
-        id_clinic: clinic,
+        id_clinic: auth.id_clinic,
       };
 
       const { datos, cargando } = await PeticionAJAX(
@@ -184,6 +186,7 @@ function ModalCalendarCreate({
 
       if (datos.state == "success" && !cargando) {
         setBlockedDays([...blockedDays, blockDay]);
+        activityBlock(date);
 
         eventBlock = {
           id: datos.dayBlocked._id,
@@ -197,6 +200,62 @@ function ModalCalendarCreate({
         closeModal();
       }
     }
+  };
+
+  const activity = async (event) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha asignado una cita al paciente con nombre " +
+        event.title,
+      action: "Crear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
+  };
+
+  const activityBlock = async (date) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha bloqueado el día " +
+       date,
+      action: "Bloquear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const checkEvent = () => {
@@ -286,7 +345,7 @@ function ModalCalendarCreate({
                 <div className="col-lg-8 col-md-12 col-sm-12">
                   <div className="separadorForm">
                     <InputLabel>Profesional</InputLabel>
-                    <SelectUserClinic clinic={clinic} name="user" />
+                    <SelectUserClinic clinic={auth.id_clinic} name="user" />
                   </div>
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12 timeMargin">

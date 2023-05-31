@@ -1,6 +1,6 @@
 const Bill = require("../models/Bill");
 
-const createBill= async (req, res) => {
+const createBill = async (req, res) => {
 
     var bill;
     let respuesta;
@@ -47,11 +47,12 @@ const deleteBill = async (req, res) => {
 
     let id = req.params.id;
 
-    await Bill.findByIdAndDelete(id);
+    const bill = await Bill.findByIdAndDelete(id);
 
     return res.status(200).json({
         state: "success",
-        message: "Factura eliminada correctamente"
+        message: "Factura eliminada correctamente",
+        bill: bill
     });
 
 }

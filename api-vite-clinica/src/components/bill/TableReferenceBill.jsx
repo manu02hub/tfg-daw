@@ -10,7 +10,7 @@ import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import BtnsTable from "../BtnsTable";
 
-function TableReferenceBill({ load, setLoad, idClinic }) {
+function TableReferenceBill({ load, setLoad, auth }) {
   const menuT = ["Referencia", "Total", "Fecha", "Acciones"];
   const [billReferences, setBillReferences] = useState({});
 
@@ -20,7 +20,7 @@ function TableReferenceBill({ load, setLoad, idClinic }) {
 
   const getBillReferences = async () => {
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "billReference/get-billreferences/" + idClinic,
+      Global.url + "billReference/get-billreferences/" + auth.id_clinic,
       "GET"
     );
 
@@ -46,6 +46,7 @@ function TableReferenceBill({ load, setLoad, idClinic }) {
   const deleteBillReference = async(id) => {
 
     let auxBill;
+    let save;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "billReference/delete-billreference/" + id,
@@ -54,10 +55,42 @@ function TableReferenceBill({ load, setLoad, idClinic }) {
 
     if (datos.state == "success" && !cargando) {
 
-      auxBill = billReferences.filter((bill) => bill._id !== id);
+      save = await activity(datos.billReference)
 
-      setBillReferences(auxBill);
+      if(save){
+        auxBill = billReferences.filter((bill) => bill._id !== id);
+
+        setBillReferences(auxBill);
+      }
     }
+
+    const activity = async (bill) => {
+      let save = false;
+  
+      let activity = {
+        message:
+          "El usuario con correo " +
+          auth.email +
+          " ha eliminado la factura " +
+          bill.reference,
+        action: "Eliminar",
+        date: Date.now(),
+        id_user: auth._id,
+        id_clinic: auth.id_clinic,
+      };
+  
+      const { datos, cargando } = await PeticionAJAX(
+        Global.url + "activity/create-activity",
+        "POST",
+        activity
+      );
+  
+      if (datos.state == "success" && !cargando) {
+        save = true;
+      }
+  
+      return save;
+    };
   }
 
   return (
@@ -96,4 +129,4 @@ function TableReferenceBill({ load, setLoad, idClinic }) {
   );
 }
 
-export default TableReferenceBill;
+export default React.memo(TableReferenceBill);

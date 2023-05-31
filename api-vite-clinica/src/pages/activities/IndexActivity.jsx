@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 import HeaderSection from "../../components/HeaderSection";
 import CardBasic from "../../components/CardBasic";
 import Spinner from "../../components/Spinner";
-import TableBill from "../../components/bill/TableBill";
+import TableActivity from "../../components/activity/TableActivity";
 
-function EditBill() {
+function IndexActivity() {
+
   const [loading, setLoading] = useState(true);
+  const {auth} = useAuth();
+
   return (
     <>
-      {!loading && <Spinner />}
-      <HeaderSection title={"Facturas"} />
+      {loading && <Spinner />}
+      <HeaderSection title={"Actividad de la Clínica"} />
       <div className="row">
         <div className="col-lg-12 col-md-12 col-sm-12">
           <CardBasic>
@@ -24,11 +28,10 @@ function EditBill() {
                 </form>
               </div>
             </div> */}
-            <TableBill
+            <TableActivity
               load={loading}
               setLoad={setLoading}
-              //    therapies={therapies}
-              //    setTherapies={setTherapies}
+              idClinic={auth.id_clinic}
             />
           </CardBasic>
         </div>
@@ -37,4 +40,4 @@ function EditBill() {
   );
 }
 
-export default EditBill;
+export default IndexActivity;

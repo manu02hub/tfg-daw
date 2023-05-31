@@ -4,10 +4,12 @@ import CardBasic from "../../components/CardBasic";
 import HeaderSection from "../../components/HeaderSection";
 import Spinner from "../../components/Spinner";
 import FormEditClinic from "../../components/clinic/FormEditClinic";
+import useAuth from "../../hooks/useAuth";
 
 function EditClinic() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const {auth} = useAuth();
 
   return (
     <>
@@ -21,7 +23,7 @@ function EditClinic() {
                 <section className="section-card">
                   <h2>Edita tu clínica </h2>
                   <p>Cambia los datos de tu clínica</p>
-                   <FormEditClinic id={id} loading={loading} setLoading={setLoading} />
+                   <FormEditClinic id={id} loading={loading} setLoading={setLoading} auth={auth} />
                 </section>
               </div>
             </div>

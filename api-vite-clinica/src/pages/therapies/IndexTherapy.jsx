@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 import HeaderSection from "../../components/HeaderSection";
 import CardBasic from "../../components/CardBasic";
 import TableTherapy from "../../components/therapy/TableTherapy";
@@ -8,6 +9,8 @@ import Spinner from "../../components/Spinner";
 function IndexTherapy() {
   const [loading, setLoading] = useState(true);
   const [therapies, setTherapies] = useState({});
+
+  const {auth} = useAuth();
 
   return (
     <>
@@ -32,6 +35,7 @@ function IndexTherapy() {
               setLoad={setLoading}
               therapies={therapies}
               setTherapies={setTherapies}
+              auth={auth}
             />
           </CardBasic>
         </div>
@@ -41,6 +45,7 @@ function IndexTherapy() {
             <FormCreateTherapy
               therapies={therapies}
               setTherapies={setTherapies}
+              auth={auth}
             />
           </CardBasic>
         </div>

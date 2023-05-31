@@ -4,10 +4,12 @@ import TableClinic from "../../components/clinic/TableClinic";
 import FormCreateClinic from "../../components/clinic/FormCreateClinic";
 import HeaderSection from "../../components/HeaderSection";
 import Spinner from "../../components/Spinner";
+import useAuth from "../../hooks/useAuth";
 
 function IndexClinic() {
   const [loading, setLoading] = useState(true);
   const [clinics, setClinics] = useState({});
+  const {auth} = useAuth();
 
   return (
     <>
@@ -40,7 +42,7 @@ function IndexClinic() {
           <CardBasic>
             <span>Añadir Clinica</span>
 
-            <FormCreateClinic clinics={clinics} setClinics={setClinics} />
+            <FormCreateClinic clinics={clinics} setClinics={setClinics} auth={auth} />
           </CardBasic>
         </div>
       </div>

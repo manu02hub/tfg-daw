@@ -1473,6 +1473,33 @@ select[multiple]:focus option:checked {
   background-color: #d32f2f;
 }
 
+.trCreate{
+  background: #caedffeb;
+}
+
+.trDelete{
+  background: #f28080;
+}
+
+.trEdit{
+  background: #fae57d;
+}
+
+.trLogin{
+  background: #d0d0d0;
+}
+
+.trAsignar{
+  background: #40ade7;
+}
+
+.trBloquear{
+  background: #ac9fff;
+}
+
+.trDesbloquear{
+  background: #a4ffeb;
+}
 
 
 /*-------------------------GRID SYSTEM------------------------------------------*/

@@ -26,6 +26,7 @@ function ModalUserDelete({ confirm, setConfirm, user, auth, users, setUsers }) {
   });
 
   const deleteUser = async (data) => {
+    let save;
     let usuarios = data;
 
     const { datos, cargando } = await PeticionAJAX(
@@ -35,7 +36,8 @@ function ModalUserDelete({ confirm, setConfirm, user, auth, users, setUsers }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      if (users) {
+      save = await activity(user);
+      if (users && save) {
         usuarios = users.filter((u) => u._id !== user._id);
         closeModal();
         setUsers(usuarios);
@@ -47,6 +49,34 @@ function ModalUserDelete({ confirm, setConfirm, user, auth, users, setUsers }) {
     } else {
       setError(datos.message);
     }
+  };
+
+  const activity = async (user) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha eliminado al usuario con correo " +
+        user.email,
+      action: "Eliminar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const closeModal = () => {
@@ -64,9 +94,9 @@ function ModalUserDelete({ confirm, setConfirm, user, auth, users, setUsers }) {
           <div className="section-modal">
             <h2>¿Seguro que quiere eliminar la cuenta?</h2>
             <p>
-            Una vez que se elimine su cuenta, todos sus recursos y datos
-              se eliminará permanentemente. Por favor, introduzca su contraseña para confirmar
-              le gustaría eliminar permanentemente su cuenta.
+              Una vez que se elimine su cuenta, todos sus recursos y datos se
+              eliminará permanentemente. Por favor, introduzca su contraseña
+              para confirmar le gustaría eliminar permanentemente su cuenta.
             </p>
 
             <form className="formDelete" onSubmit={handleSubmit(deleteUser)}>

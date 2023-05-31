@@ -41,7 +41,7 @@ function IndexPatient() {
               setLoad={setLoading}
               patients={patients}
               setPatients={setPatients}
-              clinic={auth.id_clinic}
+              auth={auth}
             />
           </CardBasic>
         </div>

@@ -20,7 +20,7 @@ function TableTherapyPatient({
   price,
   setPrice,
   idPatient,
-  idClinic,
+  auth,
 }) {
   const navigate = useNavigate();
 
@@ -87,6 +87,7 @@ function TableTherapyPatient({
         index == patientTherapies.length - 1
       ) {
         createBill(datos.therapy_has_patient, billRef, patient);
+        activity(patient);
         navigate("/panel/patients");
       } else if (
         datos.state == "success" &&
@@ -105,7 +106,7 @@ function TableTherapyPatient({
       reference: 1,
       total: calcTotal(),
       id_patient: idPatient,
-      id_clinic: idClinic,
+      id_clinic: auth.id_clinic,
     };
 
     const { datos, cargando } = await PeticionAJAX(
@@ -193,6 +194,34 @@ function TableTherapyPatient({
     }
 
     return patient;
+  };
+
+  const activity = async (pat) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha asignado nuevos tratamientos al paciente con nif " +
+        pat.nif,
+      action: "Asignar Tratamiento",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   return (

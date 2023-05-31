@@ -10,7 +10,7 @@ import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
 import BtnReset from "../BtnReset";
 
-function FormCreateTherapy({ therapies, setTherapies }) {
+function FormCreateTherapy({ therapies, setTherapies, auth }) {
   const [error, setError] = useState("");
 
   const {
@@ -22,8 +22,11 @@ function FormCreateTherapy({ therapies, setTherapies }) {
   });
 
   const onSubmit = async (data) => {
-    setError("");
+   
+    let save;
     let therapy = data;
+
+    setError("");
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "therapy/create-therapy",
@@ -32,8 +35,13 @@ function FormCreateTherapy({ therapies, setTherapies }) {
     );
 
     if (datos.state == "success" && !cargando) {
+
+      save = await activity(datos.therapy);
+
+      if(save){
+        setTherapies([...therapies, datos.therapy]);
+      }
       
-      setTherapies([...therapies, datos.therapy]);
     } else {
       setError(datos.message);
     }
@@ -41,6 +49,34 @@ function FormCreateTherapy({ therapies, setTherapies }) {
 
   const setErrorName = () => {
     setError("");
+  };
+
+  const activity = async (trat) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha creado el tratamiento " +
+        trat.name,
+      action: "Crear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   return (

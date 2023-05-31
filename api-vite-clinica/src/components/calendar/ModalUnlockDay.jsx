@@ -11,6 +11,7 @@ function ModalUnlockDay({
   setEvents,
   blockedDays,
   setBlockedDays,
+  auth
 }) {
 
   const closeModal = () => {
@@ -31,6 +32,7 @@ function ModalUnlockDay({
       auxBlock = blockedDays.filter((day) => day._id !==  event.id);
       console.log(auxBlock);
       console.log(events);
+      activity(event.start.toISOString().split("T")[0]);
       auxEvent = events.filter((e) => e.id !==  event.id);
       console.log(auxEvent);
 
@@ -38,6 +40,34 @@ function ModalUnlockDay({
       setEvents(auxEvent);
       closeModal();
     }
+  };
+
+  const activity = async (date) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha desbloqueado el día " +
+       date,
+      action: "Desbloquear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   return (

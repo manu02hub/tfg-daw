@@ -32,7 +32,7 @@ function IndexBill() {
             <TableReferenceBill
               load={loading}
               setLoad={setLoading}
-              idClinic={auth.id_clinic}
+              auth={auth}
             />
           </CardBasic>
         </div>

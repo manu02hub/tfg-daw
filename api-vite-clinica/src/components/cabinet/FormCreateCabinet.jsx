@@ -10,7 +10,7 @@ import InputError from "../../components/InputError";
 import BtnPrimary from "../BtnPrimary";
 import BtnReset from "../BtnReset";
 
-function FormCreateCabinet({clinic, cabinets, setCabinets}) {
+function FormCreateCabinet({auth, cabinets, setCabinets}) {
   const [error, setError] = useState("");
 
   const {
@@ -22,8 +22,11 @@ function FormCreateCabinet({clinic, cabinets, setCabinets}) {
   });
 
   const onSubmit = async (data) => {
-    setError("");
+   
+    let save;
     let newCabinet = data;
+
+    setError("");
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "cabinet/create-cabinet",
@@ -32,10 +35,42 @@ function FormCreateCabinet({clinic, cabinets, setCabinets}) {
     );
 
     if (datos.state == "success" && !cargando) {
-      setCabinets([...cabinets, datos.cabinet]);
+      save = await activity(datos.cabinet);
+      if(save){
+        setCabinets([...cabinets, datos.cabinet]);
+      }
+      
     } else {
       setError(datos.message);
     }
+  };
+
+  const activity = async (cab) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha creado el gabinete " +
+        cab.reference,
+      action: "Crear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const setErrorReference = () => {
@@ -59,7 +94,7 @@ function FormCreateCabinet({clinic, cabinets, setCabinets}) {
         <InputText
           type="hidden"
           name="id_clinic"
-          defaultValue={clinic}
+          defaultValue={auth.id_clinic}
           {...register("id_clinic")}
         ></InputText>
       </div>

@@ -11,7 +11,7 @@ import InputText from "../../components/InputText";
 import InputError from "../../components/InputError";
 import BtnPrimary from "../BtnPrimary";
 
-function FormEditClinic({ id, loading, setLoading }) {
+function FormEditClinic({ id, loading, setLoading,auth }) {
   const [error, setError] = useState("");
   const [clinic, setClinic] = useState(id);
   const navigate = useNavigate();
@@ -41,8 +41,10 @@ function FormEditClinic({ id, loading, setLoading }) {
   };
 
   const onSubmit = async (data) => {
-    setError("");
+   
+    let save;
     let newClinic = data;
+    setError("");
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "clinic/update-clinic/" + id,
@@ -51,10 +53,41 @@ function FormEditClinic({ id, loading, setLoading }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      navigate("/panel/clinics");
+      save = await activity(datos.clinic);
+      if(save){
+        navigate("/panel/clinics");
+      }
     } else {
       setError(datos.message);
     }
+  };
+
+  const activity = async (cli) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha editado la clínica " +
+        cli.name,
+      action: "Editar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const setErrorDirection = () => {
@@ -113,11 +146,11 @@ function FormEditClinic({ id, loading, setLoading }) {
                   <InputLabel>Código Postal</InputLabel>
                   <InputText
                     type="number"
-                    name="c_postal"
-                    defaultValue={clinic.c_postal}
-                    {...register("c_postal")}
+                    name="z_code"
+                    defaultValue={clinic.z_code}
+                    {...register("z_code")}
                   ></InputText>
-                  <InputError message={errors.c_postal?.message}></InputError>
+                  <InputError message={errors.z_code?.message}></InputError>
                 </div>
 
                 <div className="separadorBtn btnEditClinic">

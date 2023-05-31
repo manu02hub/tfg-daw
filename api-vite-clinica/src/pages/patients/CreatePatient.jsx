@@ -19,7 +19,7 @@ function CreatePatient() {
             setIsMinor={setIsMinor}
             isSavedTutor={isSavedTutor}
             idTutor={idTutor}
-            clinic={auth.id_clinic}
+            auth={auth}
           />
           {isMinor && !isSavedTutor && (
             <FormCreateTutor

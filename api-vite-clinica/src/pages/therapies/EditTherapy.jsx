@@ -3,10 +3,12 @@ import { useParams } from 'react-router-dom';
 import CardBasic from "../../components/CardBasic";
 import HeaderSection from "../../components/HeaderSection";
 import FormEditTherapy from '../../components/therapy/FormEditTherapy';
+import useAuth from '../../hooks/useAuth';
 
 function EditTherapy() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const {auth} = useAuth();
   return (
     <>
       <HeaderSection title={"Editar Tratamiento"}/>
@@ -20,7 +22,7 @@ function EditTherapy() {
                   <p>
                     Cambia los precios en tu clínica
                   </p>
-                  <FormEditTherapy id={id} loading={loading} setLoading={setLoading}/>
+                  <FormEditTherapy id={id} loading={loading} setLoading={setLoading} auth={auth}/>
                 </section>
               </div>
             </div>

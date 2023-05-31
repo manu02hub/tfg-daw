@@ -60,6 +60,7 @@ const deleteClinic = async (req, res) => {
     let parameters = req.body;
     let equal;
     let respuesta;
+    let clinic;
 
     const user = await User.findOne({ _id: parameters.id });
 
@@ -80,11 +81,12 @@ const deleteClinic = async (req, res) => {
 
             } else {
 
-                await Clinic.findByIdAndDelete(id);
+                clinic = await Clinic.findByIdAndDelete(id);
 
                 respuesta = res.status(200).json({
                     state: "success",
                     message: "Clinica eliminada correctamente",
+                    clinic: clinic
                 });
             }
 

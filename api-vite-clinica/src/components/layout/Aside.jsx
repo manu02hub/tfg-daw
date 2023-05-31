@@ -85,7 +85,7 @@ function Aside({ permissionsAuth }) {
         </div>
 
         <div className="cajaListado">
-          <NavLink className="cajaSelect" to={"/panel/patients"}>
+          <NavLink className="cajaSelect" to={"/panel/activities"}>
             <FaStream className="iconoSide" />
             <span className="spanSide">Actividad</span>
           </NavLink>

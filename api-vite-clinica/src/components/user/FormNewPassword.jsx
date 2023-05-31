@@ -23,6 +23,7 @@ function FormNewPassword({ user, auth }) {
   });
 
   const onSubmit = async (data) => {
+    let save;
     let newUser = data;
 
     const { datos, cargando } = await PeticionAJAX(
@@ -32,10 +33,43 @@ function FormNewPassword({ user, auth }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      navigate("/panel/users");
+      save = await activity(datos.user);
+      if (save) {
+        navigate("/panel/users");
+      } else {
+        setError(datos.message);
+      }
     } else {
       setError(datos.message);
     }
+  };
+
+  const activity = async (user) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha editado la contraseña del usuario con correo " +
+        user.email,
+      action: "Editar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const setErrorPass = () => {

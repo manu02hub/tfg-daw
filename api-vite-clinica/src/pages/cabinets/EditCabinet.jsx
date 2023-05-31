@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import HeaderSection from "../../components/HeaderSection";
 import CardBasic from "../../components/CardBasic";
 import FormEditCabinet from "../../components/cabinet/FormEditCabinet";
+import useAuth from "../../hooks/useAuth";
 
 function EditCabinet() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const {auth} = useAuth();
   return (
     <>
       <HeaderSection title={"Edit Cabinet"} />
@@ -22,6 +24,7 @@ function EditCabinet() {
                     id={id}
                     loading={loading}
                     setLoading={setLoading}
+                    auth={auth}
                   />
                 </section>
               </div>

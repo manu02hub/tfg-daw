@@ -13,7 +13,7 @@ import SelectPatient from "../patient/SelectPatient";
 function ModalCalendarEdit({
   confirmModalEdit,
   setConfirmModalEdit,
-  clinic,
+  auth,
   event,
   setEvent,
   events,
@@ -115,12 +115,12 @@ function ModalCalendarEdit({
     );
 
     if (datos.state == "success" && !cargando) {
+
+      await activityUpdate(event);
+
       indexTime = events.findIndex((event) => event.id === updateEvent.id);
-
       auxTime = [...events];
-
       auxTime[indexTime] = updateEvent;
-
       setEvents(auxTime);
 
       closeModal();
@@ -136,14 +136,72 @@ function ModalCalendarEdit({
     );
 
     if (datos.state == "success" && !cargando) {
-      auxEvents = events.filter((event) => event.id !== id);
+      
+      await activityDelete(event);
 
+      auxEvents = events.filter((event) => event.id !== id);
       setEvents(auxEvents);
 
       closeModal();
     } else {
       setError(datos.message);
     }
+  };
+
+  const activityDelete = async (event) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha eliminado la cita al paciente " +
+        event.title,
+      action: "Eliminar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
+  };
+
+  const activityUpdate = async (event) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha editado la cita del paciente " +
+        event.title,
+      action: "Editar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const closeModal = () => {
@@ -193,7 +251,7 @@ function ModalCalendarEdit({
 
                     {!loading && (
                       <SelectUserClinic
-                        clinic={clinic}
+                        clinic={auth.id_clinic}
                         name="user"
                         defaultValue={eventSelect.id_user}
                       />

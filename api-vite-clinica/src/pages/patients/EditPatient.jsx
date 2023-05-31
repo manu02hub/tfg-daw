@@ -6,6 +6,7 @@ import FormEditPatient from "../../components/patient/FormEditPatient";
 import FormEditTutor from "../../components/patient/FormEditTutor";
 import FormCreateTutor from "../../components/patient/FormCreateTutor";
 import ListFormEdit from "../../components/patient/ListFormEdit";
+import useAuth from "../../hooks/useAuth";
 
 function EditPatient() {
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,7 @@ function EditPatient() {
   const [isMinor, setIsMinor] = useState(false);
 
   const { id } = useParams();
+  const {auth} = useAuth();
 
   const addTutor = () => {
     setConfirmNewTutor(true);
@@ -37,6 +39,7 @@ function EditPatient() {
             idTutor={idTutor}
             isMinor={isMinor}
             setIsMinor={setIsMinor}
+            auth={auth}
           />
 
           {Idtutors.length <= 1 && !confirmNewTutor && (

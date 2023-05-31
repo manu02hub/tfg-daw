@@ -57,11 +57,12 @@ const deleteTherapy = async (req, res) => {
 
     let id = req.params.id;
 
-    await Therapy.findByIdAndDelete(id);
+    const therapy = await Therapy.findByIdAndDelete(id);
 
     return res.status(200).json({
         state: "success",
-        message: "Terapia eliminada correctamente"
+        message: "Terapia eliminada correctamente",
+        therapy: therapy
     });
 
 }

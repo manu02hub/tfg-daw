@@ -3,14 +3,14 @@ import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import CardCabinet from "./CardCabinet";
 
-function ListCabinet({ clinic, load, setLoad, cabinets, setCabinets }) {
+function ListCabinet({ load, setLoad, cabinets, setCabinets, auth }) {
   useEffect(() => {
     getCabinets();
   }, []);
 
   const getCabinets = async () => {
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "cabinet/all-cabinetClinic/" + clinic,
+      Global.url + "cabinet/all-cabinetClinic/" + auth.id_clinic,
       "GET"
     );
 
@@ -26,7 +26,7 @@ function ListCabinet({ clinic, load, setLoad, cabinets, setCabinets }) {
         cabinets.map((cabinet) => {
           return (
           
-              <CardCabinet key={cabinet._id} cabinet={cabinet} cabinets={cabinets} setCabinets={setCabinets} />
+              <CardCabinet key={cabinet._id} cabinet={cabinet} cabinets={cabinets} setCabinets={setCabinets} auth={auth}/>
             
           );
         })}

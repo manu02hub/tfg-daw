@@ -27,6 +27,7 @@ function FormCreateUser({ auth }) {
 
   const onSubmit = async (data) => {
     setError("");
+    let save;
     let newUser = data;
 
     const { datos, cargando } = await PeticionAJAX(
@@ -36,15 +37,49 @@ function FormCreateUser({ auth }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      navigate("/panel/users");
+      save = await activity(datos.user);
+
+      if (save) {
+        navigate("/panel/users");
+      } else {
+        setError(datos.message);
+      }
     } else {
       setError(datos.message);
     }
   };
 
-  const setErrorEmail = () =>{
+  const setErrorEmail = () => {
     setError("");
-  }
+  };
+
+  const activity = async (user) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha creado al usuario con correo " +
+        user.email,
+      action: "Crear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
+  };
 
   return (
     <form className="formCreate" onSubmit={handleSubmit(onSubmit)}>
@@ -63,8 +98,9 @@ function FormCreateUser({ auth }) {
             onFocus={() => setErrorEmail()}
           ></InputText>
 
-          
-          <InputError message={errors.email ? errors.email?.message : error }></InputError>
+          <InputError
+            message={errors.email ? errors.email?.message : error}
+          ></InputError>
         </div>
       </div>
 

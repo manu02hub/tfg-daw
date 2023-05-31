@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../helpers/Validate";
@@ -13,7 +13,6 @@ import SelectClinic from "./SelectClinic";
 import BtnPrimary from "../BtnPrimary";
 
 function FormEditUser({ user, auth }) {
-
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -26,6 +25,7 @@ function FormEditUser({ user, auth }) {
   });
 
   const onSubmit = async (data) => {
+    let save;
     let newUser = data;
 
     const { datos, cargando } = await PeticionAJAX(
@@ -35,16 +35,48 @@ function FormEditUser({ user, auth }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      navigate("/panel/users");
-    }else {
+      save = await activity(datos.user);
+      if (save) {
+        navigate("/panel/users");
+      } else {
+        setError(datos.message);
+      }
+    } else {
       setError(datos.message);
     }
   };
 
-  const setErrorEmail = () =>{
+  const setErrorEmail = () => {
     setError("");
-   
-  }
+  };
+
+  const activity = async (user) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha editado al usuario con correo " +
+        user.email,
+      action: "Editar",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
+  };
 
   return (
     <form className="formEdit" onSubmit={handleSubmit(onSubmit)}>
@@ -68,7 +100,9 @@ function FormEditUser({ user, auth }) {
             defaultValue={user.email}
             onFocus={() => setErrorEmail()}
           ></InputText>
-          <InputError message={errors.email ? errors.email?.message : error }></InputError>
+          <InputError
+            message={errors.email ? errors.email?.message : error}
+          ></InputError>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12">
           <InputLabel>Rol</InputLabel>
@@ -90,7 +124,7 @@ function FormEditUser({ user, auth }) {
         </div>
       </div>
       <div className="separadorBtn">
-        <BtnPrimary className={"btnsPrimary"} >Guardar</BtnPrimary>
+        <BtnPrimary className={"btnsPrimary"}>Guardar</BtnPrimary>
       </div>
     </form>
   );

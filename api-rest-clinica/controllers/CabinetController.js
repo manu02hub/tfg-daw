@@ -67,11 +67,12 @@ const deleteCabinet = async (req, res) => {
 
     let id = req.params.id;
 
-    await Cabinet.findByIdAndDelete(id);
+    const cabinet = await Cabinet.findByIdAndDelete(id);
 
     return res.status(200).json({
         state: "success",
-        message: "Gabinete eliminado correctamente"
+        message: "Gabinete eliminado correctamente",
+        cabinet:cabinet
     });
 
 }

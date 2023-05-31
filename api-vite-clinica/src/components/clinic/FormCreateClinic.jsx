@@ -10,7 +10,7 @@ import InputError from "../../components/InputError";
 import BtnPrimary from "../BtnPrimary";
 import BtnReset from "../BtnReset";
 
-function FormCreateClinic({ clinics, setClinics }) {
+function FormCreateClinic({ clinics, setClinics, auth }) {
   const [error, setError] = useState("");
 
   const {
@@ -22,9 +22,10 @@ function FormCreateClinic({ clinics, setClinics }) {
   });
 
   const onSubmit = async (data) => {
+    let save;
+    let newClinic = data;
 
     setError("");
-    let newClinic = data;
 
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "clinic/create-clinic",
@@ -33,10 +34,41 @@ function FormCreateClinic({ clinics, setClinics }) {
     );
 
     if (datos.state == "success" && !cargando) {
-      setClinics([...clinics, datos.clinic]);
+      save = await activity(datos.clinic);
+      if (save) {
+        setClinics([...clinics, datos.clinic]);
+      }
     } else {
       setError(datos.message);
     }
+  };
+
+  const activity = async (cli) => {
+    let save = false;
+
+    let activity = {
+      message:
+        "El usuario con correo " +
+        auth.email +
+        " ha creado la clínica " +
+        cli.name,
+      action: "Crear",
+      date: Date.now(),
+      id_user: auth._id,
+      id_clinic: auth.id_clinic,
+    };
+
+    const { datos, cargando } = await PeticionAJAX(
+      Global.url + "activity/create-activity",
+      "POST",
+      activity
+    );
+
+    if (datos.state == "success" && !cargando) {
+      save = true;
+    }
+
+    return save;
   };
 
   const setErrorDirection = () => {
@@ -78,7 +110,7 @@ function FormCreateClinic({ clinics, setClinics }) {
           name="z_code"
           {...register("z_code")}
         ></InputText>
-        <InputError message={errors.c_postal?.message}></InputError>
+        <InputError message={errors.z_code?.message}></InputError>
       </div>
 
       <div className="separadorBtn btnCreate">
