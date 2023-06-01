@@ -25,11 +25,21 @@ function ListCabinet({ load, setLoad, cabinets, setCabinets, auth }) {
       {!load &&
         cabinets.map((cabinet) => {
           return (
-          
-              <CardCabinet key={cabinet._id} cabinet={cabinet} cabinets={cabinets} setCabinets={setCabinets} auth={auth}/>
-            
+            <CardCabinet
+              key={cabinet._id}
+              cabinet={cabinet}
+              cabinets={cabinets}
+              setCabinets={setCabinets}
+              auth={auth}
+            />
           );
         })}
+
+      {!load && cabinets.length < 1 && (
+        <div className="notFindSection">
+          <p>No existen gabinetes en la clínica</p>
+        </div>
+      )}
     </>
   );
 }

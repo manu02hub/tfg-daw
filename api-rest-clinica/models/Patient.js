@@ -5,7 +5,7 @@ const PatientSchema = Schema({
 
     history_number: {
         type: Number,
-        default: 000001
+        require: true
     },
 
     name: {
@@ -29,7 +29,7 @@ const PatientSchema = Schema({
     },
 
     date_birth: {
-        type: Date,
+        type: String,
         required: true
     },
 

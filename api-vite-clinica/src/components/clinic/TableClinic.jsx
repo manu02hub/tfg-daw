@@ -83,6 +83,11 @@ function TableClinic({ load, setLoad, clinics, setClinics }) {
           </Tbody>
         )}
       </Table>
+      {!load && clinics.length < 1 && (
+        <div className="notFindSection">
+          <p>No existen clínicas</p>
+        </div>
+      )}
       <ModalClinicDelete
         confirm={confirmingClinicDeletion}
         setConfirm={setConfirmingClinicDeletion}

@@ -133,6 +133,11 @@ function TableTherapy({ load, setLoad, therapies, setTherapies, auth }) {
             })}
         </Tbody>
       </Table>
+      {!load && therapies.length < 1 && (
+        <div className="notFindSection">
+          <p>No existen tratamientos</p>
+        </div>
+      )}
     </>
   );
 }

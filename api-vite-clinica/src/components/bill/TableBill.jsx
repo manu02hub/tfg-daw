@@ -235,53 +235,60 @@ function TableBill({ load, setLoad, reference, auth }) {
   };
 
   return (
-    <Table>
-      <Thead menu={menuT} />
-      <Tbody>
-        {!load &&
-          bills.map((bill, index) => {
-            return (
-              <tr key={bill._id}>
-                <TdTable>{bill.patient}</TdTable>
+    <>
+      <Table>
+        <Thead menu={menuT} />
+        <Tbody>
+          {!load &&
+            bills.map((bill, index) => {
+              return (
+                <tr key={bill._id}>
+                  <TdTable>{bill.patient}</TdTable>
 
-                <TdTable>{bill.nif_patient}</TdTable>
+                  <TdTable>{bill.nif_patient}</TdTable>
 
-                <TdTable>{bill.tooth}</TdTable>
+                  <TdTable>{bill.tooth}</TdTable>
 
-                <TdTable>{bill.therapy}</TdTable>
+                  <TdTable>{bill.therapy}</TdTable>
 
-                <TdTable>{bill.price}</TdTable>
+                  <TdTable>{bill.price}</TdTable>
 
-                <TdTable>{bill.IVA}</TdTable>
+                  <TdTable>{bill.IVA}</TdTable>
 
-                <TdTable>{bill.discount}</TdTable>
+                  <TdTable>{bill.discount}</TdTable>
 
-                <TdTable>{bill.number_bill}</TdTable>
+                  <TdTable>{bill.number_bill}</TdTable>
 
-                <TdTable>
-                  {bill.pay_day ? changeDateFormat(bill.pay_day) : ""}
-                </TdTable>
+                  <TdTable>
+                    {bill.pay_day ? changeDateFormat(bill.pay_day) : ""}
+                  </TdTable>
 
-                <TdTable className={"selectTable"}>
-                  <SelectPay
-                    defaultValue={bill.is_pay}
-                    onChange={(e) => onChangePay(e, bill._id)}
-                  />
-                </TdTable>
+                  <TdTable className={"selectTable"}>
+                    <SelectPay
+                      defaultValue={bill.is_pay}
+                      onChange={(e) => onChangePay(e, bill._id)}
+                    />
+                  </TdTable>
 
-                <TdTable>
-                  <BtnsTable
-                    className={"deleteTable"}
-                    onClick={() => deleteClick(bill._id, bill.number_bill)}
-                  >
-                    <MdDelete />
-                  </BtnsTable>
-                </TdTable>
-              </tr>
-            );
-          })}
-      </Tbody>
-    </Table>
+                  <TdTable>
+                    <BtnsTable
+                      className={"deleteTable"}
+                      onClick={() => deleteClick(bill._id, bill.number_bill)}
+                    >
+                      <MdDelete />
+                    </BtnsTable>
+                  </TdTable>
+                </tr>
+              );
+            })}
+        </Tbody>
+      </Table>
+      {!load && bills.length < 1 && (
+        <div className="notFindSection">
+          <p>No hay facturas con este número de referencia</p>
+        </div>
+      )}
+    </>
   );
 }
 

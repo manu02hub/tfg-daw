@@ -31,7 +31,6 @@ function TableReferenceBill({ load, setLoad, auth }) {
   };
 
   const changeDateFormat = (date) => {
-
     let dateFormat = new Date(date);
     dateFormat =
       dateFormat.getDate() +
@@ -43,8 +42,7 @@ function TableReferenceBill({ load, setLoad, auth }) {
     return dateFormat;
   };
 
-  const deleteBillReference = async(id) => {
-
+  const deleteBillReference = async (id) => {
     let auxBill;
     let save;
 
@@ -54,10 +52,9 @@ function TableReferenceBill({ load, setLoad, auth }) {
     );
 
     if (datos.state == "success" && !cargando) {
+      save = await activity(datos.billReference);
 
-      save = await activity(datos.billReference)
-
-      if(save){
+      if (save) {
         auxBill = billReferences.filter((bill) => bill._id !== id);
 
         setBillReferences(auxBill);
@@ -66,7 +63,7 @@ function TableReferenceBill({ load, setLoad, auth }) {
 
     const activity = async (bill) => {
       let save = false;
-  
+
       let activity = {
         message:
           "El usuario con correo " +
@@ -78,54 +75,62 @@ function TableReferenceBill({ load, setLoad, auth }) {
         id_user: auth._id,
         id_clinic: auth.id_clinic,
       };
-  
+
       const { datos, cargando } = await PeticionAJAX(
         Global.url + "activity/create-activity",
         "POST",
         activity
       );
-  
+
       if (datos.state == "success" && !cargando) {
         save = true;
       }
-  
+
       return save;
     };
-  }
+  };
 
   return (
-    <Table>
-      <Thead menu={menuT} />
-      <Tbody>
-        {!load &&
-          billReferences.map((bill) => {
-            return (
-              <tr key={bill._id}>
-                <TdTable>{bill.reference}</TdTable>
+    <>
+      <Table>
+        <Thead menu={menuT} />
+        <Tbody>
+          {!load &&
+            billReferences.map((bill) => {
+              return (
+                <tr key={bill._id}>
+                  <TdTable>{bill.reference}</TdTable>
 
-                <TdTable className={"total"}>{bill.total}€</TdTable>
+                  <TdTable className={"total"}>{bill.total}€</TdTable>
 
-                <TdTable>{changeDateFormat(bill.date)}</TdTable>
+                  <TdTable>{changeDateFormat(bill.date)}</TdTable>
 
-                <TdTable>
-                  <BtnsTable className={"showTable"}>
-                    <Link to={"bill-show/" + bill.reference}>
-                      <IoDocumentText size={15} />
-                    </Link>
-                  </BtnsTable>
+                  <TdTable>
+                    <BtnsTable className={"showTable"}>
+                      <Link to={"bill-show/" + bill.reference}>
+                        <IoDocumentText size={15} />
+                      </Link>
+                    </BtnsTable>
 
-                  <BtnsTable
-                    className={"deleteTable"}
-                    onClick={() => deleteBillReference(bill._id)}
-                  >
-                    <MdDelete />
-                  </BtnsTable>
-                </TdTable>
-              </tr>
-            );
-          })}
-      </Tbody>
-    </Table>
+                    <BtnsTable
+                      className={"deleteTable"}
+                      onClick={() => deleteBillReference(bill._id)}
+                    >
+                      <MdDelete />
+                    </BtnsTable>
+                  </TdTable>
+                </tr>
+              );
+            })}
+        </Tbody>
+      </Table>
+
+      {!load && billReferences.length < 1 && (
+        <div className="notFindSection">
+          <p>Todavía no hay facturas</p>
+        </div>
+      )}
+    </>
   );
 }
 

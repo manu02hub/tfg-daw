@@ -67,13 +67,6 @@ function CardCabinet({ cabinet, cabinets, setCabinets, auth }) {
               <p>Referencia</p>
               <span>{cabinet.reference}</span>
             </div>
-            <div className="dataCabinet">
-              <p>Nº de citas de hoy</p>
-              <span>
-                {" "}
-                <FaCalendarDay size={12} /> 15
-              </span>
-            </div>
             <div className="btnsCardCabinet">
               <BtnsTable className={"editTable"}>
                 <Link to={"cabinet-edit/" + cabinet._id}>

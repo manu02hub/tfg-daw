@@ -1,4 +1,5 @@
 const Activity = require("../models/Activity");
+const CryptoJS = require("crypto-js");
 
 const createActivity = async (req, res) => {
 

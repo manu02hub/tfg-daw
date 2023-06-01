@@ -86,23 +86,30 @@ function TableActivity({ load, setLoad, idClinic }) {
   };
 
   return (
-    <Table>
-      <Thead menu={menuT} />
-      <Tbody>
-        {!load &&
-          activities.map((activity) => {
-            return (
-              <tr key={activity._id} className={checkAction(activity.action)}>
-                <TdTable>{activity.message}</TdTable>
+    <>
+      <Table>
+        <Thead menu={menuT} />
+        <Tbody>
+          {!load &&
+            activities.map((activity) => {
+              return (
+                <tr key={activity._id} className={checkAction(activity.action)}>
+                  <TdTable>{activity.message}</TdTable>
 
-                <TdTable>{activity.action}</TdTable>
+                  <TdTable>{activity.action}</TdTable>
 
-                <TdTable>{changeDateFormat(activity.date)}</TdTable>
-              </tr>
-            );
-          })}
-      </Tbody>
-    </Table>
+                  <TdTable>{changeDateFormat(activity.date)}</TdTable>
+                </tr>
+              );
+            })}
+        </Tbody>
+      </Table>
+      {!load && activities.length < 1 && (
+        <div className="notFindSection">
+          <p>No se ha realizado ninguna acción en esta clínica</p>
+        </div>
+      )}
+    </>
   );
 }
 

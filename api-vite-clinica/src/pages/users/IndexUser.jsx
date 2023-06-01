@@ -80,6 +80,12 @@ function IndexUser() {
           </div>
         </>
       )}
+
+      {!loading && users.length < 1 && (
+        <div className="notFindSection">
+          <p>No existen más usuarios</p>
+        </div>
+      )}
     </>
   );
 }

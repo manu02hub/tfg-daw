@@ -7,7 +7,7 @@ const DirectionSchema = Schema({
     },
 
     number: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -17,7 +17,7 @@ const DirectionSchema = Schema({
     },
 
     z_code: {
-        type: Number,
+        type: String,
         required: true
     },
 

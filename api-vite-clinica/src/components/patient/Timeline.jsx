@@ -151,6 +151,11 @@ function Timeline({ patientId }) {
           </div>
         </div>
       </div>
+      {!load && therapies_has_patient.length < 1 && (
+        <div className="notFindSection">
+          <p>No se le han realizado tratamientos aún</p>
+        </div>
+      )}
     </>
   );
 }

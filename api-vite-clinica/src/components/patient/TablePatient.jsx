@@ -14,9 +14,8 @@ import BtnsTable from "../BtnsTable";
 import ModalPatientDelete from "./ModalPatientDelete";
 
 function TablePatient({ load, setLoad, patients, setPatients, auth }) {
-
   const [idPatient, setIdPatient] = useState(0);
-  const [odontogram, setOdontogram] = useState({})
+  const [odontogram, setOdontogram] = useState({});
   const [confirmingPatientDeletion, setConfirmingPatientDeletion] =
     useState(false);
 
@@ -49,8 +48,7 @@ function TablePatient({ load, setLoad, patients, setPatients, auth }) {
     }
   };
 
-
-  const getOdontograms =  async () => {
+  const getOdontograms = async () => {
     const { datos, cargando } = await PeticionAJAX(
       Global.url + "odontogram/all-odontograms",
       "GET"
@@ -61,13 +59,11 @@ function TablePatient({ load, setLoad, patients, setPatients, auth }) {
     }
   };
 
-  const checkOdontogram = (id) =>{
-
-    let find = odontogram.find(o => o._id == id);
+  const checkOdontogram = (id) => {
+    let find = odontogram.find((o) => o._id == id);
 
     return find.name;
-    
-  }
+  };
 
   const confirmPatientDeletion = (id) => {
     setIdPatient(id);
@@ -79,7 +75,7 @@ function TablePatient({ load, setLoad, patients, setPatients, auth }) {
     <>
       <Table>
         <Thead menu={menuT} />
-        {!load  ? (
+        {!load && (
           <Tbody>
             {patients.map((patient) => {
               return (
@@ -130,14 +126,13 @@ function TablePatient({ load, setLoad, patients, setPatients, auth }) {
               );
             })}
           </Tbody>
-        ) : (
-          <Tbody>
-            <tr>
-              <TdTable>{"No existen pacientes aún en la clínica"}</TdTable>
-            </tr>
-          </Tbody>
         )}
       </Table>
+      {!load && patients.length < 1 && (
+        <div className="notFindSection">
+          <p>No existen pacientes</p>
+        </div>
+      )}
       <ModalPatientDelete
         confirm={confirmingPatientDeletion}
         setConfirm={setConfirmingPatientDeletion}

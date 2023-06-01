@@ -7,7 +7,7 @@ const ContactSchema = Schema({
     },
 
     mobile_phone: {
-        type: Number,
+        type: String,
         required: true
     },
     

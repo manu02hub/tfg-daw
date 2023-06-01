@@ -12,13 +12,19 @@ import InputError from "../InputError";
 import BtnPrimary from "../BtnPrimary";
 import SelectOdontogram from "../odontogram/SelectOdontogram";
 
-function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth }) {
+function FormCreatePatient({
+  isMinor,
+  setIsMinor,
+  isSavedTutor,
+  idTutor,
+  auth,
+}) {
   const dateNow = new Date();
   const [errorNif, setErrorNif] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorMobilePhone, seterrorMobilePhone] = useState("");
   const navigate = useNavigate();
- 
+
   const {
     register,
     handleSubmit,
@@ -26,7 +32,6 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth })
   } = useForm({
     resolver: yupResolver(schema),
   });
-
 
   const handleDateChange = (event) => {
     let data;
@@ -86,18 +91,19 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth })
 
     other = {
       diseases: data.diseases,
-      allergies: data.allergies
-    }
+      allergies: data.allergies,
+    };
 
     id_direction = await createDirection(direction);
     id_contact = await createContact(contact);
-    id_other = await createOther(other)
+    id_other = await createOther(other);
 
     if (idTutor !== 0) {
       tutors.push(idTutor);
     }
 
     newPatient = {
+      history_number: 1,
       name: data.name,
       surnames: data.surnames,
       nif: data.nif,
@@ -108,7 +114,7 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth })
       id_contact: id_contact,
       id_other: id_other,
       tutors: tutors,
-      id_clinic: auth.id_clinic
+      id_clinic: auth.id_clinic,
     };
 
     await createPatient(newPatient);
@@ -167,7 +173,6 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth })
   };
 
   const createPatient = async (pat) => {
-
     let save;
 
     const { datos, cargando } = await PeticionAJAX(
@@ -181,7 +186,7 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth })
       setErrorNif("");
       seterrorMobilePhone("");
       save = await activity(datos.patient);
-      if(save){
+      if (save) {
         navigate("/panel/patients");
       }
     } else {
@@ -439,13 +444,11 @@ function FormCreatePatient({ isMinor, setIsMinor, isSavedTutor, idTutor, auth })
               </div>
 
               <div className="separadorBtn">
-
-                
                 <BtnPrimary
                   className={"btnsPrimary"}
-                  disabled={(isMinor && !isSavedTutor) ? true : false}
+                  disabled={isMinor && !isSavedTutor ? true : false}
                 >
-                  Crear 
+                  Crear
                 </BtnPrimary>
                 {isMinor && !isSavedTutor && (
                   <InputError

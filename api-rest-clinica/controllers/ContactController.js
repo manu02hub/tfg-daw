@@ -1,22 +1,10 @@
 const Contact = require("../models/Contact");
-const CryptoJS  = require("crypto-js");
 
 const createContact = async (req, res) => {
 
     var contact;
     let respuesta;
     let parameters = req.body;
-
-    // var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(parameters), 'secret key 123').toString();
-    // cabinet = await Cabinet.findOne({ $or: [{ email: parameters.email }, { mobile_phone: parameters.mobile_phone }] });
-
-    // if (cabinet) {
-
-    //     respuesta = res.status(200).json({
-    //         state: "error",
-    //         message: "Ya hay "
-    //     });
-    // } else {
 
     contact = new Contact(parameters);
     await contact.save();
@@ -94,13 +82,11 @@ const searchContact = async (req, res) => {
     let id = req.params.id;
 
     if (id) {
-        console.log(id)
         // contact = await Contact.findOne({ $or: [{ email: id }, { mobile_phone: id }] });
         contact = await Contact.findOne({ $or: [{ nif: id }, { mobile_phone: id }] });
-        console.log(contact);
 
         if (contact) {
-            
+
             respuesta = res.status(200).json({
                 state: "success",
                 message: "Encontrado",

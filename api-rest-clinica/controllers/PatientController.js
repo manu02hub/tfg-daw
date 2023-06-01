@@ -3,58 +3,68 @@ const Contact = require("../models/Contact");
 const Direction = require("../models/Direction");
 const User = require("../models/User");
 const bycrypt = require("bcrypt");
-// const getUser = async (req, res) => {
-//     const id = req.params.id;
-
-//     const user = await User.findOne({ _id: id });
-//     const permissionsUser = await Rol.findOne({ _id: user.id_rol }).populate('id_permissions');
-
-//     return res.status(200).json({
-//         state: "success",
-//         user: {
-//             _id: user._id,
-//             name: user.name,
-//             email: user.email,
-//             id_clinic: user.id_clinic,
-//             id_rol: user.id_rol,
-//             name_rol: permissionsUser.name,
-//             permissions: permissionsUser.id_permissions,
-//         },
-//     });
-// }
+const CryptoJS = require("crypto-js");
 
 const createPatient = async (req, res) => {
+    
+    let patient;
+    let increment;
     let parameters = req.body;
     let respuesta;
 
-    //Validar?
+    parameters.name = CryptoJS.AES.encrypt(JSON.stringify(parameters.name), 'ToothSensation2023').toString();
+    parameters.surnames = CryptoJS.AES.encrypt(JSON.stringify(parameters.surnames), 'ToothSensation2023').toString();
+    parameters.gender = CryptoJS.AES.encrypt(JSON.stringify(parameters.gender), 'ToothSensation2023').toString();
+    parameters.date_birth = CryptoJS.AES.encrypt(JSON.stringify(parameters.date_birth), 'ToothSensation2023').toString();
 
-    // let patientCrypt = await bycrypt.hash(parameters, 10);
+    patient = await Patient.find({}).sort({ history_number: 'desc' }).limit(1).exec();
 
+    if (patient.length >= 1) {
+
+        increment = Number.parseInt(patient[0].history_number) + 1;
+        parameters.history_number = increment;
+
+    }
 
     const patientCreate = new Patient(parameters);
-
+   
     // const patientFind = await Patient.find({ mobile_phone: patientCreate.mobile_phone }).exec();
-
     await patientCreate.save();
+
+
     respuesta = res.status(200).json({
         state: "success",
         patient: patientCreate
     });
-
-
-
 
     return respuesta;
 
 }
 
 const getAllPatients = async (req, res) => {
-
+    var bytes;
     const id = req.params.id;
 
     //  const allPatients = await Patient.find({}).sort({ date: -1 }).populate('id_rol').exec();
     const patients = await Patient.find({ $and: [{ id_clinic: id }, { active: true }] }).sort({ date: -1 }).populate('id_contact');
+
+    if (patients.length > 0) {
+
+        patients.forEach(element => {
+            bytes = CryptoJS.AES.decrypt(element.name, 'ToothSensation2023');
+            element.name = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+            bytes = CryptoJS.AES.decrypt(element.surnames, 'ToothSensation2023');
+            element.surnames = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+            bytes = CryptoJS.AES.decrypt(element.gender, 'ToothSensation2023');
+            element.gender = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+            bytes = CryptoJS.AES.decrypt(element.date_birth, 'ToothSensation2023');
+            element.date_birth = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        });
+    }
+
 
     return res.status(200).json({
         state: "success",
@@ -62,25 +72,46 @@ const getAllPatients = async (req, res) => {
     });
 }
 
-// const getUsersClinic = async (req, res) => {
-
-//     const id_clinic = req.params.clinic;
-//     const id = req.params.id;
-
-//     const allUsers = await User.find({ $and: [{ _id: { $not: { $eq: id } } }, { id_clinic: id_clinic }] }).populate('id_rol').exec();
-
-//     return res.status(200).json({
-//         state: "success",
-//         allUsers,
-//     });
-
-// }
 
 const getPatient = async (req, res) => {
 
+    var bytes;
     const id = req.params.id;
 
     const patient = await Patient.findOne({ _id: id }).populate('id_direction');
+
+    if (patient._id) {
+        bytes = CryptoJS.AES.decrypt(patient.name, 'ToothSensation2023');
+        patient.name = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.surnames, 'ToothSensation2023');
+        patient.surnames = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.gender, 'ToothSensation2023');
+        patient.gender = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.date_birth, 'ToothSensation2023');
+        patient.date_birth = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.id_direction.street, 'ToothSensation2023');
+        patient.id_direction.street = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.id_direction.number, 'ToothSensation2023');
+        patient.id_direction.number = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.id_direction.flat, 'ToothSensation2023');
+        patient.id_direction.flat = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.id_direction.z_code, 'ToothSensation2023');
+        patient.id_direction.z_code = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.id_direction.city, 'ToothSensation2023');
+        patient.id_direction.city = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+        bytes = CryptoJS.AES.decrypt(patient.id_direction.province, 'ToothSensation2023');
+        patient.id_direction.province = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    }
+
 
     return res.status(200).json({
         state: "success",
@@ -103,6 +134,11 @@ const updatePatient = async (req, res) => {
     //         message: "Ya existe un paciente con ese número de teléfono",
     //     });
     // } else {
+
+    parameters.name = CryptoJS.AES.encrypt(JSON.stringify(parameters.name), 'ToothSensation2023').toString();
+    parameters.surnames = CryptoJS.AES.encrypt(JSON.stringify(parameters.surnames), 'ToothSensation2023').toString();
+    parameters.gender = CryptoJS.AES.encrypt(JSON.stringify(parameters.gender), 'ToothSensation2023').toString();
+    parameters.date_birth = CryptoJS.AES.encrypt(JSON.stringify(parameters.date_birth), 'ToothSensation2023').toString();
 
     patient = await Patient.findByIdAndUpdate(id, parameters, { new: true });
 
@@ -183,6 +219,7 @@ const deletePatient = async (req, res) => {
 
 const searchNIFphone = async (req, res) => {
 
+    var bytes;
     let patient;
     let data = req.params.data;
 
@@ -190,6 +227,7 @@ const searchNIFphone = async (req, res) => {
         patient = await Patient.findOne({ $and: [{ id_contact: data }, { active: true }] });
 
         if (patient) {
+
             respuesta = res.status(200).json({
                 state: "success",
                 message: "Encontrado",
@@ -222,8 +260,27 @@ const searchPatient = async (req, res) => {
     let patients;
 
     if (data !== "") {
-        patients = await Patient.find({ $and: [{ nif: { $regex: data, $options: 'i' } }, { active: true }] }).sort({ date: -1 }).populate('id_contact').exec();
+        patients = await Patient.find({ $and: [{ nif: { $regex: aux.nif, $options: 'i' } }, { active: true }] }).sort({ date: -1 }).populate('id_contact').exec();
+
+        if (patients.length > 0) {
+
+            patients.forEach(element => {
+                bytes = CryptoJS.AES.decrypt(element.name, 'ToothSensation2023');
+                element.name = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+                bytes = CryptoJS.AES.decrypt(element.surnames, 'ToothSensation2023');
+                element.surnames = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+                bytes = CryptoJS.AES.decrypt(element.gender, 'ToothSensation2023');
+                element.gender = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+                bytes = CryptoJS.AES.decrypt(element.date_birth, 'ToothSensation2023');
+                element.date_birth = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+            });
+        }
+
     }
+
 
     return res.status(200).json({
         state: "success",
