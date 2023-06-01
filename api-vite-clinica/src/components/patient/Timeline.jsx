@@ -124,6 +124,59 @@ function Timeline({ patientId }) {
           <div className="timeline">
             {!load &&
               therapies_has_patient.length > 0 &&
+              appointments.map((app, index) => {
+                console.log(app.date);
+                return (
+                  <div className="container right" key={app._id}>
+                    <CardBasic>
+                      <div className="infoTimeline">
+                        <span>{changeDateFormat(app.date)}</span>
+                        {therapies_has_patient.map((th) => {
+                          console.log("TH " + th.id_therapy.name);
+                          return app.id_therapy_has_patient.map((t) => {
+                            console.log("ID CiTA " + t);
+                            return (
+                              th._id == t &&
+                              th.complete && (
+                                <div className="therapiesDate" key={th._id}>
+                                  <p>
+                                    <span className="therapyName">
+                                      Tratamiento:
+                                    </span>
+                                    {th.id_therapy.name},
+                                    {tooth.map((teeth) => {
+                                      return (
+                                        teeth._id == th.id_tooth && (
+                                          <span key={teeth._id}>
+                                            {" "}
+                                            Pieza:{" "}
+                                            {teeth.number +
+                                              "" +
+                                              teeth.letter}{" "}
+                                          </span>
+                                        )
+                                      );
+                                    })}
+                                  </p>
+                                </div>
+                              )
+                            );
+                          });
+                        })}
+                      </div>
+                    </CardBasic>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="row">
+        <div className="col-sm-8 col-md-8 col-lg-8">
+          <div className="timeline">
+            {!load &&
+              therapies_has_patient.length > 0 &&
               therapies_has_patient.map((th, index) => {
                 return appointments.map((app) => {
                   return app.id_therapy_has_patient.map((t) => {
@@ -156,7 +209,7 @@ function Timeline({ patientId }) {
               })}
           </div>
         </div>
-      </div>
+      </div> */}
       {!load && therapies_has_patient.length < 1 && (
         <div className="notFindSection">
           <p>No se le han realizado tratamientos aún</p>

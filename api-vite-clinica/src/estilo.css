@@ -1439,6 +1439,15 @@ select[multiple]:focus option:checked {
   font-size: 0.75rem;
   cursor: pointer;
   border-radius: 3px;
+  border: 1px solid rgb(209 213 219);
+  background: white;
+  transition: all 300ms;
+  color: #212121;
+  margin-left: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .unlockBtns .btnUnlock {
@@ -1536,10 +1545,6 @@ select[multiple]:focus option:checked {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-}
-
-.modal-error {
-  background-color: #ee5c5c;
 }
 
 /*-------------------------GRID SYSTEM------------------------------------------*/

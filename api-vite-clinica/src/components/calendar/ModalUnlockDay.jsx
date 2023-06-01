@@ -75,7 +75,7 @@ function ModalUnlockDay({
     <>
       {confirmModalUnlock && (
         <Modal show={confirm}>
-          <div className="section-modal modal-error">
+          <div className="section-modal">
             <h2>Desbloquear Día</h2>
             <div className="unlock">
               <span>¿Quiéres desbloquear el día para poder crear citas?</span>
@@ -87,13 +87,13 @@ function ModalUnlockDay({
                 >
                   desbloquear
                 </button>
-                <BtnCancel
+                <button
                   type="button"
-                  className="btnCancel btnNoUnlock shadow"
+                  className="btnNoUnlock shadow"
                   onClick={() => closeModal()}
                 >
                   cancelar
-                </BtnCancel>
+                </button>
               </div>
             </div>
           </div>
