@@ -9,13 +9,14 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import BtnsTable from "../BtnsTable";
+import ModalError from "../ModalError";
 // import ModalClinicDelete from "./ModalClinicDelete";
 
 function TableTherapy({ load, setLoad, therapies, setTherapies, auth }) {
-  const [idClinic, setIdClinic] = useState(0);
-  const [confirmingClinicDeletion, setConfirmingClinicDeletion] =
-    useState(false);
 
+  const [error, setError] = useState("");
+  const [confirmingTherapyDeletion, setConfirmingherapyDeletion] =
+    useState(false);
   const menuT = ["Tratamiento", "Precio", "Descuento", "Total", "Acciones"];
 
   useEffect(() => {
@@ -43,26 +44,27 @@ function TableTherapy({ load, setLoad, therapies, setTherapies, auth }) {
     return total;
   };
 
-  const deleteTherapy = async(id)  =>{
-
+  const deleteTherapy = async (id) => {
     let auxTherapies;
     let save;
 
     const { datos, cargando } = await PeticionAJAX(
-      Global.url + "therapy/delete-therapy/"+id,
+      Global.url + "therapy/delete-therapy/" + id,
       "DELETE"
     );
 
     if (datos.state == "success" && !cargando) {
-
       save = await activity(datos.therapy);
 
-      if(save){
-        auxTherapies = therapies.filter(thera => thera._id !== id);
+      if (save) {
+        auxTherapies = therapies.filter((thera) => thera._id !== id);
 
         setTherapies(auxTherapies);
       }
 
+    }else{
+      setError(datos.message);
+      setConfirmingherapyDeletion(true);
     }
   };
 
@@ -94,10 +96,6 @@ function TableTherapy({ load, setLoad, therapies, setTherapies, auth }) {
     return save;
   };
 
-  const confirmClinicDeletion = (id) => {
-    setConfirmingClinicDeletion(true);
-  };
-
   return (
     <>
       <Table>
@@ -124,7 +122,10 @@ function TableTherapy({ load, setLoad, therapies, setTherapies, auth }) {
                       </Link>
                     </BtnsTable>
 
-                    <BtnsTable className={"deleteTable"} onClick={()=> deleteTherapy(therapy._id)}>
+                    <BtnsTable
+                      className={"deleteTable"}
+                      onClick={() => deleteTherapy(therapy._id)}
+                    >
                       <MdDelete />
                     </BtnsTable>
                   </TdTable>
@@ -138,6 +139,9 @@ function TableTherapy({ load, setLoad, therapies, setTherapies, auth }) {
           <p>No existen tratamientos</p>
         </div>
       )}
+
+      {confirmingTherapyDeletion && <ModalError show={confirmingTherapyDeletion} message={error} setConfirm={setConfirmingherapyDeletion} />}
+      
     </>
   );
 }

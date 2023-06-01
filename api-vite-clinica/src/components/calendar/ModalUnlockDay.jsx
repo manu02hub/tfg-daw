@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Global } from "../../helpers/Global";
 import { PeticionAJAX } from "../../helpers/PeticionAJAX";
 import Modal from "../Modal";
+import BtnCancel from "../BtnCancel";
 
 function ModalUnlockDay({
   confirmModalUnlock,
@@ -74,7 +75,7 @@ function ModalUnlockDay({
     <>
       {confirmModalUnlock && (
         <Modal show={confirm}>
-          <div className="section-modal">
+          <div className="section-modal modal-error">
             <h2>Desbloquear Día</h2>
             <div className="unlock">
               <span>¿Quiéres desbloquear el día para poder crear citas?</span>
@@ -86,13 +87,13 @@ function ModalUnlockDay({
                 >
                   desbloquear
                 </button>
-                <button
+                <BtnCancel
                   type="button"
                   className="btnCancel btnNoUnlock shadow"
                   onClick={() => closeModal()}
                 >
                   cancelar
-                </button>
+                </BtnCancel>
               </div>
             </div>
           </div>

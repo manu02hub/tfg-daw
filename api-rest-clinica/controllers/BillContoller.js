@@ -45,6 +45,8 @@ const getBill = async (req, res) => {
 
 const deleteBill = async (req, res) => {
 
+    let respuesta;
+    let billreference;
     let id = req.params.id;
 
     const bill = await Bill.findByIdAndDelete(id);

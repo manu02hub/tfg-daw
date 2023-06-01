@@ -1,4 +1,5 @@
 const Cabinet = require("../models/Cabinet");
+const Appointment = require("../models/Appointment");
 
 const createCabinet = async (req, res) => {
 
@@ -42,7 +43,7 @@ const getAllCabinets = async (req, res) => {
 const getAllGabinetClinic = async (req, res) => {
     let id = req.params.id;
 
-    const cabinets = await Cabinet.find({id_clinic: id}).exec();
+    const cabinets = await Cabinet.find({ id_clinic: id }).exec();
 
     return res.status(200).json({
         state: "success",
@@ -65,15 +66,27 @@ const getCabinet = async (req, res) => {
 
 const deleteCabinet = async (req, res) => {
 
+    let cabinet;
+    let respuesta;
     let id = req.params.id;
 
-    const cabinet = await Cabinet.findByIdAndDelete(id);
+    const appointment = await Appointment.findOne({ id_cabinet: id });
 
-    return res.status(200).json({
-        state: "success",
-        message: "Gabinete eliminado correctamente",
-        cabinet:cabinet
-    });
+    if (appointment) {
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "El gabinete no se puede eliminar porque tiene citas osociadas",
+        });
+    } else {
+        cabinet = await Cabinet.findByIdAndDelete(id);
+        respuesta = res.status(200).json({
+            state: "success",
+            message: "Gabinete eliminado correctamente",
+            cabinet: cabinet
+        });
+    }
+
+    return respuesta;
 
 }
 

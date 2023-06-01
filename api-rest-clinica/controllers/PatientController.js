@@ -2,11 +2,12 @@ const Patient = require("../models/Patient");
 const Contact = require("../models/Contact");
 const Direction = require("../models/Direction");
 const User = require("../models/User");
+const Appointments = require("../models/Appointment");
 const bycrypt = require("bcrypt");
 const CryptoJS = require("crypto-js");
 
 const createPatient = async (req, res) => {
-    
+
     let patient;
     let increment;
     let parameters = req.body;
@@ -27,7 +28,7 @@ const createPatient = async (req, res) => {
     }
 
     const patientCreate = new Patient(parameters);
-   
+
     // const patientFind = await Patient.find({ mobile_phone: patientCreate.mobile_phone }).exec();
     await patientCreate.save();
 
@@ -162,6 +163,7 @@ const deletePatient = async (req, res) => {
     let equal;
     let respuesta;
     let patientDelete;
+    let appointments;
 
     const user = await User.findOne({ _id: parameters.id });
 
@@ -170,34 +172,24 @@ const deletePatient = async (req, res) => {
 
         if (equal) {
 
-            patientDelete = await Patient.findByIdAndUpdate(id, { active: false }, { new: true });
+            appointments = await Appointments.findOne({ id_patient: id });
 
-            respuesta = res.status(200).json({
-                state: "success",
-                message: "Paciente eliminado correctamente",
-                patient: patientDelete
-            });
+            if(appointments){
+                respuesta = res.status(200).json({
+                    state: "error",
+                    message: "No se puede eliminar tiene citas asignadas",
+                });
 
+            }else{
 
-            // usuariosClinicas = await User.findOne({ id_clinic: id });
+                patientDelete = await Patient.findByIdAndUpdate(id, { active: false }, { new: true });
 
-            // if (usuariosClinicas) {
-
-            //     respuesta = res.status(200).json({
-            //         state: "error",
-            //         message: "No se puede eliminar la clinica, tienes usuarios asociados",
-            //     });
-
-            // } else {
-
-            //     await Patient.findByIdAndDelete(id);
-
-            //     respuesta = res.status(200).json({
-            //         state: "success",
-            //         message: "Paciente eliminado correctamente",
-            //     });
-            // }
-
+                respuesta = res.status(200).json({
+                    state: "success",
+                    message: "Paciente eliminado correctamente",
+                    patient: patientDelete
+                });
+            }
 
         } else {
             respuesta = res.status(200).json({
@@ -227,6 +219,12 @@ const searchNIFphone = async (req, res) => {
         patient = await Patient.findOne({ $and: [{ id_contact: data }, { active: true }] });
 
         if (patient) {
+
+            bytes = CryptoJS.AES.decrypt(patient.name, 'ToothSensation2023');
+            patient.name = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    
+            bytes = CryptoJS.AES.decrypt(patient.surnames, 'ToothSensation2023');
+            patient.surnames = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
             respuesta = res.status(200).json({
                 state: "success",

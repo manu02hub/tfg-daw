@@ -124,29 +124,35 @@ function Timeline({ patientId }) {
           <div className="timeline">
             {!load &&
               therapies_has_patient.length > 0 &&
-              appointments.map((appointment) => {
-                return (
-                  <div className="container right" key={appointment._id}>
-                    <CardBasic>
-                      <div className="infoTimeline">
-                        <span>{changeDateFormat(appointment.date)}</span>
-                        {therapies_has_patient.map((th, index) => {
-                          return (
-                            <div className="therapiesDate" key={th._id}>
-                              <p>
-                                <span className="therapyName">
-                                  Tratamiento:
-                                </span>
-                                {th.id_therapy.name}, <span> Pieza: </span>{" "}
-                                {tooth[index].number + "" + tooth[index].letter}
-                              </p>
+              therapies_has_patient.map((th, index) => {
+                return appointments.map((app) => {
+                  return app.id_therapy_has_patient.map((t) => {
+                    return (
+                      t == th._id &&
+                      th.complete && (
+                        <div className="container right" key={app._id}>
+                          <CardBasic>
+                            <div className="infoTimeline">
+                              <span>{changeDateFormat(app.date)}</span>
+
+                              <div className="therapiesDate" key={th._id}>
+                                <p>
+                                  <span className="therapyName">
+                                    Tratamiento:
+                                  </span>
+                                  {th.id_therapy.name}, <span> Pieza: </span>{" "}
+                                  {tooth[index].number +
+                                    "" +
+                                    tooth[index].letter}
+                                </p>
+                              </div>
                             </div>
-                          );
-                        })}
-                      </div>
-                    </CardBasic>
-                  </div>
-                );
+                          </CardBasic>
+                        </div>
+                      )
+                    );
+                  });
+                });
               })}
           </div>
         </div>

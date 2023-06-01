@@ -4,6 +4,7 @@ const jwt = require("../services/jwt");
 const Rol = require('../models/Rol');
 const Permission = require("../models/Permission");
 const moongosePaginate = require("mongoose-paginate-v2");
+const Appointment = require("../models/Appointment");
 
 const pruebaUser = (req, res) => {
     res.status(200).json({
@@ -245,25 +246,38 @@ const deleteUser = async (req, res) => {
     let parameters = req.body;
     let equal;
     let respuesta;
+    let appointment
 
     const user = await User.findOne({ _id: parameters.id });
 
     if (user) {
-        equal = bycrypt.compareSync(parameters.password, user.password);
 
-        if (equal) {
-            await User.findByIdAndDelete(id);
+        appointment = await Appointment.findOne({ id_user: parameters.id });
 
-            respuesta = res.status(200).json({
-                state: "success",
-                message: "Usuario eliminado correctamente",
-            });
+        if (appointment) {
+            equal = bycrypt.compareSync(parameters.password, user.password);
+
+            if (equal) {
+                await User.findByIdAndDelete(id);
+
+                respuesta = res.status(200).json({
+                    state: "success",
+                    message: "Usuario eliminado correctamente",
+                });
+            } else {
+                respuesta = res.status(200).json({
+                    state: "error",
+                    message: "La contraseña no es correcta",
+                });
+            }
+
         } else {
             respuesta = res.status(200).json({
                 state: "error",
-                message: "La contraseña no es correcta",
+                message: "No puedes eliminar el usuario porque tiene citas asignadas",
             });
         }
+
     } else {
 
         respuesta = res.status(200).json({

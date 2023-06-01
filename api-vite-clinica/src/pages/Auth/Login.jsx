@@ -96,9 +96,6 @@ function Login() {
                 {...register("email")}
                 onFocus={() => setErrorEmail()}
               ></InputText>
-              <InputError
-                message={errors.email ? errors.email?.message : error}
-              ></InputError>
 
               <InputLabel>Contraseña</InputLabel>
               <InputText
@@ -106,7 +103,7 @@ function Login() {
                 name="password"
                 {...register("password")}
               ></InputText>
-              <InputError message={errors.password?.message}></InputError>
+              <InputError message={error !== "" ? error : ""}></InputError>
 
               <div className="contenedorLink">
                 {/* <Link>Forgot your password?</Link> */}

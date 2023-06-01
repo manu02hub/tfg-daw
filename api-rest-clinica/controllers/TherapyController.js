@@ -1,4 +1,5 @@
 const Therapy = require("../models/Therapy");
+const Therapy_has_Patient = require("../models/Therapy_has_Patient");
 
 const createTherapy = async (req, res) => {
 
@@ -71,14 +72,27 @@ const searchTherapy = async (req, res) => {
 const deleteTherapy = async (req, res) => {
 
     let id = req.params.id;
+    let respuesta;
+    let therapy;
 
-    const therapy = await Therapy.findByIdAndDelete(id);
+    const tp = await Therapy_has_Patient.findOne({ id_therapy: id });
 
-    return res.status(200).json({
-        state: "success",
-        message: "Terapia eliminada correctamente",
-        therapy: therapy
-    });
+    if (tp) {
+        respuesta = res.status(200).json({
+            state: "error",
+            message: "Este tratamiento esta asignado a pacientes",
+        });
+
+    } else {
+        therapy = await Therapy.findByIdAndDelete(id);
+
+        respuesta = res.status(200).json({
+            state: "success",
+            message: "Terapia eliminada correctamente",
+            therapy: therapy
+        });
+    }
+    return respuesta;
 
 }
 

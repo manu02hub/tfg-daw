@@ -1,4 +1,5 @@
 const BillReference = require("../models/BillReference");
+const Bill = require("../models/Bill");
 
 const createBillReference = async (req, res) => {
 
@@ -56,14 +57,33 @@ const getBillReference = async (req, res) => {
 const deleteBillReference = async (req, res) => {
 
     let id = req.params.id;
+    let billreference;
+    let bill;
+    let respuesta;
 
-    const billreference = await BillReference.findByIdAndUpdate(id, { active: false });
+    billreference = await BillReference.findById(id);
 
-    return res.status(200).json({
-        state: "success",
-        message: "Factura eliminada correctamente",
-        billreference: billreference,
-    });
+    if (billreference) {
+        bill = await Bill.findOne({ number_bill: billreference.reference });
+
+        if (bill) {
+
+            respuesta = res.status(200).json({
+                state: "error",
+                message: "No se puede eliminar la factura",
+            });
+        } else {
+            billreference = await BillReference.findByIdAndUpdate(id, { active: false });
+
+            respuesta = res.status(200).json({
+                state: "success",
+                message: "Factura eliminada correctamente",
+                billreference: billreference,
+            });
+        }
+    }
+
+    return respuesta;
 
 }
 
