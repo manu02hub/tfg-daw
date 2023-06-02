@@ -150,9 +150,6 @@ function FullCalendarCabinet({
     let updateEvent;
     const newStartDay = arg.event.start; // Obtener el día del mes para la fecha de inicio
 
-    console.log("Día de inicio:", newStartDay.toISOString());
-    console.log(arg.event.id);
-
     const isDayBlocked = blockedDays.find(
       (element) =>
         element.date.split("T")[0] == newStartDay.toISOString().split("T")[0]
@@ -161,7 +158,6 @@ function FullCalendarCabinet({
     if (isDayBlocked) {
       // Cancelar el arrastre del evento
       arg.revert();
-      console.log("No se puede deslizar el evento en un día bloqueado");
     } else {
       position = events.findIndex((e) => e.id === arg.event.id);
       auxEvents = [...events];
@@ -208,7 +204,6 @@ function FullCalendarCabinet({
       setEvent(info.event);
       setConfirmModalEdit(true);
     } else {
-      console.log(info.event.id);
       setEvent(info.event);
       setConfirmModalUnlock(true);
     }

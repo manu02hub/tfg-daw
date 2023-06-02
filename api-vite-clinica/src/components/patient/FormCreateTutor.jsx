@@ -44,7 +44,6 @@ function FormCreateTutor({ setIsSavedTutor, setIdTutor }) {
       if (datos.state == "success" && !cargando) {
         getTutor(datos.contact);
       } else {
-        console.log(tutorValue);
         setErrorTutor(datos.message);
         setTutor({});
         setContact({});

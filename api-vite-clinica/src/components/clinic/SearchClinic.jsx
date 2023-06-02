@@ -21,7 +21,6 @@ function SearchClinic({ setClinics }) {
 
     if (datos.state == "success" && !cargando) {
       setClinics(datos.clinics);
-      console.log(datos.clinics);
     }
   };
 

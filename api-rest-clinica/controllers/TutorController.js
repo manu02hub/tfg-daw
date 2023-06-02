@@ -12,7 +12,6 @@ const createTutor = async (req, res) => {
     parameters.surnames = CryptoJS.AES.encrypt(JSON.stringify(parameters.surnames), 'ToothSensation2023').toString();
 
     tutor = new Tutor(parameters);
-    console.log(tutor);
     await tutor.save();
 
     respuesta = res.status(200).json({

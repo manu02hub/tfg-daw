@@ -179,7 +179,6 @@ function TableAppointments() {
 
     if (datos.state === "success" && !cargando) {
       deleteInterface(id, index);
-      console.log(datos.therapy_has_patient)
     } else {
       setErrorBd("Algo ha ido mal");
     }

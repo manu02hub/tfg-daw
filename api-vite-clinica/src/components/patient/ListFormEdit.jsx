@@ -49,8 +49,6 @@ function ListFormEdit({
     const tut = resolvedPromises.filter((tut) => tut); // Filter out undefined values
 
     setTutorGet(tut);
-    // console.log(tut.id_direction)
-    // setDirectionGet(tut.id_direction);
 
     return tut;
   };
@@ -81,7 +79,6 @@ function ListFormEdit({
 
   return (
     <>
-    {console.log(tutorGet)}
       {!loading &&
         tutorGet.map((idT, index) => {
           return (

@@ -31,11 +31,8 @@ function ModalUnlockDay({
 
     if (datos.state == "success" && !cargando) {
       auxBlock = blockedDays.filter((day) => day._id !==  event.id);
-      console.log(auxBlock);
-      console.log(events);
       activity(event.start.toISOString().split("T")[0]);
       auxEvent = events.filter((e) => e.id !==  event.id);
-      console.log(auxEvent);
 
       setBlockedDays(auxBlock);
       setEvents(auxEvent);

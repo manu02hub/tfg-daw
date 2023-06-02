@@ -285,14 +285,9 @@ function FormEditPatient({
         tutors: tutors,
       };
 
-      console.log(patientTutor);
-
       save = await updatePatient(patientTutor);
 
       if (save) {
-        console.log("Añade tutor");
-        // setIdTutors([...Idtutors, idTutor]);
-        // setConfirmNewTutor(false);
         navigate("/panel/patients");
       }
     }

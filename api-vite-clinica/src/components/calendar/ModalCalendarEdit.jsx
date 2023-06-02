@@ -65,7 +65,6 @@ function ModalCalendarEdit({
         hora = auxDate.getHours();
       }
       time = hora + ":" + auxDate.getMinutes();
-      console.log(time);
       setTime(time);
       setLoading(false);
     }

@@ -106,7 +106,7 @@ const login = async (req, res) => {
         }
 
     } else {
-        respuesta = res.status(400).json({
+        respuesta = res.status(200).json({
             state: "error",
             message: "El usuario no existe"
         });

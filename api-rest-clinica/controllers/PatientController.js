@@ -47,7 +47,7 @@ const getAllPatients = async (req, res) => {
     const id = req.params.id;
 
     //  const allPatients = await Patient.find({}).sort({ date: -1 }).populate('id_rol').exec();
-    const patients = await Patient.find({ $and: [{ id_clinic: id }, { active: true }] }).sort({ date: -1 }).populate('id_contact');
+    const patients = await Patient.find({ $and: [{ id_clinic: id }, { active: true }] }).sort({ history_number: 'asc' }).populate('id_contact');
 
     if (patients.length > 0) {
 

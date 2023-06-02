@@ -41,7 +41,6 @@ function TableBill({ load, setLoad, reference, auth }) {
     let date;
     let select = e.target.value;
 
-    console.log(select);
     if (!select) {
       date = "";
     } else {
@@ -57,7 +56,6 @@ function TableBill({ load, setLoad, reference, auth }) {
 
     if (save) {
       position = bills.findIndex((bill) => {
-        console.log(bill._id);
         return bill._id == id;
       });
 
@@ -71,8 +69,6 @@ function TableBill({ load, setLoad, reference, auth }) {
       auxBill = [...bills];
 
       auxBill[position] = billUpdate;
-
-      console.log(auxBill);
 
       setBills(auxBill);
     }

@@ -56,6 +56,7 @@ function Login() {
     let activity = {
       message: "El usuario con correo " + us.email + " se ha logueado ",
       action: "Login",
+      date: new Date(),
       id_user: us._id,
       id_clinic: us.id_clinic,
     };
